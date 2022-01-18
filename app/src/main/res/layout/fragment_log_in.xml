@@ -77,7 +77,7 @@
             android:layout_height="26dp"
             android:background="@color/F2CB05"
             android:padding="5dp"
-            android:text="@string/log_in_fragment_form_password"
+            android:text="@string/generic_form_password"
             android:textColor="@color/black" />
 
 
@@ -86,8 +86,8 @@
             android:layout_width="match_parent"
             android:layout_height="56dp"
             android:background="@color/F2B705"
-            android:hint="@string/log_in_fragment_form_user_password"
-            android:inputType="textEmailAddress"
+            android:hint="@string/generic_form_password"
+            android:inputType="textPassword"
             android:padding="5dp"
             android:textAlignment="center"
             android:textColor="@color/black"

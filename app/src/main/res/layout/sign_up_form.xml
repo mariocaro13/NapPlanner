@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:gravity="center"
+    tools:context=".LogInFragment">
+
+    <LinearLayout
+        android:id="@+id/sign_up_fragment_mail_linear_layout"
+        android:layout_width="266dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/border_linearlayout"
+        android:gravity="center"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+
+        <TextView
+            android:id="@+id/sign_up_fragment_mail_text_view"
+            android:layout_width="match_parent"
+            android:layout_height="26dp"
+            android:background="@color/F2CB05"
+            android:padding="5dp"
+            android:text="@string/generic_form_user_text_view"
+            android:textColor="@color/black" />
+
+        <EditText
+            android:id="@+id/sign_up_fragment_mail_edit_view"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:background="@color/F2B705"
+            android:hint="@string/generic_form_user_text_view"
+            android:inputType="textEmailAddress"
+            android:textAlignment="center"
+            android:textColor="@color/black"
+            android:textColorHint="@color/gray" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/sign_up_fragment_username_linear_layout"
+        android:layout_width="266dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="42dp"
+        android:background="@drawable/border_linearlayout"
+        android:gravity="center"
+        android:orientation="vertical">
+
+
+        <TextView
+            android:id="@+id/sign_up_fragment_username_text_view"
+            android:layout_width="match_parent"
+            android:layout_height="26dp"
+            android:background="@color/F2CB05"
+            android:padding="5dp"
+            android:text="@string/generic_form_mail_edit_text"
+            android:textColor="@color/black" />
+
+        <EditText
+            android:id="@+id/sign_up_fragment_username_edit_view"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:background="@color/F2B705"
+            android:hint="@string/generic_form_mail_edit_text"
+            android:inputType="textEmailAddress"
+            android:textAlignment="center"
+            android:textColor="@color/black"
+            android:textColorHint="@color/gray" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/sign_up_fragment_pass_linear_layout"
+        android:layout_width="266dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="42dp"
+        android:background="@drawable/border_linearlayout"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/sign_up_fragment_pass_text_view"
+            android:layout_width="match_parent"
+            android:layout_height="26dp"
+            android:background="@color/F2CB05"
+            android:padding="5dp"
+            android:text="@string/generic_form_password"
+            android:textColor="@color/black" />
+
+
+        <EditText
+            android:id="@+id/sign_up_fragment_pass_edit_view"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:background="@color/F2B705"
+            android:hint="@string/generic_form_password"
+            android:inputType="textPassword"
+            android:padding="5dp"
+            android:textAlignment="center"
+            android:textColor="@color/black"
+            android:textColorHint="@color/gray" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/sign_up_fragment_confirm_pass_linear_layout"
+        android:layout_width="266dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="42dp"
+        android:background="@drawable/border_linearlayout"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/sign_up_fragment_confirm_pass_text_view"
+            android:layout_width="match_parent"
+            android:layout_height="26dp"
+            android:background="@color/F2CB05"
+            android:padding="5dp"
+            android:text="@string/generic_form_confirm_password"
+            android:textColor="@color/black" />
+
+
+        <EditText
+            android:id="@+id/sign_up_fragment_confirm_pass_edit_view"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:background="@color/F2B705"
+            android:hint="@string/generic_form_confirm_password"
+            android:inputType="textPassword"
+            android:padding="5dp"
+            android:textAlignment="center"
+            android:textColor="@color/black"
+            android:textColorHint="@color/gray" />
+
+    </LinearLayout>
+
+</LinearLayout>
