@@ -10,10 +10,14 @@
     <string name="hello_first_fragment">Hello first fragment</string>
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
     <string name="log_in_fragment_form_user_or_mail_text_view">User or Mail</string>
-    <string name="log_in_fragment_form_password">Password</string>
-    <string name="log_in_fragment_form_user_password">User password</string>
+    <string name="generic_form_password">Password</string>
     <string name="log_in_fragment_form_user_or_mail_edit_text">User or mail</string>
     <string name="log_ing_fragment_button_send">Send</string>
     <string name="log_in_fragment_form_don_t_have_an_account">Don´t have an account?</string>
     <string name="log_in_fragment_form_sign_up">Sign Up</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="generic_form_confirm_password">Confirm Password</string>
+    <string name="generic_form_mail_edit_text">Mail</string>
+    <string name="generic_form_user_text_view">Username</string>
 </resources>

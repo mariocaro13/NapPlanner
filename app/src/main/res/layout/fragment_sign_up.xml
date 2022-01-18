@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/F2C84B"
+    tools:context=".SignUpFragment">
+
+    <ImageView
+        android:id="@+id/AppIcon"
+        android:layout_width="175dp"
+        android:layout_height="175dp"
+        android:layout_marginStart="85dp"
+        android:layout_marginTop="45dp"
+        android:layout_marginEnd="85dp"
+        android:src="@drawable/app_icon"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.54"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <include layout="@layout/sign_up_form"
+        app:layout_constraintTop_toBottomOf="@id/AppIcon"/>
+
+    <Button
+        android:id="@+id/sendButton"
+        android:layout_width="132dp"
+        android:layout_height="60dp"
+        android:layout_marginStart="114dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="114dp"
+        android:layout_marginBottom="78dp"
+        android:backgroundTint="@color/F29F05"
+        android:text="@string/log_ing_fragment_button_send"
+        android:textColor="@color/black"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/LinkToSignUpLinearLayout" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
