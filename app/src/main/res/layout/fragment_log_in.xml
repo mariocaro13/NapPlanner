@@ -4,79 +4,136 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/F2C84B"
     tools:context=".LogInFragment">
 
     <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="152dp"
-        android:layout_height="152dp"
+        android:id="@+id/AppIcon"
+        android:layout_width="224dp"
+        android:layout_height="224dp"
         android:layout_marginStart="85dp"
         android:layout_marginTop="45dp"
         android:layout_marginEnd="85dp"
-        android:src="@drawable/tempcatico"
+        android:src="@drawable/app_icon"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.54"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/textViewMail"
-        android:layout_width="224dp"
-        android:layout_height="26dp"
+    <LinearLayout
+        android:id="@+id/MailLinearLayout"
+        android:layout_width="266dp"
+        android:layout_height="wrap_content"
         android:layout_marginStart="48dp"
-        android:layout_marginTop="22dp"
+        android:layout_marginTop="23dp"
         android:layout_marginEnd="48dp"
-        android:background="@color/F2CB05"
-        android:padding="5dp"
-        android:text="@string/user_or_mail"
+        android:background="@drawable/border_linearlayout"
+        android:gravity="center"
+        android:orientation="vertical"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView" />
+        app:layout_constraintTop_toBottomOf="@+id/AppIcon">
 
-    <EditText
-        android:id="@+id/editTextMail"
-        android:layout_width="224dp"
-        android:layout_height="46dp"
+
+        <TextView
+            android:id="@+id/textViewMail"
+            android:layout_width="match_parent"
+            android:layout_height="26dp"
+            android:background="@color/F2CB05"
+            android:padding="5dp"
+            android:text="@string/log_in_fragment_form_user_or_mail_text_view"
+            android:textColor="@color/black" />
+
+        <EditText
+            android:id="@+id/editTextMail"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:background="@color/F2B705"
+            android:hint="@string/log_in_fragment_form_user_or_mail_edit_text"
+            android:inputType="textEmailAddress"
+            android:textAlignment="center"
+            android:textColor="@color/black"
+            android:textColorHint="@color/gray" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/PassLinearLayout"
+        android:layout_width="266dp"
+        android:layout_height="wrap_content"
         android:layout_marginStart="48dp"
-        android:layout_marginTop="2dp"
+        android:layout_marginTop="42dp"
         android:layout_marginEnd="48dp"
-        android:background="@color/F2B705"
-        android:hint="User or gmail"
-        android:inputType="textEmailAddress"
-        android:padding="5dp"
-        android:textAlignment="center"
+        android:background="@drawable/border_linearlayout"
+        android:gravity="center"
+        android:orientation="vertical"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewMail" />
+        app:layout_constraintTop_toBottomOf="@+id/MailLinearLayout">
+
+        <TextView
+            android:id="@+id/textViewPass"
+            android:layout_width="match_parent"
+            android:layout_height="26dp"
+            android:background="@color/F2CB05"
+            android:padding="5dp"
+            android:text="@string/log_in_fragment_form_password"
+            android:textColor="@color/black" />
 
 
-    <TextView
-        android:id="@+id/textViewPass"
-        android:layout_width="224dp"
-        android:layout_height="26dp"
+        <EditText
+            android:id="@+id/editTextPass"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:background="@color/F2B705"
+            android:hint="@string/log_in_fragment_form_user_password"
+            android:inputType="textEmailAddress"
+            android:padding="5dp"
+            android:textAlignment="center"
+            android:textColor="@color/black"
+            android:textColorHint="@color/gray" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/LinkToSignUpLinearLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="18dp"
         android:layout_marginStart="48dp"
-        android:layout_marginTop="30dp"
         android:layout_marginEnd="48dp"
-        android:background="@color/F2CB05"
-        android:padding="5dp"
-        android:text="@string/password"
+        android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextMail" />
+        app:layout_constraintTop_toBottomOf="@+id/PassLinearLayout">
 
-    <EditText
-        android:id="@+id/editTextPass"
-        android:layout_width="224dp"
-        android:layout_height="46dp"
-        android:layout_marginStart="48dp"
-        android:layout_marginTop="2dp"
-        android:layout_marginEnd="48dp"
-        android:background="@color/F2B705"
-        android:hint="User password"
-        android:inputType="textEmailAddress"
-        android:padding="5dp"
-        android:textAlignment="center"
+        <TextView
+            android:layout_width="200dp"
+            android:layout_height="match_parent"
+            android:text="@string/log_in_fragment_form_don_t_have_an_account"
+            android:textColor="@color/black" />
+
+        <TextView
+            android:layout_width="66dp"
+            android:layout_height="match_parent"
+            android:text="@string/log_in_fragment_form_sign_up"
+            android:textAlignment="center"
+            android:textColor="@color/blue" />
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/sendButton"
+        android:layout_width="132dp"
+        android:layout_height="60dp"
+        android:layout_marginStart="114dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="114dp"
+        android:layout_marginBottom="78dp"
+        android:backgroundTint="@color/F29F05"
+        android:text="@string/log_ing_fragment_button_send"
+        android:textColor="@color/black"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewPass" />
+        app:layout_constraintTop_toBottomOf="@+id/LinkToSignUpLinearLayout" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
