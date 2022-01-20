@@ -8,7 +8,7 @@
     tools:context=".LogInFragment">
 
     <ImageView
-        android:id="@+id/AppIcon"
+        android:id="@+id/log_in_fragment_app_icon_image_view"
         android:layout_width="224dp"
         android:layout_height="224dp"
         android:layout_marginTop="45dp"
@@ -18,20 +18,20 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <LinearLayout
-        android:id="@+id/MailLinearLayout"
+        android:id="@+id/log_in_fragment_mail_linear_layout"
         android:layout_width="266dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="23dp"
-        android:background="@drawable/border_linearlayout"
+        android:background="@drawable/border_linear_layout"
         android:gravity="center"
         android:orientation="vertical"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/AppIcon">
+        app:layout_constraintTop_toBottomOf="@+id/log_in_fragment_app_icon_image_view">
 
 
         <TextView
-            android:id="@+id/textViewMail"
+            android:id="@+id/log_in_fragment_mail_text_view"
             android:layout_width="match_parent"
             android:layout_height="26dp"
             android:background="@color/F2CB05"
@@ -40,7 +40,7 @@
             android:textColor="@color/black" />
 
         <EditText
-            android:id="@+id/editTextMail"
+            android:id="@+id/log_in_fragment_mail_edit_text"
             android:layout_width="match_parent"
             android:layout_height="56dp"
             android:background="@color/F2B705"
@@ -53,19 +53,19 @@
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/PassLinearLayout"
+        android:id="@+id/log_in_fragment_password_linear_layout"
         android:layout_width="266dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="42dp"
-        android:background="@drawable/border_linearlayout"
+        android:background="@drawable/border_linear_layout"
         android:gravity="center"
         android:orientation="vertical"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/MailLinearLayout">
+        app:layout_constraintTop_toBottomOf="@+id/log_in_fragment_mail_linear_layout">
 
         <TextView
-            android:id="@+id/textViewPass"
+            android:id="@+id/log_in_fragment_pass_text_view"
             android:layout_width="match_parent"
             android:layout_height="26dp"
             android:background="@color/F2CB05"
@@ -75,12 +75,12 @@
 
 
         <EditText
-            android:id="@+id/editTextPass"
+            android:id="@+id/log_in_fragment_password_edit_text"
             android:layout_width="match_parent"
             android:layout_height="56dp"
             android:background="@color/F2B705"
             android:hint="@string/log_in_fragment_form_user_password"
-            android:inputType="textEmailAddress"
+            android:inputType="textPassword"
             android:padding="5dp"
             android:textAlignment="center"
             android:textColor="@color/black"
@@ -89,13 +89,13 @@
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/LinkToSignUpLinearLayout"
+        android:id="@+id/log_in_fragment_link_to_sign_up_linear_layout"
         android:layout_width="wrap_content"
         android:layout_height="18dp"
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/PassLinearLayout">
+        app:layout_constraintTop_toBottomOf="@+id/log_in_fragment_password_linear_layout">
 
         <TextView
             android:layout_width="200dp"
@@ -112,7 +112,7 @@
     </LinearLayout>
 
     <Button
-        android:id="@+id/sendButton"
+        android:id="@+id/log_in_fragment_send_button"
         android:layout_width="132dp"
         android:layout_height="60dp"
         android:layout_marginStart="114dp"
@@ -125,6 +125,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/LinkToSignUpLinearLayout" />
+        app:layout_constraintTop_toBottomOf="@+id/log_in_fragment_link_to_sign_up_linear_layout" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
