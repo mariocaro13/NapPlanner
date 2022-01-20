@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
     android:gravity="center"
+    android:orientation="vertical"
     tools:context=".LogInFragment">
 
     <LinearLayout
@@ -23,19 +23,21 @@
         <TextView
             android:id="@+id/sign_up_fragment_mail_text_view"
             android:layout_width="match_parent"
-            android:layout_height="26dp"
+            android:layout_height="18dp"
             android:background="@color/F2CB05"
-            android:padding="5dp"
+            android:paddingHorizontal="5dp"
             android:text="@string/generic_form_user_text_view"
-            android:textColor="@color/black" />
+            android:textColor="@color/black"
+            android:textSize="12sp" />
 
         <EditText
             android:id="@+id/sign_up_fragment_mail_edit_view"
             android:layout_width="match_parent"
-            android:layout_height="56dp"
+            android:layout_height="46dp"
             android:background="@color/F2B705"
             android:hint="@string/generic_form_user_text_view"
             android:inputType="textEmailAddress"
+            android:padding="5dp"
             android:textAlignment="center"
             android:textColor="@color/black"
             android:textColorHint="@color/gray" />
@@ -55,19 +57,21 @@
         <TextView
             android:id="@+id/sign_up_fragment_username_text_view"
             android:layout_width="match_parent"
-            android:layout_height="26dp"
+            android:layout_height="18dp"
             android:background="@color/F2CB05"
-            android:padding="5dp"
+            android:paddingHorizontal="5dp"
             android:text="@string/generic_form_mail_edit_text"
-            android:textColor="@color/black" />
+            android:textColor="@color/black"
+            android:textSize="12sp" />
 
         <EditText
             android:id="@+id/sign_up_fragment_username_edit_view"
             android:layout_width="match_parent"
-            android:layout_height="56dp"
+            android:layout_height="46dp"
             android:background="@color/F2B705"
             android:hint="@string/generic_form_mail_edit_text"
             android:inputType="textEmailAddress"
+            android:padding="5dp"
             android:textAlignment="center"
             android:textColor="@color/black"
             android:textColorHint="@color/gray" />
@@ -86,17 +90,18 @@
         <TextView
             android:id="@+id/sign_up_fragment_pass_text_view"
             android:layout_width="match_parent"
-            android:layout_height="26dp"
+            android:layout_height="18dp"
             android:background="@color/F2CB05"
-            android:padding="5dp"
+            android:paddingHorizontal="5dp"
             android:text="@string/generic_form_password"
-            android:textColor="@color/black" />
+            android:textColor="@color/black"
+            android:textSize="12sp" />
 
 
         <EditText
             android:id="@+id/sign_up_fragment_pass_edit_view"
             android:layout_width="match_parent"
-            android:layout_height="56dp"
+            android:layout_height="46dp"
             android:background="@color/F2B705"
             android:hint="@string/generic_form_password"
             android:inputType="textPassword"
@@ -119,17 +124,18 @@
         <TextView
             android:id="@+id/sign_up_fragment_confirm_pass_text_view"
             android:layout_width="match_parent"
-            android:layout_height="26dp"
+            android:layout_height="18dp"
             android:background="@color/F2CB05"
-            android:padding="5dp"
+            android:paddingHorizontal="5dp"
             android:text="@string/generic_form_confirm_password"
-            android:textColor="@color/black" />
+            android:textColor="@color/black"
+            android:textSize="12sp" />
 
 
         <EditText
             android:id="@+id/sign_up_fragment_confirm_pass_edit_view"
             android:layout_width="match_parent"
-            android:layout_height="56dp"
+            android:layout_height="46dp"
             android:background="@color/F2B705"
             android:hint="@string/generic_form_confirm_password"
             android:inputType="textPassword"
