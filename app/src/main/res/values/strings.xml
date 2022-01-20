@@ -20,4 +20,6 @@
     <string name="generic_form_confirm_password">Confirm Password</string>
     <string name="generic_form_mail_edit_text">Mail</string>
     <string name="generic_form_user_text_view">Username</string>
+    <string name="sign_up_fragment_form_already_have_an_account">Already have an account?</string>
+    <string name="sign_up_fragment_form_log_in">Log In</string>
 </resources>
