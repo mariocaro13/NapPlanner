@@ -10,10 +10,14 @@ import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.example.naplanner.databinding.FragmentLogInBinding;
 import com.example.naplanner.databinding.FragmentSignUpBinding;
 import com.example.naplanner.model.UserModel;
+import com.google.android.material.snackbar.Snackbar;
+
+import java.util.Locale;
 
 public class SignUpFragment extends Fragment {
 
@@ -35,13 +39,28 @@ public class SignUpFragment extends Fragment {
 
             @Override
             public void onClick(View view) {
-                data.setMail(binding.signUpFragmentFormLayout.signUpFragmentMailTextView.getText().toString());
+                String mail = binding.signUpFragmentFormLayout.signUpFragmentMailTextView.getText().toString();
+                if(validateEmail(mail))
+                    data.setMail(mail);
+                else
+                    sendErrorMsg("Por favor introduzca un email valido");
+
+                String pass = binding.signUpFragmentFormLayout.signUpFragmentPassEditText.getText().toString();
+                String conPass = binding.signUpFragmentFormLayout.signUpFragmentConfirmPassEditText.getText().toString();
+                if(pass.equals(conPass))
+                    data.setPass(pass);
+                else
+                    sendErrorMsg("Las contraseñas no son iguales");
 
             }
         });
     }
 
     private boolean validateEmail(CharSequence mail){
-        //return Patterns.EMAIL_ADDRESS.matcher(mail).
+        return  !mail.toString().isEmpty() && Patterns.EMAIL_ADDRESS.matcher(mail).matches();
+    }
+
+    private void sendErrorMsg(String error){
+        Toast.makeText(requireActivity(), error, Toast.LENGTH_SHORT).show();
     }
 }

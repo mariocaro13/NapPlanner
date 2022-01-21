@@ -31,11 +31,12 @@
             android:textSize="12sp" />
 
         <EditText
-            android:id="@+id/sign_up_fragment_mail_edit_view"
+            android:id="@+id/sign_up_fragment_mail_edit_text"
             android:layout_width="match_parent"
             android:layout_height="46dp"
             android:background="@color/F2B705"
             android:hint="@string/generic_form_user_text_view"
+            android:imeOptions="actionDone"
             android:inputType="textEmailAddress"
             android:padding="5dp"
             android:textAlignment="center"
@@ -65,11 +66,12 @@
             android:textSize="12sp" />
 
         <EditText
-            android:id="@+id/sign_up_fragment_username_edit_view"
+            android:id="@+id/sign_up_fragment_username_edit_text"
             android:layout_width="match_parent"
             android:layout_height="46dp"
             android:background="@color/F2B705"
             android:hint="@string/generic_form_mail_edit_text"
+            android:imeOptions="actionDone"
             android:inputType="textEmailAddress"
             android:padding="5dp"
             android:textAlignment="center"
@@ -99,11 +101,12 @@
 
 
         <EditText
-            android:id="@+id/sign_up_fragment_pass_edit_view"
+            android:id="@+id/sign_up_fragment_pass_edit_text"
             android:layout_width="match_parent"
             android:layout_height="46dp"
             android:background="@color/F2B705"
             android:hint="@string/generic_form_password"
+            android:imeOptions="actionDone"
             android:inputType="textPassword"
             android:padding="5dp"
             android:textAlignment="center"
@@ -133,11 +136,12 @@
 
 
         <EditText
-            android:id="@+id/sign_up_fragment_confirm_pass_edit_view"
+            android:id="@+id/sign_up_fragment_confirm_pass_edit_text"
             android:layout_width="match_parent"
             android:layout_height="46dp"
             android:background="@color/F2B705"
             android:hint="@string/generic_form_confirm_password"
+            android:imeOptions="actionDone"
             android:inputType="textPassword"
             android:padding="5dp"
             android:textAlignment="center"
