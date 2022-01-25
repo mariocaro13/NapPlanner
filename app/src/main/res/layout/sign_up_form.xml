@@ -9,7 +9,7 @@
     tools:context=".LogInFragment">
 
     <LinearLayout
-        android:id="@+id/sign_up_fragment_mail_linear_layout"
+        android:id="@+id/sign_up_fragment_username_linear_layout"
         android:layout_width="266dp"
         android:layout_height="wrap_content"
         android:background="@drawable/border_linearlayout"
@@ -21,7 +21,7 @@
 
 
         <TextView
-            android:id="@+id/sign_up_fragment_mail_text_view"
+            android:id="@+id/sign_up_fragment_username_text_view"
             android:layout_width="match_parent"
             android:layout_height="18dp"
             android:background="@color/F2CB05"
@@ -31,7 +31,7 @@
             android:textSize="12sp" />
 
         <EditText
-            android:id="@+id/sign_up_fragment_mail_edit_text"
+            android:id="@+id/sign_up_fragment_username_edit_text"
             android:layout_width="match_parent"
             android:layout_height="46dp"
             android:background="@color/F2B705"
@@ -46,7 +46,7 @@
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/sign_up_fragment_username_linear_layout"
+        android:id="@+id/sign_up_fragment_mail_linear_layout"
         android:layout_width="266dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="42dp"
@@ -56,7 +56,7 @@
 
 
         <TextView
-            android:id="@+id/sign_up_fragment_username_text_view"
+            android:id="@+id/sign_up_fragment_mail_text_view"
             android:layout_width="match_parent"
             android:layout_height="18dp"
             android:background="@color/F2CB05"
@@ -66,7 +66,7 @@
             android:textSize="12sp" />
 
         <EditText
-            android:id="@+id/sign_up_fragment_username_edit_text"
+            android:id="@+id/sign_up_fragment_mail_edit_text"
             android:layout_width="match_parent"
             android:layout_height="46dp"
             android:background="@color/F2B705"
