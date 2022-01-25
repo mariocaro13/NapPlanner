@@ -32,7 +32,7 @@
     <color name="light_blue">#A4BDE5</color>
     <color name="dark_blue">#657CBF</color>
     <color name="nav_menu_blue">#BDD2F6</color>
-    //Green tasks
+    //Blue tasks
     <color name="important_task_blue">#657CBF</color>
     <color name="normal_task_blue">#A4BDE5</color>
     <color name="low_importance_tasks_blue">#CCD4E1</color>

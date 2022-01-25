@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/F2C84B"
+    android:background="@color/background_blue"
     tools:context=".SignUpFragment">
 
     <ImageView
@@ -57,7 +57,7 @@
         android:id="@+id/sign_up_fragment_send_button"
         android:layout_width="132dp"
         android:layout_height="60dp"
-        android:backgroundTint="@color/F29F05"
+        android:backgroundTint="@color/dark_blue"
         android:text="@string/log_ing_fragment_button_send"
         android:textColor="@color/black"
         app:layout_constraintBottom_toBottomOf="parent"
