@@ -45,6 +45,7 @@
             android:textColor="@color/black" />
 
         <TextView
+            android:id="@+id/sign_up_fragment_log_in_text_view"
             android:layout_width="66dp"
             android:layout_height="match_parent"
             android:text="@string/sign_up_fragment_form_log_in"
@@ -53,7 +54,7 @@
     </LinearLayout>
 
     <Button
-        android:id="@+id/sign_up_fragment_send_up"
+        android:id="@+id/sign_up_fragment_send_button"
         android:layout_width="132dp"
         android:layout_height="60dp"
         android:backgroundTint="@color/F29F05"
