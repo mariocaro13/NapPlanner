@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/signUpFragment">
+    app:startDestination="@id/signUpChoiceFragment">
 
     <fragment
         android:id="@+id/FirstFragment"
@@ -11,8 +11,8 @@
         android:label="@string/first_fragment_label"
         tools:layout="@layout/fragment_log_in">
         <action
-            android:id="@+id/action_FirstFragment_to_signUpFragment"
-            app:destination="@id/signUpFragment" />
+            android:id="@+id/action_FirstFragment_to_signUpChoiceFragment"
+            app:destination="@id/signUpChoiceFragment" />
     </fragment>
     <fragment
         android:id="@+id/signUpFragment"
@@ -21,6 +21,21 @@
         tools:layout="@layout/fragment_sign_up" >
         <action
             android:id="@+id/action_signUpFragment_to_FirstFragment"
+            app:destination="@id/FirstFragment" />
+        <argument
+            android:name="user_choice"
+            app:argType="integer" />
+    </fragment>
+    <fragment
+        android:id="@+id/signUpChoiceFragment"
+        android:name="com.example.naplanner.SignUpChoiceFragment"
+        android:label="fragment_sign_up_choice"
+        tools:layout="@layout/fragment_sign_up_choice" >
+        <action
+            android:id="@+id/action_signUpChoiceFragment_to_signUpFragment"
+            app:destination="@id/signUpFragment" />
+        <action
+            android:id="@+id/action_signUpChoiceFragment_to_FirstFragment"
             app:destination="@id/FirstFragment" />
     </fragment>
 </navigation>
