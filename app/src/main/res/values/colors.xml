@@ -11,12 +11,29 @@
 
     <color name="blue">#110066</color>
 
-    <color name="F2CB05">#F2CB05</color>
-    <color name="F2E422">#F2E422</color>
-    <color name="F2B705">#F2B705</color>
-    <color name="F29F05">#F29F05</color>
-    <color name="F28705">#F28705</color>
-    <color name="BABDBF">#BABDBF</color>
+    //Gray
+    <color name="background_gray">#E3DEE0 </color>
+    <color name="light_gray">#BDB9BA</color>
+    <color name="dark_gray">#7D7A7B</color>
 
-    <color name="F2C84B">#F2C84B</color>
+    //Green
+    <color name="background_green">#D3E4CD </color>
+    <color name="light_green">#ADC2A9</color>
+    <color name="dark_green">#76B990</color>
+    <color name="nav_menu_green">#ADC2A9</color>
+    //Green tasks
+    <color name="important_task_green">#76B990</color>
+    <color name="normal_task_green">#A3D890</color>
+    <color name="low_importance_tasks_green">#E3EFE0</color>
+
+
+    //Blue
+    <color name="background_blue">#D6E1F4 </color>
+    <color name="light_blue">#A4BDE5</color>
+    <color name="dark_blue">#657CBF</color>
+    <color name="nav_menu_blue">#BDD2F6</color>
+    //Green tasks
+    <color name="important_task_blue">#657CBF</color>
+    <color name="normal_task_blue">#A4BDE5</color>
+    <color name="low_importance_tasks_blue">#CCD4E1</color>
 </resources>

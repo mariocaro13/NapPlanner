@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/F2C84B"
+    android:background="@color/background_gray"
     tools:context=".LogInFragment">
 
     <ImageView
@@ -34,7 +34,7 @@
             android:id="@+id/log_in_fragment_mail_text_view"
             android:layout_width="match_parent"
             android:layout_height="26dp"
-            android:background="@color/F2CB05"
+            android:background="@color/light_gray"
             android:padding="5dp"
             android:text="@string/log_in_fragment_form_user_or_mail_text_view"
             android:textColor="@color/black" />
@@ -43,7 +43,8 @@
             android:id="@+id/log_in_fragment_mail_edit_text"
             android:layout_width="match_parent"
             android:layout_height="56dp"
-            android:background="@color/F2B705"
+            android:background="@color/dark_gray"
+            android:layout_margin="2dp"
             android:hint="@string/log_in_fragment_form_user_or_mail_edit_text"
             android:inputType="textEmailAddress"
             android:textAlignment="center"
@@ -68,7 +69,7 @@
             android:id="@+id/log_in_fragment_pass_text_view"
             android:layout_width="match_parent"
             android:layout_height="26dp"
-            android:background="@color/F2CB05"
+            android:background="@color/light_gray"
             android:padding="5dp"
             android:text="@string/log_in_fragment_form_password"
             android:textColor="@color/black" />
@@ -78,7 +79,8 @@
             android:id="@+id/log_in_fragment_password_edit_text"
             android:layout_width="match_parent"
             android:layout_height="56dp"
-            android:background="@color/F2B705"
+            android:layout_margin="2dp"
+            android:background="@color/dark_gray"
             android:hint="@string/log_in_fragment_form_user_password"
             android:inputType="textPassword"
             android:padding="5dp"
@@ -119,7 +121,7 @@
         android:layout_marginTop="20dp"
         android:layout_marginEnd="114dp"
         android:layout_marginBottom="78dp"
-        android:backgroundTint="@color/F29F05"
+        android:backgroundTint="@color/dark_gray"
         android:text="@string/log_ing_fragment_button_send"
         android:textColor="@color/black"
         app:layout_constraintBottom_toBottomOf="parent"
