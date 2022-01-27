@@ -10,6 +10,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 
 import com.example.naplanner.databinding.FragmentLogInBinding;
 import com.example.naplanner.model.UserModel;
@@ -41,7 +42,6 @@ public class LogInFragment extends Fragment {
 
                 String input = binding.logInFragmentMailEditText.getText().toString();
 
-
                 if (!input.isEmpty() && validateEmail(input)) {
                     data.setMail(input);
                 } else if (!input.isEmpty()) {
@@ -60,6 +60,14 @@ public class LogInFragment extends Fragment {
 
             }
         });
+
+        binding.logInFragmentLinkToSignUpText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Navigation.findNavController(requireView()).navigate(R.id.action_FirstFragment_to_signUpChoiceFragment);
+            }
+        });
+
     }
 
     @Override

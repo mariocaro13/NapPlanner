@@ -43,7 +43,7 @@ public class SignUpChoiceFragment extends Fragment {
         binding.signUpChoiceFragmentLogInTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Navigation.findNavController(requireView()).navigate(R.id.action_signUpChoiceFragment_to_FirstFragment);
+                Navigation.findNavController(requireView()).navigateUp();
             }
         });
     }
