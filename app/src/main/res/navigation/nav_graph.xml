@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/FirstFragment"
-        android:name="com.example.naplanner.LogInFragment"
+        android:name="com.example.naplanner.features.login.LogInFragment"
         android:label="@string/first_fragment_label"
         tools:layout="@layout/fragment_log_in">
         <action
@@ -20,7 +20,7 @@
     </fragment>
     <fragment
         android:id="@+id/signUpFragment"
-        android:name="com.example.naplanner.SignUpFragment"
+        android:name="com.example.naplanner.features.signup.SignUpFragment"
         android:label="fragment_sign_up"
         tools:layout="@layout/fragment_sign_up" >
         <argument
@@ -36,7 +36,7 @@
     </fragment>
     <fragment
         android:id="@+id/signUpChoiceFragment"
-        android:name="com.example.naplanner.SignUpChoiceFragment"
+        android:name="com.example.naplanner.features.signup.SignUpChoiceFragment"
         android:label="fragment_sign_up_choice"
         tools:layout="@layout/fragment_sign_up_choice" >
         <action

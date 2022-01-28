@@ -1,4 +1,4 @@
-package com.example.naplanner;
+package com.example.naplanner.features.login;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -13,6 +13,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
+import com.example.naplanner.R;
 import com.example.naplanner.databinding.FragmentLogInBinding;
 import com.example.naplanner.model.UserModel;
 import com.google.android.gms.tasks.OnCompleteListener;

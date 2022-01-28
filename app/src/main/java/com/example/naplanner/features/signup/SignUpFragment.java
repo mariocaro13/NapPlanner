@@ -1,4 +1,4 @@
-package com.example.naplanner;
+package com.example.naplanner.features.signup;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -14,6 +14,7 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
+import com.example.naplanner.R;
 import com.example.naplanner.databinding.FragmentSignUpBinding;
 import com.example.naplanner.helperclasses.Constants;
 import com.example.naplanner.model.UserModel;
