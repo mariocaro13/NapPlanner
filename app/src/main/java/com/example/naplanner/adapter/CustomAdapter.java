@@ -3,13 +3,12 @@ package com.example.naplanner.adapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.naplanner.R;
 import com.example.naplanner.databinding.TasksListItemBinding;
+import com.example.naplanner.interfaces.TaskItemListener;
 import com.example.naplanner.model.TaskModel;
 
 import java.util.ArrayList;
@@ -17,7 +16,7 @@ import java.util.ArrayList;
 public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder> {
 
     private ArrayList<TaskModel> tasks;
-    private taskEditListener listener;
+    private TaskItemListener listener;
 
 
     @NonNull
@@ -29,7 +28,12 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         holder.binding.tasksListItemNameTaskTextView.setText(tasks.get(position).getName());
-
+        holder.binding.taskListItemCompleteTaskCheckbox.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                listener.onCheckboxTap();
+            }
+        });
         holder.binding.taskListItemEditTaskImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -45,13 +49,11 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         TasksListItemBinding binding;
+
         public ViewHolder(TasksListItemBinding mbinding) {
             super(mbinding.getRoot());
             binding = mbinding;
         }
     }
 
-    interface taskEditListener{
-        void onEditTap();
-    }
 }

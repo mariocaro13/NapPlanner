@@ -2,17 +2,16 @@ package com.example.naplanner.model;
 
 public class TaskModel {
 
+    int taskId;
     String name;
-    /*
-     * Legendary tasks will be asociate with 1.
-     * Epic tasks will be asociate with 2.
-     * Normal tasks will be asociate with 3.
-     */
-    int typeOfTask;
+    typeOfTask taskType;
+    boolean completeTask;
 
-    public TaskModel(String name, int typeOfTask) {
+    public TaskModel(int taskId, String name, typeOfTask taskType, boolean completeTask) {
+        this.taskId = taskId;
         this.name = name;
-        this.typeOfTask = typeOfTask;
+        this.taskType = taskType;
+        this.completeTask = completeTask;
     }
 
     public String getName() {
@@ -23,11 +22,17 @@ public class TaskModel {
         this.name = name;
     }
 
-    public int getTypeOfTask() {
-        return typeOfTask;
+    public typeOfTask getTypeOfTask() {
+        return taskType;
     }
 
     public void setTypeOfTask(int typeOfTask) {
-        this.typeOfTask = typeOfTask;
+        this.taskType = taskType;
+    }
+
+    public enum typeOfTask {
+        LEGENDARY,
+        EPIC,
+        NORMAL
     }
 }
