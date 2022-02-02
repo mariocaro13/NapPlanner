@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.example.naplanner.MainActivity">
+
+    <item
+        android:id="@+id/bottom_menu_student_list"
+        android:icon="@drawable/ic_baseline_school_24"
+        android:title="@string/bottom_menu_students_list_text"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/bottom_menu_own_task"
+        android:title="@string/bottom_menu_own_tasks_text"
+        android:icon="@drawable/ic_baseline_format_list_numbered_24"
+        app:showAsAction="always" />
+
+    <item
+        android:id="@+id/bottom_menu_completed_tasks"
+        android:title="@string/bottom_menu_completed_tasks_text"
+        android:icon="@drawable/ic_baseline_playlist_add_check_24"
+        app:showAsAction="ifRoom" />
+</menu>
