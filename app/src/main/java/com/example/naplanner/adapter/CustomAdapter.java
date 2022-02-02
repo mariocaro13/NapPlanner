@@ -18,6 +18,11 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder
     private ArrayList<TaskModel> tasks;
     private TaskItemListener listener;
 
+    public CustomAdapter(ArrayList<TaskModel> tasks, TaskItemListener listener) {
+        this.tasks = tasks;
+        this.listener = listener;
+    }
+
 
     @NonNull
     @Override
@@ -28,7 +33,7 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         holder.binding.tasksListItemNameTaskTextView.setText(tasks.get(position).getName());
-        holder.binding.taskListItemCompleteTaskCheckbox.setOnClickListener(new View.OnClickListener() {
+       holder.binding.taskListItemCompleteTaskCheckbox.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 listener.onCheckboxTap();
