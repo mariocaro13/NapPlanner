@@ -1,6 +1,7 @@
 package com.example.naplanner.features.main;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,13 +35,17 @@ public class TeacherTasksFragment extends Fragment implements TaskItemListener {
         super.onViewCreated(view, savedInstanceState);
 
         binding.teacherTasksFragmentTasksListRecycleview.setHasFixedSize(true);
+        tasks.add(new TaskModel(3, "Complete", TaskModel.typeOfTask.NORMAL, false));
+        tasks.add(new TaskModel(3, "Normal", TaskModel.typeOfTask.NORMAL, false));
+        tasks.add(new TaskModel(1, "Legendary", TaskModel.typeOfTask.LEGENDARY, false));
+        tasks.add(new TaskModel(3, "Normal", TaskModel.typeOfTask.NORMAL, false));
+        tasks.add(new TaskModel(3, "Normal", TaskModel.typeOfTask.NORMAL, false));
+        tasks.add(new TaskModel(1, "Legendary", TaskModel.typeOfTask.LEGENDARY, false));
+        tasks.add(new TaskModel(2, "Epic", TaskModel.typeOfTask.EPIC, false));
 
-        tasks.add(new TaskModel(1, "hi", TaskModel.typeOfTask.LEGENDARY, false));
-        tasks.add(new TaskModel(2, "hi", TaskModel.typeOfTask.EPIC, false));
-        tasks.add(new TaskModel(3, "hi", TaskModel.typeOfTask.NORMAL, false));
         tasks.sort(new TasksSorter());
-        binding.teacherTasksFragmentTasksListRecycleview.setAdapter(new CustomAdapter(tasks, this));
         binding.teacherTasksFragmentTasksListRecycleview.setLayoutManager(new LinearLayoutManager(this.getContext(), LinearLayoutManager.VERTICAL, false));
+        binding.teacherTasksFragmentTasksListRecycleview.setAdapter(new CustomAdapter(tasks, this, getContext()));
     }
 
 
@@ -53,10 +58,12 @@ public class TeacherTasksFragment extends Fragment implements TaskItemListener {
     @Override
     public void onEditTap() {
 
+
     }
 
     @Override
-    public void onCheckboxTap() {
+    public void onCheckboxTap(int position) {
+        tasks.get(position).setCompleteTask(!tasks.get(position).isCompleteTask());
 
     }
 }

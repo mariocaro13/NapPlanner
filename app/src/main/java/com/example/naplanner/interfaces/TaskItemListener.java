@@ -4,5 +4,5 @@ public interface TaskItemListener {
 
         void onEditTap();
 
-        void onCheckboxTap();
+        void onCheckboxTap(int pos);
 }
