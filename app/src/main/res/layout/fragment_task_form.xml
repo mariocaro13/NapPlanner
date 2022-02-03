@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background_blue"
+    tools:context=".features.main.TaskForm">
+
+    <ImageView
+        android:id="@+id/task_form_app_icon_image_view"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginStart="60dp"
+        android:layout_marginTop="46dp"
+        android:src="@drawable/app_icon"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <LinearLayout
+        android:id="@+id/task_form_username_linear_layout"
+        android:layout_width="160dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="70dp"
+        android:background="@drawable/border_linear_layout"
+        android:orientation="vertical"
+        app:layout_constraintStart_toEndOf="@id/task_form_app_icon_image_view"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/task_form_username_text_view"
+            android:layout_width="match_parent"
+            android:layout_height="26dp"
+            android:background="@color/light_blue"
+            android:textColor="@color/black"
+            tools:text="User name" />
+
+        <LinearLayout
+            android:id="@+id/task_form_user_level_linear_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/dark_blue">
+
+            <TextView
+                android:id="@+id/task_form_user_level_text_view"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_margin="6dp"
+                android:textColor="@color/black"
+                tools:text="LVL" />
+
+            <ProgressBar
+                android:id="@+id/task_form_user_level_progressbar"
+                style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="6dp"
+                android:max="100" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/task_form_name_linear_layout"
+        android:layout_width="266dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="36dp"
+        android:background="@drawable/border_linear_layout"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/task_form_app_icon_image_view">
+
+        <TextView
+            android:id="@+id/task_form_name_textview"
+            android:layout_width="match_parent"
+            android:layout_height="18dp"
+            android:background="@color/dark_blue"
+            android:text="@string/task_form_task_name"
+            android:textColor="@color/black" />
+
+        <EditText
+            android:id="@+id/task_form_name_edittext"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/light_blue"
+            android:hint="@string/task_form_hint_task_name"
+            android:hintTextColor="#5D4037"
+            android:minHeight="30dp"
+            android:padding="2dp"
+            android:textColor="@color/black"
+            android:textColorHint="@color/dark_gray"
+            tools:ignore="TextContrastCheck" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="266dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="36dp"
+        android:background="@drawable/border_linear_layout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/task_form_name_linear_layout"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:text="@string/task_form_type_of_task"
+            android:background="@color/dark_blue"
+            android:padding="6dp"
+            android:textColor="@color/black"/>
+
+        <Spinner
+            android:id="@+id/task_form_task_type_spinner"
+            android:layout_width="266dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="188dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.406"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/task_form_name_linear_layout" />
+
+    </LinearLayout>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

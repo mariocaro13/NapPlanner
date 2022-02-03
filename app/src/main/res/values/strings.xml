@@ -26,6 +26,10 @@
     <string name="sign_up_choice_fragment_professor_hint_text_view">Si eres profesor de un alumno</string>
     <string name="generic_name_student">Alumno</string>
     <string name="sign_up_choice_fragment_student_hint_text_view">Si eres un alumno</string>
+    <string name="task_form_task_name">Nombre de la tarea:</string>
+    <string name="task_form_hint_task_name">Inserte un nombre para su tarea</string>
+    <string name="task_form_type_of_task">Importancia de la tarea:</string>
+    <string name="generic_legendary_task_type">Legendaria</string>
     <string name="bottom_menu_own_tasks_text">Own Tasks</string>
     <string name="bottom_menu_students_list_text">Students List</string>
     <string name="bottom_menu_completed_tasks_text">Completed Tasks</string>
