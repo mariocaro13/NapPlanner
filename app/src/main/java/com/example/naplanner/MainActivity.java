@@ -1,22 +1,25 @@
 package com.example.naplanner;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
-import android.widget.Toast;
+import android.view.View;
 
-import androidx.appcompat.app.ActionBar;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.constraintlayout.widget.ConstraintSet;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import com.example.naplanner.databinding.ActivityMainBinding;
+import com.google.android.material.navigation.NavigationBarView;
 
 public class MainActivity extends AppCompatActivity {
 
     private AppBarConfiguration appBarConfiguration;
-    private ActionBar bottomBar;
     private ActivityMainBinding binding;
 
     @Override
@@ -27,32 +30,37 @@ public class MainActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
 
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
-        bottomBar = getSupportActionBar();
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-        //noinspection SimplifiableIfStatement
+    protected void onStart() {
+        super.onStart();
+        setupNavigationBar();
+    }
 
-        if (id == R.id.bottom_menu_own_task) {
-            //TODO: Navigate to Own Tasks
-            Toast.makeText(getApplicationContext(), "TODO: Navigate to Own Tasks", Toast.LENGTH_SHORT).show();
-            return true;
-        }else if(id == R.id.bottom_menu_completed_tasks){
-            //TODO: Navigate to Completed Tasks
-            Toast.makeText(getApplicationContext(), "TODO: Navigate to Completed Tasks", Toast.LENGTH_SHORT).show();
-            return true;
-        }else if(id == R.id.bottom_menu_student_list){
-            //TODO: Navigate to Students List
-            Toast.makeText(getApplicationContext(), "TODO: Navigate to Students List", Toast.LENGTH_SHORT).show();
-            return true;
-        }
+    private void setupNavigationBar() {
+        binding.activityMainBottomNav.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                int id = item.getItemId();
 
-        return super.onOptionsItemSelected(item);
+                if (id == R.id.bottom_menu_own_task) {
+                    //TODO: Navigate to Own Tasks
+                    Log.d("Navigation Check: ", "TODO: Navigate to Own Tasks");
+                    return true;
+                } else if (id == R.id.bottom_menu_completed_tasks) {
+                    //TODO: Navigate to Completed Tasks
+                    Log.d("Navigation Check: ", "TODO: Navigate to Completed Tasks");
+                    return true;
+                } else if (id == R.id.bottom_menu_student_list) {
+                    //TODO: Navigate to Students List
+                    Log.d("Navigation Check: ", "TODO: Navigate to Students List");
+                    return true;
+                }
+
+                return true;
+            }
+        });
     }
 
     @Override
@@ -60,5 +68,25 @@ public class MainActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
         return NavigationUI.navigateUp(navController, appBarConfiguration)
                 || super.onSupportNavigateUp();
+    }
+
+    public void showNavBar() {
+        binding.activityMainBottomNav.setVisibility(View.VISIBLE);
+        ConstraintLayout constraintLayout = binding.getRoot();
+        ConstraintSet constraintSet = new ConstraintSet();
+        constraintSet.clone(constraintLayout);
+        constraintSet.connect(R.id.activity_main_bottom_nav, ConstraintSet.BOTTOM, ConstraintSet.PARENT_ID, ConstraintSet.BOTTOM, 0);
+        constraintSet.clear(R.id.activity_main_bottom_nav, ConstraintSet.TOP);
+        constraintSet.applyTo(constraintLayout);
+    }
+
+    public void hideNavBar() {
+        binding.activityMainBottomNav.setVisibility(View.GONE);
+        ConstraintLayout constraintLayout = binding.getRoot();
+        ConstraintSet constraintSet = new ConstraintSet();
+        constraintSet.clone(constraintLayout);
+        constraintSet.connect(R.id.activity_main_bottom_nav, ConstraintSet.TOP, ConstraintSet.PARENT_ID, ConstraintSet.BOTTOM, 0);
+        constraintSet.clear(R.id.activity_main_bottom_nav, ConstraintSet.BOTTOM);
+        constraintSet.applyTo(constraintLayout);
     }
 }

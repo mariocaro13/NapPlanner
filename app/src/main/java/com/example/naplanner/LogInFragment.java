@@ -12,6 +12,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.constraintlayout.widget.ConstraintSet;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
@@ -28,7 +29,6 @@ public class LogInFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentLogInBinding.inflate(inflater, container, false);
         return binding.getRoot();
-
     }
 
     @Override
@@ -40,13 +40,7 @@ public class LogInFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-        //setupNavBar(false);
-    }
-
-    private void setupNavBar(Boolean isVisible) {
-        int visibility = isVisible? View.VISIBLE : View.INVISIBLE;
-        BottomNavigationView navBar = getActivity().findViewById(R.id.activity_main_bottom_nav);
-        navBar.setVisibility(visibility);
+        ((MainActivity)requireActivity()).hideNavBar();
     }
 
     private void setupUI() {
