@@ -2,9 +2,18 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.example.naplanner.MainActivity">
+
     <item
-        android:id="@+id/action_settings"
-        android:orderInCategory="100"
-        android:title="@string/action_settings"
-        app:showAsAction="never" />
+        android:id="@+id/action_add_task"
+        android:orderInCategory="1"
+        android:title="@string/action_add_task"
+        android:icon="@drawable/ic_baseline_add_circle_task_24"
+        app:showAsAction="always" />
+
+    <item
+        android:id="@+id/action_profile"
+        android:orderInCategory="2"
+        android:title="@string/action_profile"
+        android:icon="@drawable/ic_baseline_profile_24"
+        app:showAsAction="ifRoom" />
 </menu>

@@ -29,4 +29,6 @@
     <string name="bottom_menu_own_tasks_text">Own Tasks</string>
     <string name="bottom_menu_students_list_text">Students List</string>
     <string name="bottom_menu_completed_tasks_text">Completed Tasks</string>
+    <string name="action_add_task">Add Task</string>
+    <string name="action_profile">Profile</string>
 </resources>

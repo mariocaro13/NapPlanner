@@ -5,21 +5,15 @@ import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.constraintlayout.widget.ConstraintSet;
-import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
 import com.example.naplanner.databinding.FragmentLogInBinding;
 import com.example.naplanner.model.UserModel;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class LogInFragment extends Fragment {
 
@@ -40,7 +34,7 @@ public class LogInFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-        ((MainActivity)requireActivity()).hideNavBar();
+        ((MainActivity)requireActivity()).hideInteractionBars();
     }
 
     private void setupUI() {
