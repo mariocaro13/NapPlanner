@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "621536287270",
+    "project_id": "naplanner-fb54d",
+    "storage_bucket": "naplanner-fb54d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:621536287270:android:1050f95ac9c014e97de4e7",
+        "android_client_info": {
+          "package_name": "com.example.naplanner"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "621536287270-b5meirp743hc8p2h6v39halbdkhhb9qk.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC_GAaxl0jkzzJ4xpoMUuwYwphOaWNqvHA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "621536287270-b5meirp743hc8p2h6v39halbdkhhb9qk.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
