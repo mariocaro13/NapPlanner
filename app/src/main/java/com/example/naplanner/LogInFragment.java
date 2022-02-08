@@ -23,14 +23,18 @@ public class LogInFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentLogInBinding.inflate(inflater, container, false);
         return binding.getRoot();
-
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         setupUI();
+    }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+        ((MainActivity)requireActivity()).hideInteractionBars();
     }
 
     private void setupUI() {
@@ -41,7 +45,6 @@ public class LogInFragment extends Fragment {
             public void onClick(View view) {
 
                 String input = binding.logInFragmentMailEditText.getText().toString();
-
                 if (!input.isEmpty() && validateEmail(input)) {
                     data.setMail(input);
                 } else if (!input.isEmpty()) {
