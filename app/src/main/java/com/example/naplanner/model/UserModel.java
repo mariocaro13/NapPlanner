@@ -3,15 +3,23 @@ package com.example.naplanner.model;
 public class UserModel {
     private String mail;
     private String username;
-    private String pass;
+    private Boolean isStudent = false;
 
     public UserModel() {
     }
 
-    public UserModel(String mail, String username, String pass) {
+    public UserModel(String mail, String username, Boolean isStudent) {
         this.mail = mail;
         this.username = username;
-        this.pass = pass;
+        this.isStudent = isStudent;
+    }
+
+    public Boolean getStudent() {
+        return isStudent;
+    }
+
+    public void setStudent(Boolean student) {
+        isStudent = student;
     }
 
     public String getMail() {
@@ -28,13 +36,5 @@ public class UserModel {
 
     public void setUsername(String username) {
         this.username = username;
-    }
-
-    public String getPass() {
-        return pass;
-    }
-
-    public void setPass(String pass) {
-        this.pass = pass;
     }
 }

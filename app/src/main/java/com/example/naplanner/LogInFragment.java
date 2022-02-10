@@ -63,22 +63,10 @@ public class LogInFragment extends Fragment {
 
                 String pass = binding.logInFragmentPasswordEditText.getText().toString();
                 if (!pass.isEmpty())
-                    data.setPass(pass);
+                    fAuth.signInWithEmailAndPassword(data.getMail(), pass).addOnCompleteListener(authComplete());
                 else {
                     sendErrorMsg("Introduzca una contraseña");
                 }
-
-                fAuth.signInWithEmailAndPassword(data.getMail(), data.getPass()).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if(task.isSuccessful()) {
-                            //TODO:Navigate to Main Screen
-                            Log.d("Auth Test:", "Correctly Signed in");
-                        }else{
-                            Log.d("Auth Test:", "Couldn't Sign in");
-                        }
-                    }
-                });
 
             }
         });
@@ -104,6 +92,20 @@ public class LogInFragment extends Fragment {
 
     private void sendErrorMsg(String error) {
         Toast.makeText(requireActivity().getApplicationContext(), error, Toast.LENGTH_SHORT).show();
+    }
+
+    private OnCompleteListener<AuthResult> authComplete(){
+        return new OnCompleteListener<AuthResult>() {
+            @Override
+            public void onComplete(@NonNull Task<AuthResult> task) {
+                if(task.isSuccessful()) {
+                    //TODO:Navigate to Main Screen
+                    Log.d("Auth Test:", "Correctly Signed in");
+                }else{
+                    Log.d("Auth Test:", "Couldn't Sign in");
+                }
+            }
+        };
     }
 
 }
