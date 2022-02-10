@@ -16,13 +16,13 @@ import com.example.naplanner.model.TaskModel;
 
 import java.util.ArrayList;
 
-public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder> {
+public class TaskRecycleAdapter extends RecyclerView.Adapter<TaskRecycleAdapter.ViewHolder> {
 
     private ArrayList<TaskModel> tasks;
     private TaskItemListener listener;
     private Context context;
 
-    public CustomAdapter(ArrayList<TaskModel> tasks, TaskItemListener listener, Context context) {
+    public TaskRecycleAdapter(ArrayList<TaskModel> tasks, TaskItemListener listener, Context context) {
         this.tasks = tasks;
         this.listener = listener;
         this.context = context;

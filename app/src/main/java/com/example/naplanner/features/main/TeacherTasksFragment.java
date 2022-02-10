@@ -1,7 +1,6 @@
 package com.example.naplanner.features.main;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,7 +10,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
-import com.example.naplanner.adapter.CustomAdapter;
+import com.example.naplanner.adapter.TaskRecycleAdapter;
 import com.example.naplanner.databinding.FragmentTeacherTasksBinding;
 import com.example.naplanner.interfaces.TaskItemListener;
 import com.example.naplanner.model.TaskModel;
@@ -45,7 +44,7 @@ public class TeacherTasksFragment extends Fragment implements TaskItemListener {
 
         tasks.sort(new TasksSorter());
         binding.teacherTasksFragmentTasksListRecycleview.setLayoutManager(new LinearLayoutManager(this.getContext(), LinearLayoutManager.VERTICAL, false));
-        binding.teacherTasksFragmentTasksListRecycleview.setAdapter(new CustomAdapter(tasks, this, getContext()));
+        binding.teacherTasksFragmentTasksListRecycleview.setAdapter(new TaskRecycleAdapter(tasks, this, getContext()));
     }
 
 

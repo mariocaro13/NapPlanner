@@ -96,32 +96,60 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/task_form_tasks_importance_linear_layout"
         android:layout_width="266dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="36dp"
         android:background="@drawable/border_linear_layout"
+        android:orientation="vertical"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/task_form_name_linear_layout"
-        android:orientation="horizontal">
+        app:layout_constraintTop_toBottomOf="@id/task_form_name_linear_layout">
 
         <TextView
+            android:id="@+id/task_form_taks_importance_title_text_view"
             android:layout_width="match_parent"
             android:layout_height="30dp"
-            android:text="@string/task_form_type_of_task"
             android:background="@color/dark_blue"
             android:padding="6dp"
-            android:textColor="@color/black"/>
+            android:text="@string/task_form_type_of_task"
+            android:textColor="@color/black" />
 
-        <Spinner
-            android:id="@+id/task_form_task_type_spinner"
-            android:layout_width="266dp"
+        <RadioGroup
+            android:id="@+id/task_form_taks_importance_radio_group"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="188dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.406"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/task_form_name_linear_layout" />
+            android:background="@color/nav_menu_blue"
+            android:orientation="vertical">
+
+            <RadioButton
+                android:button="@null"
+                android:drawableRight="@android:drawable/btn_radio"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:background="@color/legendary_task_blue"
+                android:text="@string/generic_legendary_task_type" />
+
+            <RadioButton
+                android:button="@null"
+                android:drawableRight="@android:drawable/btn_radio"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:background="@color/epic_task_blue"
+                android:text="@string/generic_epic_task_type" />
+
+            <RadioButton
+                android:button="@null"
+                android:drawableRight="@android:drawable/btn_radio"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:background="@color/normal_tasks_blue"
+                android:text="@string/generic_normal_task_type" />
+        </RadioGroup>
+
 
     </LinearLayout>
 
