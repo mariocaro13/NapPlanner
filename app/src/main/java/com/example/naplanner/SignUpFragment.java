@@ -1,6 +1,7 @@
 package com.example.naplanner;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,12 +15,21 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
 import com.example.naplanner.databinding.FragmentSignUpBinding;
+import com.example.naplanner.helperclasses.Constants;
 import com.example.naplanner.model.UserModel;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.FirebaseDatabase;
+
+import java.util.Objects;
 
 public class SignUpFragment extends Fragment {
 
     private FragmentSignUpBinding binding;
-
+    private FirebaseAuth fAuth;
+    private UserModel data = new UserModel();
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -32,16 +42,23 @@ public class SignUpFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         setupUI();
-        swapPalette(SignUpFragmentArgs.fromBundle(getArguments()).getUserChoice());
+        if(SignUpFragmentArgs.fromBundle(getArguments()).getIsStudent()){
+            useStudentPalette();
+            data.setStudent((true));
+        }
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        fAuth = FirebaseAuth.getInstance();
     }
 
     private void setupUI() {
         binding.signUpFragmentSendButton.setOnClickListener(new View.OnClickListener() {
-            UserModel data = new UserModel();
 
             @Override
             public void onClick(View view) {
-
                 String username = binding.signUpFragmentFormLayout.signUpFragmentUsernameEditText.getText().toString();
                 if (!username.isEmpty())
                     data.setUsername(username);
@@ -63,11 +80,10 @@ public class SignUpFragment extends Fragment {
                 if (pass.isEmpty())
                     sendErrorMsg("Introduzca una contraseña");
                 else if (pass.equals(conPass))
-                    data.setPass(pass);
+                    fAuth.createUserWithEmailAndPassword(data.getMail(), pass).addOnCompleteListener(authComplete(data));
                 else {
                     sendErrorMsg("Las contraseñas no son iguales");
                 }
-
             }
         });
 
@@ -77,11 +93,6 @@ public class SignUpFragment extends Fragment {
                 Navigation.findNavController(requireView()).navigate(R.id.action_signUpFragment_to_FirstFragment);
             }
         });
-    }
-
-    private void swapPalette(int choice) {
-        if (choice == 2)
-            useStudentPalette();
     }
 
     private void useStudentPalette() {
@@ -110,5 +121,31 @@ public class SignUpFragment extends Fragment {
 
     private void sendErrorMsg(String error) {
         Toast.makeText(requireActivity().getApplicationContext(), error, Toast.LENGTH_SHORT).show();
+    }
+
+    private OnCompleteListener<AuthResult> authComplete(UserModel user){
+        return new OnCompleteListener<AuthResult>() {
+            @Override
+            public void onComplete(@NonNull Task<AuthResult> task) {
+                if(task.isSuccessful()) {
+                    Log.d("Auth Test:", "Correctly Signed in");
+                    FirebaseDatabase.getInstance(Constants.databaseURL).getReference("User")
+                            .child(Objects.requireNonNull(fAuth.getCurrentUser()).getUid())
+                            .setValue(user).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            if(task.isSuccessful())
+                                Log.d("Data Test:", "Correctly Signed in");
+                            else
+                                Log.d("Data Test:", Objects.requireNonNull(task.getException()).getMessage());
+                        }
+                    });
+
+                    //TODO:Navigate to Main Screen
+                }else{
+                    Log.d("Auth Test:", Objects.requireNonNull(task.getException()).getMessage());
+                }
+            }
+        };
     }
 }

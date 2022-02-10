@@ -1,6 +1,7 @@
 package com.example.naplanner;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,10 +15,15 @@ import androidx.navigation.Navigation;
 
 import com.example.naplanner.databinding.FragmentLogInBinding;
 import com.example.naplanner.model.UserModel;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
 
 public class LogInFragment extends Fragment {
 
     private FragmentLogInBinding binding;
+    private FirebaseAuth fAuth;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -34,6 +40,7 @@ public class LogInFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
+        fAuth = FirebaseAuth.getInstance();
         ((MainActivity)requireActivity()).hideInteractionBars();
     }
 
@@ -56,7 +63,7 @@ public class LogInFragment extends Fragment {
 
                 String pass = binding.logInFragmentPasswordEditText.getText().toString();
                 if (!pass.isEmpty())
-                    data.setPass(pass);
+                    fAuth.signInWithEmailAndPassword(data.getMail(), pass).addOnCompleteListener(authComplete());
                 else {
                     sendErrorMsg("Introduzca una contraseña");
                 }
@@ -85,6 +92,20 @@ public class LogInFragment extends Fragment {
 
     private void sendErrorMsg(String error) {
         Toast.makeText(requireActivity().getApplicationContext(), error, Toast.LENGTH_SHORT).show();
+    }
+
+    private OnCompleteListener<AuthResult> authComplete(){
+        return new OnCompleteListener<AuthResult>() {
+            @Override
+            public void onComplete(@NonNull Task<AuthResult> task) {
+                if(task.isSuccessful()) {
+                    //TODO:Navigate to Main Screen
+                    Log.d("Auth Test:", "Correctly Signed in");
+                }else{
+                    Log.d("Auth Test:", "Couldn't Sign in");
+                }
+            }
+        };
     }
 
 }
