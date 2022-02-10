@@ -32,9 +32,9 @@
     <string name="generic_legendary_task_type">Legendaria</string>
     <string name="generic_epic_task_type">Epicas</string>
     <string name="generic_normal_task_type">Normal</string>
-    <string name="bottom_menu_own_tasks_text">Own Tasks</string>
-    <string name="bottom_menu_students_list_text">Students List</string>
-    <string name="bottom_menu_completed_tasks_text">Completed Tasks</string>
-    <string name="action_add_task">Add Task</string>
-    <string name="action_profile">Profile</string>
+    <string name="bottom_menu_own_tasks_text">Tareas Propias</string>
+    <string name="bottom_menu_students_list_text">Lista de Estudiantes</string>
+    <string name="bottom_menu_completed_tasks_text">Tareas Completadas</string>
+    <string name="action_add_task">Añadir Tarea</string>
+    <string name="action_profile">Perfil</string>
 </resources>

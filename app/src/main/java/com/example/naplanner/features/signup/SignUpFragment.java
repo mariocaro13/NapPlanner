@@ -142,7 +142,7 @@ public class SignUpFragment extends Fragment {
                         }
                     });
 
-                    //TODO:Navigate to Main Screen
+                    Navigation.findNavController(requireView()).navigate(R.id.action_signUpFragment_to_teacherTasksFragment2);
                 }else{
                     Log.d("Auth Test:", Objects.requireNonNull(task.getException()).getMessage());
                 }

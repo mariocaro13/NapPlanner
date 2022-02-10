@@ -10,6 +10,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import com.example.naplanner.MainActivity;
 import com.example.naplanner.adapter.TaskRecycleAdapter;
 import com.example.naplanner.databinding.FragmentTeacherTasksBinding;
 import com.example.naplanner.interfaces.TaskItemListener;
@@ -47,6 +48,12 @@ public class TeacherTasksFragment extends Fragment implements TaskItemListener {
         binding.teacherTasksFragmentTasksListRecycleview.setAdapter(new TaskRecycleAdapter(tasks, this, getContext()));
     }
 
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        ((MainActivity)requireActivity()).showInteractionBars();
+    }
 
     @Override
     public void onDestroyView() {

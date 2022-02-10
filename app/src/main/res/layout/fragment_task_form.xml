@@ -87,7 +87,6 @@
             android:layout_height="wrap_content"
             android:background="@color/light_blue"
             android:hint="@string/task_form_hint_task_name"
-            android:hintTextColor="#5D4037"
             android:minHeight="30dp"
             android:padding="2dp"
             android:textColor="@color/black"

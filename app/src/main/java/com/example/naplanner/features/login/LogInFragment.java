@@ -13,6 +13,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
+import com.example.naplanner.MainActivity;
 import com.example.naplanner.R;
 import com.example.naplanner.databinding.FragmentLogInBinding;
 import com.example.naplanner.model.UserModel;
@@ -100,7 +101,7 @@ public class LogInFragment extends Fragment {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if(task.isSuccessful()) {
-                    //TODO:Navigate to Main Screen
+                    Navigation.findNavController(requireView()).navigate(R.id.action_FirstFragment_to_teacherTasksFragment);
                     Log.d("Auth Test:", "Correctly Signed in");
                 }else{
                     Log.d("Auth Test:", "Couldn't Sign in");
