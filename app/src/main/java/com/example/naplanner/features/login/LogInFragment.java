@@ -43,7 +43,7 @@ public class LogInFragment extends Fragment {
     public void onStart() {
         super.onStart();
         fAuth = FirebaseAuth.getInstance();
-        ((MainActivity)requireActivity()).hideInteractionBars();
+        ((MainActivity) requireActivity()).hideInteractionBars();
     }
 
     private void setupUI() {
@@ -96,14 +96,14 @@ public class LogInFragment extends Fragment {
         Toast.makeText(requireActivity().getApplicationContext(), error, Toast.LENGTH_SHORT).show();
     }
 
-    private OnCompleteListener<AuthResult> authComplete(){
+    private OnCompleteListener<AuthResult> authComplete() {
         return new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
-                if(task.isSuccessful()) {
+                if (task.isSuccessful()) {
                     Navigation.findNavController(requireView()).navigate(R.id.action_FirstFragment_to_teacherTasksFragment);
                     Log.d("Auth Test:", "Correctly Signed in");
-                }else{
+                } else {
                     Log.d("Auth Test:", "Couldn't Sign in");
                 }
             }

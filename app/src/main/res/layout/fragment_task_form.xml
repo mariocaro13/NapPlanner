@@ -5,10 +5,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/background_blue"
-    tools:context=".features.main.TaskForm">
+    tools:context=".features.main.TaskFormFragment">
 
     <ImageView
-        android:id="@+id/task_form_app_icon_image_view"
+        android:id="@+id/task_form_fragment_app_icon_image_view"
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:layout_marginStart="60dp"
@@ -18,18 +18,18 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <LinearLayout
-        android:id="@+id/task_form_username_linear_layout"
+        android:id="@+id/task_form_fragment_username_linear_layout"
         android:layout_width="160dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
         android:layout_marginTop="70dp"
         android:background="@drawable/border_linear_layout"
         android:orientation="vertical"
-        app:layout_constraintStart_toEndOf="@id/task_form_app_icon_image_view"
+        app:layout_constraintStart_toEndOf="@id/task_form_fragment_app_icon_image_view"
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView
-            android:id="@+id/task_form_username_text_view"
+            android:id="@+id/task_form_fragment_username_text_view"
             android:layout_width="match_parent"
             android:layout_height="26dp"
             android:background="@color/light_blue"
@@ -37,13 +37,13 @@
             tools:text="User name" />
 
         <LinearLayout
-            android:id="@+id/task_form_user_level_linear_layout"
+            android:id="@+id/task_form_fragment_user_level_linear_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@color/dark_blue">
 
             <TextView
-                android:id="@+id/task_form_user_level_text_view"
+                android:id="@+id/task_form_fragment_user_level_text_view"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_margin="6dp"
@@ -51,7 +51,7 @@
                 tools:text="LVL" />
 
             <ProgressBar
-                android:id="@+id/task_form_user_level_progressbar"
+                android:id="@+id/task_form_fragment_user_level_progressbar"
                 style="@style/Widget.AppCompat.ProgressBar.Horizontal"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -63,7 +63,7 @@
 
 
     <LinearLayout
-        android:id="@+id/task_form_name_linear_layout"
+        android:id="@+id/task_form_fragment_name_linear_layout"
         android:layout_width="266dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="36dp"
@@ -71,10 +71,10 @@
         android:orientation="vertical"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/task_form_app_icon_image_view">
+        app:layout_constraintTop_toBottomOf="@id/task_form_fragment_app_icon_image_view">
 
         <TextView
-            android:id="@+id/task_form_name_textview"
+            android:id="@+id/task_form_fragment_name_textview"
             android:layout_width="match_parent"
             android:layout_height="18dp"
             android:background="@color/dark_blue"
@@ -82,11 +82,13 @@
             android:textColor="@color/black" />
 
         <EditText
-            android:id="@+id/task_form_name_edittext"
+            android:id="@+id/task_form_fragment_name_edittext"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/light_blue"
             android:hint="@string/task_form_hint_task_name"
+            android:imeOptions="actionDone"
+            android:inputType="text"
             android:minHeight="30dp"
             android:padding="2dp"
             android:textColor="@color/black"
@@ -95,7 +97,7 @@
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/task_form_tasks_importance_linear_layout"
+        android:id="@+id/task_form_fragment_tasks_importance_linear_layout"
         android:layout_width="266dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="36dp"
@@ -103,10 +105,10 @@
         android:orientation="vertical"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/task_form_name_linear_layout">
+        app:layout_constraintTop_toBottomOf="@id/task_form_fragment_name_linear_layout">
 
         <TextView
-            android:id="@+id/task_form_taks_importance_title_text_view"
+            android:id="@+id/task_form_fragment_taks_importance_title_text_view"
             android:layout_width="match_parent"
             android:layout_height="30dp"
             android:background="@color/dark_blue"
@@ -115,15 +117,13 @@
             android:textColor="@color/black" />
 
         <RadioGroup
-            android:id="@+id/task_form_taks_importance_radio_group"
+            android:id="@+id/task_form_fragment_taks_importance_radio_group"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/nav_menu_blue"
             android:orientation="vertical">
 
             <RadioButton
-                android:button="@null"
-                android:drawableRight="@android:drawable/btn_radio"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12dp"
@@ -131,8 +131,6 @@
                 android:text="@string/generic_legendary_task_type" />
 
             <RadioButton
-                android:button="@null"
-                android:drawableRight="@android:drawable/btn_radio"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12dp"
@@ -140,8 +138,6 @@
                 android:text="@string/generic_epic_task_type" />
 
             <RadioButton
-                android:button="@null"
-                android:drawableRight="@android:drawable/btn_radio"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12dp"
@@ -151,6 +147,30 @@
 
 
     </LinearLayout>
+
+    <Button
+        android:id="@+id/task_form_fragment_confirm_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@color/dark_blue"
+        android:text="@string/generic_action_confirmar"
+        android:textColor="@color/black"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/task_form_fragment_cancel_button"
+        app:layout_constraintTop_toBottomOf="@+id/task_form_fragment_tasks_importance_linear_layout" />
+
+    <Button
+        android:id="@+id/task_form_fragment_cancel_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@color/dark_blue"
+        android:text="@string/generic_action_cancelar"
+        android:textColor="@color/black"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/task_form_fragment_confirm_button"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/task_form_fragment_tasks_importance_linear_layout" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -43,13 +43,13 @@ public class TaskRecycleAdapter extends RecyclerView.Adapter<TaskRecycleAdapter.
         holder.binding.tasksListItemNameTaskTextView.setText(tasks.get(pos).getName());
 
         switch (tasks.get(pos).getTaskType()) {
-            case LEGENDARY:
+            case "LEGENDARY":
                 holder.binding.getRoot().setBackground(AppCompatResources.getDrawable(context, R.drawable.border_task_legendary_blue));
                 break;
-            case EPIC:
+            case "EPIC":
                 holder.binding.getRoot().setBackground(AppCompatResources.getDrawable(context, R.drawable.border_task_epic_blue));
                 break;
-            case NORMAL:
+            case "NORMAL":
                 holder.binding.getRoot().setBackground(AppCompatResources.getDrawable(context, R.drawable.border_task_normal_blue));
                 break;
             default:
@@ -64,7 +64,7 @@ public class TaskRecycleAdapter extends RecyclerView.Adapter<TaskRecycleAdapter.
         holder.binding.taskListItemEditTaskImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                listener.onEditTap();
+                listener.onEditTap(holder.binding.taskListItemCompleteTaskCheckbox.isChecked());
             }
         });
     }

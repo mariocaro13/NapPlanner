@@ -65,5 +65,18 @@
         android:id="@+id/teacherTasksFragment"
         android:name="com.example.naplanner.features.main.TeacherTasksFragment"
         android:label="fragment_teacher_tasks"
-        tools:layout="@layout/fragment_teacher_tasks" />
+        tools:layout="@layout/fragment_teacher_tasks" >
+        <action
+            android:id="@+id/action_teacherTasksFragment_to_taskForm"
+            app:destination="@id/taskForm" />
+    </fragment>
+    <fragment
+        android:id="@+id/taskForm"
+        android:name="com.example.naplanner.features.main.TaskFormFragment"
+        android:label="fragment_task_form"
+        tools:layout="@layout/fragment_task_form" >
+        <argument
+            android:name="isComplete"
+            app:argType="boolean" />
+    </fragment>
 </navigation>

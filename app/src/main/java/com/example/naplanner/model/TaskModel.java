@@ -4,10 +4,13 @@ public class TaskModel {
 
     private int taskId;
     private String name;
-    private typeOfTask taskType;
+    private TaskType taskType;
     private boolean completeTask;
 
-    public TaskModel(int taskId, String name, typeOfTask taskType, boolean completeTask) {
+    public TaskModel() {
+    }
+
+    public TaskModel(int taskId, String name, TaskType taskType, boolean completeTask) {
         this.taskId = taskId;
         this.name = name;
         this.taskType = taskType;
@@ -22,20 +25,6 @@ public class TaskModel {
         this.name = name;
     }
 
-    public typeOfTask getTypeOfTask() {
-        return taskType;
-    }
-
-    public void setTypeOfTask(int typeOfTask) {
-        this.taskType = taskType;
-    }
-
-    public enum typeOfTask {
-        LEGENDARY,
-        EPIC,
-        NORMAL
-    }
-
     public int getTaskId() {
         return taskId;
     }
@@ -44,11 +33,11 @@ public class TaskModel {
         this.taskId = taskId;
     }
 
-    public typeOfTask getTaskType() {
+    public TaskType getTaskType() {
         return taskType;
     }
 
-    public void setTaskType(typeOfTask taskType) {
+    public void setTaskType(TaskType taskType) {
         this.taskType = taskType;
     }
 
@@ -60,5 +49,9 @@ public class TaskModel {
         this.completeTask = completeTask;
     }
 
-
+    public enum TaskType{
+        LEGENDARY,
+        EPIC,
+        NORMAL
+    }
 }

@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.example.naplanner.MainActivity;
@@ -35,13 +36,13 @@ public class TeacherTasksFragment extends Fragment implements TaskItemListener {
         super.onViewCreated(view, savedInstanceState);
 
         binding.teacherTasksFragmentTasksListRecycleview.setHasFixedSize(true);
-        tasks.add(new TaskModel(3, "Complete", TaskModel.typeOfTask.NORMAL, false));
-        tasks.add(new TaskModel(3, "Normal", TaskModel.typeOfTask.NORMAL, false));
-        tasks.add(new TaskModel(1, "Legendary", TaskModel.typeOfTask.LEGENDARY, false));
-        tasks.add(new TaskModel(3, "Normal", TaskModel.typeOfTask.NORMAL, false));
-        tasks.add(new TaskModel(3, "Normal", TaskModel.typeOfTask.NORMAL, false));
-        tasks.add(new TaskModel(1, "Legendary", TaskModel.typeOfTask.LEGENDARY, false));
-        tasks.add(new TaskModel(2, "Epic", TaskModel.typeOfTask.EPIC, false));
+        tasks.add(new TaskModel(3, "Complete", TaskModel.TaskType.NORMAL, false));
+        tasks.add(new TaskModel(3, "Normal", TaskModel.TaskType.NORMAL, false));
+        tasks.add(new TaskModel(1, "Legendary", TaskModel.TaskType.LEGENDARY, false));
+        tasks.add(new TaskModel(3, "Normal", TaskModel.TaskType.NORMAL, false));
+        tasks.add(new TaskModel(3, "Normal", TaskModel.TaskType.NORMAL, false));
+        tasks.add(new TaskModel(1, "Legendary", TaskModel.TaskType.LEGENDARY, false));
+        tasks.add(new TaskModel(2, "Epic", TaskModel.TaskType.EPIC, false));
 
         tasks.sort(new TasksSorter());
         binding.teacherTasksFragmentTasksListRecycleview.setLayoutManager(new LinearLayoutManager(this.getContext(), LinearLayoutManager.VERTICAL, false));
@@ -52,7 +53,7 @@ public class TeacherTasksFragment extends Fragment implements TaskItemListener {
     @Override
     public void onStart() {
         super.onStart();
-        ((MainActivity)requireActivity()).showInteractionBars();
+        ((MainActivity) requireActivity()).showInteractionBars();
     }
 
     @Override
@@ -62,9 +63,9 @@ public class TeacherTasksFragment extends Fragment implements TaskItemListener {
     }
 
     @Override
-    public void onEditTap() {
-
-
+    public void onEditTap(boolean isComplete) {
+        TeacherTasksFragmentDirections.ActionTeacherTasksFragmentToTaskForm action = TeacherTasksFragmentDirections.actionTeacherTasksFragmentToTaskForm(isComplete);
+        Navigation.findNavController(requireView()).navigate(action);
     }
 
     @Override

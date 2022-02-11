@@ -37,4 +37,6 @@
     <string name="bottom_menu_completed_tasks_text">Tareas Completadas</string>
     <string name="action_add_task">Añadir Tarea</string>
     <string name="action_profile">Perfil</string>
+    <string name="generic_action_confirmar">Confirmar</string>
+    <string name="generic_action_cancelar">Cancelar</string>
 </resources>
