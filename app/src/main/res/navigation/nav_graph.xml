@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/teacherTasksFragment">
+    app:startDestination="@id/profileFragment">
 
     <fragment
         android:id="@+id/FirstFragment"
@@ -69,6 +69,12 @@
         <action
             android:id="@+id/action_teacherTasksFragment_to_taskForm"
             app:destination="@id/taskForm" />
+        <action
+            android:id="@+id/action_teacherTasksFragment_self"
+            app:destination="@id/teacherTasksFragment" />
+        <action
+            android:id="@+id/action_teacherTasksFragment_to_profileFragment"
+            app:destination="@id/profileFragment" />
     </fragment>
     <fragment
         android:id="@+id/taskForm"
@@ -78,5 +84,14 @@
         <argument
             android:name="isComplete"
             app:argType="boolean" />
+    </fragment>
+    <fragment
+        android:id="@+id/profileFragment"
+        android:name="com.example.naplanner.features.profile.ProfileFragment"
+        android:label="fragment_profile"
+        tools:layout="@layout/fragment_profile" >
+        <action
+            android:id="@+id/action_profileFragment_to_FirstFragment"
+            app:destination="@id/FirstFragment" />
     </fragment>
 </navigation>

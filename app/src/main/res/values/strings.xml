@@ -39,4 +39,7 @@
     <string name="action_profile">Perfil</string>
     <string name="generic_action_confirmar">Confirmar</string>
     <string name="generic_action_cancelar">Cancelar</string>
+    <string name="profile_fragment_number_of_task_completed">Numero de tareas completadas:</string>
+    <string name="profile_fragment_log_out">Cerrar Sesion</string>
+    <string name="profile_fragment_back">Volver</string>
 </resources>
