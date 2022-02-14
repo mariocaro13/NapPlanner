@@ -14,14 +14,22 @@ import com.example.naplanner.MainActivity;
 import com.example.naplanner.databinding.FragmentCreateTaskBinding;
 import com.example.naplanner.helperclasses.Constants;
 import com.example.naplanner.model.TaskModel;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+
+import java.util.Objects;
 
 public class CreateTaskFragment extends Fragment {
 
     private FragmentCreateTaskBinding binding;
+    private FirebaseAuth fAuth;
+    private DatabaseReference database;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -33,6 +41,9 @@ public class CreateTaskFragment extends Fragment {
     public void onStart() {
         super.onStart();
         ((MainActivity) requireActivity()).hideInteractionBars();
+        fAuth = FirebaseAuth.getInstance();
+        database = FirebaseDatabase.getInstance(Constants.databaseURL).getReference();
+        setupUI();
     }
 
     @Override
@@ -42,17 +53,13 @@ public class CreateTaskFragment extends Fragment {
     }
 
 
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
+    private void setupUI(){
         binding.taskFormFragmentConfirmButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 TaskModel task = new TaskModel();
                 task.setName(binding.taskFormFragmentNameEdittext.getText().toString());
                 task.setComplete(CreateTaskFragmentArgs.fromBundle(getArguments()).getIsComplete());
-                task.setId(2);
-                binding.taskFormFragmentTaksImportanceRadioGroup.getChildAt(binding.taskFormFragmentTaksImportanceRadioGroup.getCheckedRadioButtonId()).toString();
                 switch (binding.taskFormFragmentTaksImportanceRadioGroup.getCheckedRadioButtonId()) {
                     case 1:
                         task.setType(TaskModel.TaskType.LEGENDARY);
@@ -66,8 +73,25 @@ public class CreateTaskFragment extends Fragment {
                     default:
                         return;
                 }
-                FirebaseDatabase.getInstance(Constants.databaseURL).getReference().child("Tasks").child("Task").setValue(task);
-                Navigation.findNavController(requireView()).navigateUp();
+
+                database.child("Tasks").child(Objects.requireNonNull(fAuth.getCurrentUser()).getUid()).addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        task.setId(Integer.parseInt("" + (snapshot.getChildrenCount() + 1)));
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
+
+                database.child("Tasks").child(Objects.requireNonNull(fAuth.getCurrentUser()).getUid()).child("Task" + (task.getId() - 1)).setValue(task).addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        Navigation.findNavController(requireView()).navigateUp();
+                    }
+                });
             }
         });
         binding.taskFormFragmentCancelButton.setOnClickListener(new View.OnClickListener() {

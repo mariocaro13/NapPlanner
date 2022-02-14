@@ -80,7 +80,8 @@
         tools:layout="@layout/fragment_create_task" >
         <argument
             android:name="isComplete"
-            app:argType="boolean" />
+            app:argType="boolean"
+            android:defaultValue="false" />
     </fragment>
     <fragment
         android:id="@+id/profileFragment"
