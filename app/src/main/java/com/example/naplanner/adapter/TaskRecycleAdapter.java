@@ -42,7 +42,7 @@ public class TaskRecycleAdapter extends RecyclerView.Adapter<TaskRecycleAdapter.
 
         holder.binding.tasksListItemNameTaskTextView.setText(tasks.get(pos).getName());
 
-        switch (tasks.get(pos).getTaskType()) {
+        switch (tasks.get(pos).getType()) {
             case LEGENDARY:
                 holder.binding.getRoot().setBackground(AppCompatResources.getDrawable(context, R.drawable.border_task_legendary_blue));
                 break;

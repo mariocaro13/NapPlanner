@@ -8,7 +8,7 @@ public class TasksSorter implements Comparator<TaskModel> {
 
     @Override
     public int compare(TaskModel task1, TaskModel task2) {
-        return task1.getTaskType().compareTo(task2.getTaskType());
+        return task1.getType().compareTo(task2.getType());
     }
 
 }
