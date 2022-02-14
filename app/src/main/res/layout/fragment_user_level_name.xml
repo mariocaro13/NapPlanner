@@ -37,28 +37,7 @@
             android:textColor="@color/black"
             tools:text="User name" />
 
-        <LinearLayout
-            android:id="@+id/task_form_fragment_user_level_linear_layout"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/dark_blue">
 
-            <TextView
-                android:id="@+id/task_form_fragment_user_level_text_view"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_margin="6dp"
-                android:textColor="@color/black"
-                tools:text="LVL" />
-
-            <ProgressBar
-                android:id="@+id/task_form_fragment_user_level_progressbar"
-                style="@style/Widget.AppCompat.ProgressBar.Horizontal"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_margin="6dp"
-                android:max="100" />
-        </LinearLayout>
 
     </LinearLayout>
 

@@ -11,7 +11,7 @@
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
     <string name="log_in_fragment_form_user_or_mail_text_view">User or Mail</string>
     <string name="generic_form_password">Contraseña</string>
-    <string name="log_in_fragment_form_user_or_mail_edit_text">Usuario o Mail</string>
+    <string name="log_in_fragment_form_user_or_mail_edit_text">Correo electronico</string>
     <string name="log_ing_fragment_button_send">Enviar</string>
     <string name="log_in_fragment_form_don_t_have_an_account">No tiene cuenta?</string>
     <string name="log_in_fragment_form_sign_up">Sign Up</string>
