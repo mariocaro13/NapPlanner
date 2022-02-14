@@ -11,16 +11,21 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
 import com.example.naplanner.MainActivity;
-import com.example.naplanner.databinding.FragmentTaskFormBinding;
+import com.example.naplanner.databinding.FragmentCreateTaskBinding;
+import com.example.naplanner.helperclasses.Constants;
 import com.example.naplanner.model.TaskModel;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
-public class TaskFormFragment extends Fragment {
+public class CreateTaskFragment extends Fragment {
 
-    private FragmentTaskFormBinding binding;
+    private FragmentCreateTaskBinding binding;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        binding = FragmentTaskFormBinding.inflate(inflater, container, false);
+        binding = FragmentCreateTaskBinding.inflate(inflater, container, false);
         return binding.getRoot();
     }
 
@@ -45,23 +50,23 @@ public class TaskFormFragment extends Fragment {
             public void onClick(View view) {
                 TaskModel task = new TaskModel();
                 task.setName(binding.taskFormFragmentNameEdittext.getText().toString());
-                task.setComplete(TaskFormFragmentArgs.fromBundle(getArguments()).getIsComplete());
-                String taskType;
-
+                task.setComplete(CreateTaskFragmentArgs.fromBundle(getArguments()).getIsComplete());
+                task.setId(2);
                 binding.taskFormFragmentTaksImportanceRadioGroup.getChildAt(binding.taskFormFragmentTaksImportanceRadioGroup.getCheckedRadioButtonId()).toString();
                 switch (binding.taskFormFragmentTaksImportanceRadioGroup.getCheckedRadioButtonId()) {
                     case 1:
-                        taskType = "LEGENDARY";
+                        task.setType(TaskModel.TaskType.LEGENDARY);
                         break;
                     case 2:
-                        taskType = "EPIC";
+                        task.setType(TaskModel.TaskType.EPIC);
                         break;
                     case 3:
-                        taskType = "NORMAL";
+                        task.setType(TaskModel.TaskType.NORMAL);
                         break;
                     default:
                         return;
                 }
+                FirebaseDatabase.getInstance(Constants.databaseURL).getReference().child("Tasks").child("Task").setValue(task);
                 Navigation.findNavController(requireView()).navigateUp();
             }
         });

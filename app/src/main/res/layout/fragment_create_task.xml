@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/background_blue"
-    tools:context=".features.main.TaskFormFragment">
+    tools:context=".features.main.CreateTaskFragment">
 
     <include
         android:id="@+id/user_level_name_fragment_layout"
