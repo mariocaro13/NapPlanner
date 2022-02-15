@@ -99,6 +99,11 @@
             app:popUpToInclusive="true" />
     </fragment>
     <fragment
+        android:id="@+id/completeTasksFragment"
+        android:name="com.example.naplanner.features.main.CompleteTasksFragment"
+        android:label="fragment_complete_tasks"
+        tools:layout="@layout/fragment_complete_tasks" />
+    <fragment
         android:id="@+id/studentListFragment"
         android:name="com.example.naplanner.features.main.StudentListFragment"
         android:label="fragment_student_list"
