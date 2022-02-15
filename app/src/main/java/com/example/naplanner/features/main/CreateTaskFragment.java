@@ -1,5 +1,6 @@
 package com.example.naplanner.features.main;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -17,8 +18,7 @@ import com.example.naplanner.databinding.FragmentCreateTaskBinding;
 import com.example.naplanner.helperclasses.Constants;
 import com.example.naplanner.interfaces.OnDataChange;
 import com.example.naplanner.model.TaskModel;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
+import com.example.naplanner.model.UserModel;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -69,6 +69,23 @@ public class CreateTaskFragment extends Fragment implements OnDataChange {
             createTask();
         }
 
+        FirebaseDatabase.getInstance(Constants.databaseURL).getReference().child("User").child(Objects.requireNonNull(fAuth.getCurrentUser()).getUid()).addValueEventListener(new ValueEventListener() {
+            @SuppressLint("SetTextI18n")
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                FirebaseDatabase.getInstance(Constants.databaseURL).getReference().child("User").child(Objects.requireNonNull(fAuth.getCurrentUser()).getUid()).removeEventListener(this);
+                if (snapshot.exists()){
+                    String name = Objects.requireNonNull(snapshot.getValue(UserModel.class)).getUsername();
+                    binding.taskFormFragmentUsernameTextView.setText(name.substring(0, 1).toUpperCase() + name.substring(1));
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
         binding.taskFormFragmentCancelButton.setOnClickListener(view -> Navigation.findNavController(requireView()).navigateUp());
     }
 
@@ -103,7 +120,12 @@ public class CreateTaskFragment extends Fragment implements OnDataChange {
             @Override
             public void onClick(View view) {
                 TaskModel task = new TaskModel();
-                task.setName(binding.taskFormFragmentNameEdittext.getText().toString());
+                if(!binding.taskFormFragmentNameEdittext.getText().toString().isEmpty())
+                    task.setName(binding.taskFormFragmentNameEdittext.getText().toString());
+                else {
+                    sendErrorMsg("Introduzca un nombre para la tarea");
+                    return;
+                }
                 task.setId((id));
                 if (binding.taskFormRadioButtonLeg.isChecked())
                     task.setType(TaskModel.TaskType.LEGENDARY);
@@ -111,8 +133,10 @@ public class CreateTaskFragment extends Fragment implements OnDataChange {
                     task.setType(TaskModel.TaskType.EPIC);
                 else if (binding.taskFormRadioButtonNormal.isChecked())
                     task.setType(TaskModel.TaskType.NORMAL);
-                else
-                    sendErrorMsg("Seleccione una opcion de tipo de tarea");
+                else {
+                    sendErrorMsg("Seleccione una opcion de importancia de tarea");
+                    return;
+                }
 
                 database.child("Tasks").child(Objects.requireNonNull(fAuth.getCurrentUser()).getUid()).child("Task" + (task.getId())).setValue(task)
                         .addOnCompleteListener(task1 -> Navigation.findNavController(requireView()).navigateUp());
@@ -126,25 +150,34 @@ public class CreateTaskFragment extends Fragment implements OnDataChange {
             @Override
             public void onClick(View view) {
                 TaskModel task = new TaskModel();
-                task.setName(binding.taskFormFragmentNameEdittext.getText().toString());
+
+                if(!binding.taskFormFragmentNameEdittext.getText().toString().isEmpty())
+                    task.setName(binding.taskFormFragmentNameEdittext.getText().toString());
+                else{
+                    sendErrorMsg("Introduzca un nombre para la tarea");
+                    return;
+                }
+
                 if (binding.taskFormRadioButtonLeg.isChecked())
                     task.setType(TaskModel.TaskType.LEGENDARY);
                 else if (binding.taskFormRadioButtonEpic.isChecked())
                     task.setType(TaskModel.TaskType.EPIC);
                 else if (binding.taskFormRadioButtonNormal.isChecked())
                     task.setType(TaskModel.TaskType.NORMAL);
-                else
+                else {
                     sendErrorMsg("Seleccione una opcion de tipo de tarea");
+                    return;
+                }
 
 
                 ValueEventListener eventListener = new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        database.child("Tasks").child(Objects.requireNonNull(fAuth.getCurrentUser()).getUid()).removeEventListener(this);
                         if (snapshot.exists()) {
                             task.setId((int) (snapshot.getChildrenCount() + 1));
                             Log.d("ID: ", Integer.toString(task.getId()));
                             onDataChanged(task);
-                            database.child("Tasks").child(Objects.requireNonNull(fAuth.getCurrentUser()).getUid()).removeEventListener(this);
                         } else {
                             task.setId(1);
                             database.child("Tasks").child(Objects.requireNonNull(fAuth.getCurrentUser()).getUid()).child("Task1").setValue(task)
@@ -165,12 +198,8 @@ public class CreateTaskFragment extends Fragment implements OnDataChange {
 
     @Override
     public void onDataChanged(TaskModel task) {
-        database.child("Tasks").child(Objects.requireNonNull(fAuth.getCurrentUser()).getUid()).child("Task" + (task.getId())).setValue(task).addOnCompleteListener(new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(@NonNull Task<Void> task) {
-                Navigation.findNavController(requireView()).navigateUp();
-            }
-        });
+        database.child("Tasks").child(Objects.requireNonNull(fAuth.getCurrentUser()).getUid()).child("Task" + (task.getId())).setValue(task)
+                .addOnCompleteListener(task1 -> Navigation.findNavController(requireView()).navigateUp());
 
     }
 

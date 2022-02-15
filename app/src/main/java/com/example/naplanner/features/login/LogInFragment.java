@@ -1,7 +1,6 @@
 package com.example.naplanner.features.login;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -56,10 +55,8 @@ public class LogInFragment extends Fragment {
                 String input = binding.logInFragmentMailEditText.getText().toString();
                 if (!input.isEmpty() && validateEmail(input)) {
                     data.setMail(input);
-                } else if (!input.isEmpty()) {
-                    data.setUsername(input);
                 } else {
-                    sendErrorMsg("El Nombre de usuario esta vacio");
+                    sendErrorMsg("Introduzca un correo valido");
                     return;
                 }
 
@@ -73,12 +70,7 @@ public class LogInFragment extends Fragment {
             }
         });
 
-        binding.logInFragmentLinkToSignUpText.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Navigation.findNavController(requireView()).navigate(R.id.action_FirstFragment_to_signUpChoiceFragment);
-            }
-        });
+        binding.logInFragmentLinkToSignUpText.setOnClickListener(view -> Navigation.findNavController(requireView()).navigate(R.id.action_FirstFragment_to_signUpChoiceFragment));
 
     }
 
@@ -102,9 +94,8 @@ public class LogInFragment extends Fragment {
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()) {
                     Navigation.findNavController(requireView()).navigate(R.id.action_FirstFragment_to_teacherTasksFragment);
-                    Log.d("Auth Test:", "Correctly Signed in");
                 } else {
-                    Log.d("Auth Test:", "Couldn't Sign in");
+                    sendErrorMsg("Correo o Contraseña incorrectos");
                 }
             }
         };

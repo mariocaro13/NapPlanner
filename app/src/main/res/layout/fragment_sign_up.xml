@@ -45,6 +45,7 @@
             android:textColor="@color/black" />
 
         <TextView
+            android:focusable="false"
             android:id="@+id/sign_up_fragment_log_in_text_view"
             android:layout_width="66dp"
             android:layout_height="match_parent"

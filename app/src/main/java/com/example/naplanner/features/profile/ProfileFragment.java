@@ -57,19 +57,8 @@ public class ProfileFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        binding.profileFragmentBackButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Navigation.findNavController(requireView()).navigateUp();
-            }
-        });
-        binding.profileFragmentLogOutButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Navigation.findNavController(requireView()).navigate(R.id.action_profileFragment_to_FirstFragment);
-
-            }
-        });
+        binding.profileFragmentBackButton.setOnClickListener(view1 -> Navigation.findNavController(requireView()).navigateUp());
+        binding.profileFragmentLogOutButton.setOnClickListener(view12 -> Navigation.findNavController(requireView()).navigate(R.id.action_profileFragment_to_FirstFragment));
 
     }
 
@@ -77,11 +66,16 @@ public class ProfileFragment extends Fragment {
 
         countCompleteTasks();
 
+
         binding.profileFragmentUserMailTextView.setText(Objects.requireNonNull(fAuth.getCurrentUser()).getEmail());
         FirebaseDatabase.getInstance(Constants.databaseURL).getReference().child("User").child(Objects.requireNonNull(fAuth.getCurrentUser()).getUid()).addValueEventListener(new ValueEventListener() {
+            @SuppressLint("SetTextI18n")
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                binding.profileFragmentUserNameTextView.setText(snapshot.getValue(UserModel.class).getUsername());
+                if (snapshot.exists()) {
+                    String name = Objects.requireNonNull(snapshot.getValue(UserModel.class)).getUsername();
+                    binding.profileFragmentUserNameTextView.setText(name.substring(0, 1).toUpperCase() + name.substring(1));
+                }
             }
 
             @Override
@@ -95,7 +89,7 @@ public class ProfileFragment extends Fragment {
 
     public void countCompleteTasks() {
         FirebaseDatabase.getInstance(Constants.databaseURL).getReference().child("Tasks").child(Objects.requireNonNull(fAuth.getCurrentUser()).getUid()).addValueEventListener(new ValueEventListener() {
-            @SuppressLint("NotifyDataSetChanged")
+            @SuppressLint({"NotifyDataSetChanged", "SetTextI18n"})
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 FirebaseDatabase.getInstance(Constants.databaseURL).getReference().child("Tasks").child(Objects.requireNonNull(fAuth.getCurrentUser()).getUid()).removeEventListener(this);
@@ -106,7 +100,7 @@ public class ProfileFragment extends Fragment {
                         tasksCompleteCount++;
                     }
                 }
-                binding.profileFragmentTasksCountTextView.setText("" + tasksCompleteCount);
+                binding.profileFragmentTasksCountTextView.setText(Integer.toString(tasksCompleteCount));
             }
 
             @Override

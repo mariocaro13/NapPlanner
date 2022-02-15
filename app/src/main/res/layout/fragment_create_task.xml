@@ -7,12 +7,41 @@
     android:background="@color/background_blue"
     tools:context=".features.main.CreateTaskFragment">
 
-    <include
-        android:id="@+id/user_level_name_fragment_layout"
+    <ImageView
+        android:id="@+id/task_form_fragment_app_icon_image_view"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginStart="60dp"
+        android:layout_marginTop="46dp"
+        android:src="@drawable/boocks_app_ico"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <LinearLayout
+        android:id="@+id/task_form_fragment_username_linear_layout"
+        android:layout_width="160dp"
         android:layout_height="wrap_content"
-        android:layout_width="wrap_content"
-        layout="@layout/fragment_user_level_name"
-        android:layout_marginTop="10dp"/>
+        android:layout_marginStart="24dp"
+        android:gravity="center"
+        android:orientation="vertical"
+        app:layout_constraintStart_toEndOf="@id/task_form_fragment_app_icon_image_view"
+        app:layout_constraintTop_toTopOf="@id/task_form_fragment_app_icon_image_view"
+        app:layout_constraintBottom_toBottomOf="@id/task_form_fragment_app_icon_image_view"
+        tools:layout_editor_absoluteY="45dp">
+
+        <TextView
+            android:id="@+id/task_form_fragment_username_text_view"
+            android:layout_width="match_parent"
+            android:layout_height="26dp"
+            android:background="@drawable/border_linear_layout"
+            android:backgroundTint="@color/light_blue"
+            android:paddingHorizontal="4dp"
+            android:textColor="@color/black"
+            android:textStyle="bold|italic"
+            tools:text="User name" />
+
+
+    </LinearLayout>
 
 
     <LinearLayout
@@ -24,7 +53,7 @@
         android:orientation="vertical"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/user_level_name_fragment_layout">
+        app:layout_constraintTop_toBottomOf="@id/task_form_fragment_app_icon_image_view">
 
         <TextView
             android:id="@+id/task_form_fragment_name_textview"

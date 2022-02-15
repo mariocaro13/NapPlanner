@@ -1,7 +1,6 @@
 package com.example.naplanner.features.signup;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -57,14 +56,15 @@ public class SignUpFragment extends Fragment {
 
     private void setupUI() {
         binding.signUpFragmentSendButton.setOnClickListener(new View.OnClickListener() {
-
             @Override
             public void onClick(View view) {
                 String username = binding.signUpFragmentFormLayout.signUpFragmentUsernameEditText.getText().toString();
-                if (!username.isEmpty())
+                if (username.length() > 18)
+                    sendMsg("Nombre muy largo (Maximo 18)");
+                else if (!username.isEmpty())
                     data.setUsername(username);
                 else {
-                    sendErrorMsg("El Nombre de usuario esta vacio");
+                    sendMsg("El Nombre de usuario esta vacio");
                     return;
                 }
 
@@ -72,28 +72,23 @@ public class SignUpFragment extends Fragment {
                 if (validateEmail(mail))
                     data.setMail(mail);
                 else {
-                    sendErrorMsg("Por favor introduzca un email valido");
+                    sendMsg("Por favor introduzca un email valido");
                     return;
                 }
 
                 String pass = binding.signUpFragmentFormLayout.signUpFragmentPassEditText.getText().toString();
                 String conPass = binding.signUpFragmentFormLayout.signUpFragmentConfirmPassEditText.getText().toString();
                 if (pass.isEmpty())
-                    sendErrorMsg("Introduzca una contraseña");
+                    sendMsg("Introduzca una contraseña");
                 else if (pass.equals(conPass))
                     fAuth.createUserWithEmailAndPassword(data.getMail(), pass).addOnCompleteListener(authComplete(data));
                 else {
-                    sendErrorMsg("Las contraseñas no son iguales");
+                    sendMsg("Las contraseñas no son iguales");
                 }
             }
         });
 
-        binding.signUpFragmentLogInTextView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Navigation.findNavController(requireView()).navigate(R.id.action_signUpFragment_to_FirstFragment);
-            }
-        });
+        binding.signUpFragmentLogInTextView.setOnClickListener(view -> Navigation.findNavController(requireView()).navigate(R.id.action_signUpFragment_to_FirstFragment));
     }
 
     private void useStudentPalette() {
@@ -120,7 +115,7 @@ public class SignUpFragment extends Fragment {
         return !mail.toString().isEmpty() && Patterns.EMAIL_ADDRESS.matcher(mail).matches();
     }
 
-    private void sendErrorMsg(String error) {
+    private void sendMsg(String error) {
         Toast.makeText(requireActivity().getApplicationContext(), error, Toast.LENGTH_SHORT).show();
     }
 
@@ -129,22 +124,22 @@ public class SignUpFragment extends Fragment {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if(task.isSuccessful()) {
-                    Log.d("Auth Test:", "Correctly Signed in");
-                    FirebaseDatabase.getInstance(Constants.databaseURL).getReference("Users")
+                    sendMsg("Correctly Signed in");
+                    FirebaseDatabase.getInstance(Constants.databaseURL).getReference("User")
                             .child(Objects.requireNonNull(fAuth.getCurrentUser()).getUid())
                             .setValue(user).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
-                            if(task.isSuccessful())
-                                Log.d("Data Test:", "Correctly Signed in");
+                            if(task.isSuccessful()) {
+                                Navigation.findNavController(requireView()).navigate(R.id.action_signUpFragment_to_teacherTasksFragment2);
+                            }
                             else
-                                Log.d("Data Test:", Objects.requireNonNull(task.getException()).getMessage());
+                                sendMsg(Objects.requireNonNull(task.getException()).getMessage());
                         }
                     });
 
-                    Navigation.findNavController(requireView()).navigate(R.id.action_signUpFragment_to_teacherTasksFragment2);
                 }else{
-                    Log.d("Auth Test:", Objects.requireNonNull(task.getException()).getMessage());
+                    sendMsg(Objects.requireNonNull(task.getException()).getMessage());
                 }
             }
         };

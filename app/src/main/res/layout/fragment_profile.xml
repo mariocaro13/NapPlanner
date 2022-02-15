@@ -52,7 +52,8 @@
             android:hint="@string/generic_form_user_text_view"
             android:padding="5dp"
             android:textColor="@color/black"
-            android:textColorHint="@color/gray" />
+            android:textColorHint="@color/gray"
+            android:textStyle="bold|italic" />
 
     </LinearLayout>
 
@@ -75,7 +76,7 @@
             android:layout_height="18dp"
             android:background="@color/dark_blue"
             android:paddingHorizontal="5dp"
-            android:text="@string/log_in_fragment_form_user_or_mail_edit_text"
+            android:text="@string/generic_form_mail"
             android:textColor="@color/black"
             android:textSize="12sp" />
 
@@ -85,7 +86,7 @@
             android:layout_height="46dp"
             android:background="@color/light_blue"
             android:gravity="center"
-            android:hint="@string/log_in_fragment_form_user_or_mail_edit_text"
+            android:hint="@string/generic_form_mail"
             android:padding="5dp"
             android:textAlignment="center"
             android:textColor="@color/black"

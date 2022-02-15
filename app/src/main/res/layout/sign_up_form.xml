@@ -39,6 +39,7 @@
             android:imeOptions="actionDone"
             android:inputType="textEmailAddress"
             android:padding="5dp"
+            android:layout_margin="2dp"
             android:textAlignment="center"
             android:textColor="@color/black"
             android:textColorHint="@color/gray" />
@@ -49,7 +50,7 @@
         android:id="@+id/sign_up_fragment_mail_linear_layout"
         android:layout_width="266dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="42dp"
+        android:layout_marginTop="35dp"
         android:background="@drawable/border_linear_layout"
         android:gravity="center"
         android:orientation="vertical">
@@ -74,6 +75,7 @@
             android:imeOptions="actionDone"
             android:inputType="textEmailAddress"
             android:padding="5dp"
+            android:layout_margin="2dp"
             android:textAlignment="center"
             android:textColor="@color/black"
             android:textColorHint="@color/gray" />
@@ -84,7 +86,7 @@
         android:id="@+id/sign_up_fragment_pass_linear_layout"
         android:layout_width="266dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="42dp"
+        android:layout_marginTop="35dp"
         android:background="@drawable/border_linear_layout"
         android:gravity="center"
         android:orientation="vertical">
@@ -109,6 +111,7 @@
             android:imeOptions="actionDone"
             android:inputType="textPassword"
             android:padding="5dp"
+            android:layout_margin="2dp"
             android:textAlignment="center"
             android:textColor="@color/black"
             android:textColorHint="@color/gray" />
@@ -119,7 +122,7 @@
         android:id="@+id/sign_up_fragment_confirm_pass_linear_layout"
         android:layout_width="266dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="42dp"
+        android:layout_marginTop="35dp"
         android:background="@drawable/border_linear_layout"
         android:gravity="center"
         android:orientation="vertical">
@@ -144,6 +147,7 @@
             android:imeOptions="actionDone"
             android:inputType="textPassword"
             android:padding="5dp"
+            android:layout_margin="2dp"
             android:textAlignment="center"
             android:textColor="@color/black"
             android:textColorHint="@color/gray" />

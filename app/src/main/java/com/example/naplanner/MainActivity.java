@@ -33,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
 
         navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
-        setupToolbar();
+        setupToolbar("Login");
     }
 
     @Override
@@ -75,8 +75,8 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private void setupToolbar(){
-        binding.activityMainToolbar.setTitle("Login");
+    public void setupToolbar(String title){
+        binding.activityMainToolbar.setTitle(title);
         setSupportActionBar(binding.activityMainToolbar);
     }
 
