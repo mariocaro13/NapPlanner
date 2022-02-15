@@ -5,16 +5,16 @@ public class TaskModel {
     private int taskId;
     private String name;
     private TaskType taskType;
-    private boolean completeTask;
+    private boolean complete;
 
     public TaskModel() {
     }
 
-    public TaskModel(int taskId, String name, TaskType taskType, boolean completeTask) {
+    public TaskModel(int taskId, String name, TaskType taskType, boolean complete) {
         this.taskId = taskId;
         this.name = name;
         this.taskType = taskType;
-        this.completeTask = completeTask;
+        this.complete = complete;
     }
 
     public String getName() {
@@ -41,12 +41,12 @@ public class TaskModel {
         this.taskType = taskType;
     }
 
-    public boolean isCompleteTask() {
-        return completeTask;
+    public boolean isComplete() {
+        return complete;
     }
 
-    public void setCompleteTask(boolean completeTask) {
-        this.completeTask = completeTask;
+    public void setComplete(boolean complete) {
+        this.complete = complete;
     }
 
     public enum TaskType{

@@ -45,7 +45,7 @@ public class TaskFormFragment extends Fragment {
             public void onClick(View view) {
                 TaskModel task = new TaskModel();
                 task.setName(binding.taskFormFragmentNameEdittext.getText().toString());
-                task.setCompleteTask(TaskFormFragmentArgs.fromBundle(getArguments()).getIsComplete());
+                task.setComplete(TaskFormFragmentArgs.fromBundle(getArguments()).getIsComplete());
                 String taskType;
 
                 binding.taskFormFragmentTaksImportanceRadioGroup.getChildAt(binding.taskFormFragmentTaksImportanceRadioGroup.getCheckedRadioButtonId()).toString();

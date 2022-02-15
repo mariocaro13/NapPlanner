@@ -14,29 +14,29 @@
         android:layout_height="100dp"
         android:layout_marginStart="60dp"
         android:layout_marginTop="46dp"
-        android:src="@drawable/app_icon"
+        android:src="@drawable/boocks_app_ico"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <LinearLayout
         android:id="@+id/task_form_fragment_username_linear_layout"
         android:layout_width="160dp"
-        android:layout_height="wrap_content"
+        android:layout_height="100dp"
         android:layout_marginStart="24dp"
-        android:layout_marginTop="70dp"
-        android:background="@drawable/border_linear_layout"
+        android:gravity="center"
         android:orientation="vertical"
         app:layout_constraintStart_toEndOf="@id/task_form_fragment_app_icon_image_view"
-        app:layout_constraintTop_toTopOf="parent">
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteY="45dp">
 
         <TextView
             android:id="@+id/task_form_fragment_username_text_view"
             android:layout_width="match_parent"
             android:layout_height="26dp"
-            android:background="@color/light_blue"
+            android:background="@drawable/border_linear_layout"
+            android:backgroundTint="@color/light_blue"
             android:textColor="@color/black"
             tools:text="User name" />
-
 
 
     </LinearLayout>

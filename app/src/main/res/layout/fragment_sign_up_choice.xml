@@ -12,7 +12,7 @@
         android:layout_width="224dp"
         android:layout_height="224dp"
         android:layout_marginTop="45dp"
-        android:src="@drawable/app_icon"
+        android:src="@drawable/boocks_app_ico"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

@@ -70,7 +70,7 @@ public class TeacherTasksFragment extends Fragment implements TaskItemListener {
 
     @Override
     public void onCheckboxTap(int position) {
-        tasks.get(position).setCompleteTask(!tasks.get(position).isCompleteTask());
+        tasks.get(position).setComplete(!tasks.get(position).isComplete());
 
     }
 }

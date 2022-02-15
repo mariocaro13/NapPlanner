@@ -14,7 +14,6 @@ import androidx.navigation.Navigation;
 import com.example.naplanner.MainActivity;
 import com.example.naplanner.R;
 import com.example.naplanner.databinding.FragmentProfileBinding;
-import com.example.naplanner.features.main.TaskFormFragmentArgs;
 import com.example.naplanner.helperclasses.Constants;
 import com.example.naplanner.model.TaskModel;
 import com.example.naplanner.model.UserModel;
@@ -24,14 +23,13 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.util.ArrayList;
-import java.util.Locale;
 import java.util.Objects;
 
 public class ProfileFragment extends Fragment {
-    private int tasksCompleteCount = 0;
+
     private FragmentProfileBinding binding;
     private FirebaseAuth fAuth;
+    private int tasksCompleteCount;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -45,6 +43,8 @@ public class ProfileFragment extends Fragment {
         ((MainActivity) requireActivity()).hideInteractionBars();
         fAuth = FirebaseAuth.getInstance();
         setupUI();
+
+
     }
 
     @Override
@@ -70,9 +70,12 @@ public class ProfileFragment extends Fragment {
 
             }
         });
+
     }
 
     public void setupUI() {
+
+        countCompleteTasks();
 
         binding.profileFragmentUserMailTextView.setText(Objects.requireNonNull(fAuth.getCurrentUser()).getEmail());
         FirebaseDatabase.getInstance(Constants.databaseURL).getReference().child("User").child(Objects.requireNonNull(fAuth.getCurrentUser()).getUid()).addValueEventListener(new ValueEventListener() {
@@ -87,19 +90,22 @@ public class ProfileFragment extends Fragment {
             }
         });
 
-        countCompleteTasks();
+
     }
 
-    public  void countCompleteTasks() {
+    public void countCompleteTasks() {
         FirebaseDatabase.getInstance(Constants.databaseURL).getReference().child("Tasks").child(Objects.requireNonNull(fAuth.getCurrentUser()).getUid()).addValueEventListener(new ValueEventListener() {
             @SuppressLint("NotifyDataSetChanged")
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for(DataSnapshot dataSnapshot : snapshot.getChildren()) {
-                    if(Objects.requireNonNull(dataSnapshot.getValue(TaskModel.class)).isCompleteTask()){
-                        tasksCompleteCount ++;
+                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                    TaskModel task = dataSnapshot.getValue(TaskModel.class);
+
+                    if (Objects.requireNonNull(task).isComplete()) {
+                        tasksCompleteCount++;
                     }
                 }
+                binding.profileFragmentTasksCountTextView.setText("" + tasksCompleteCount);
             }
 
             @Override
@@ -107,7 +113,6 @@ public class ProfileFragment extends Fragment {
 
             }
         });
-        binding.profileFragmentTasksCountTextView.setText(""+ tasksCompleteCount);
 
     }
 }
