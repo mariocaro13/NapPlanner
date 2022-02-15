@@ -71,6 +71,7 @@ public class TeacherTasksFragment extends Fragment implements TaskItemListener {
                     tasks.add(dataSnapshot.getValue(TaskModel.class));
                 }
                 adapter.notifyDataSetChanged();
+                FirebaseDatabase.getInstance(Constants.databaseURL).getReference().child("Tasks").child(Objects.requireNonNull(fAuth.getCurrentUser()).getUid()).removeEventListener(this);
             }
 
             @Override
@@ -95,7 +96,7 @@ public class TeacherTasksFragment extends Fragment implements TaskItemListener {
     @Override
     public void onCheckboxTap(int taskID) {
         tasks.get(taskID).setComplete(!tasks.get(taskID).isComplete());
-        FirebaseDatabase.getInstance().getReference(Constants.databaseURL).child("Tasks").child(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid()).child("Task"+taskID).child("complete").setValue(tasks.get(taskID).isComplete());
+        FirebaseDatabase.getInstance(Constants.databaseURL).getReference().child("Tasks").child(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid()).child("Task"+taskID).child("complete").setValue(tasks.get(taskID).isComplete());
 
     }
 }

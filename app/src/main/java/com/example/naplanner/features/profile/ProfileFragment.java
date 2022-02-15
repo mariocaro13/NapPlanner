@@ -98,6 +98,7 @@ public class ProfileFragment extends Fragment {
             @SuppressLint("NotifyDataSetChanged")
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
+                FirebaseDatabase.getInstance(Constants.databaseURL).getReference().child("Tasks").child(Objects.requireNonNull(fAuth.getCurrentUser()).getUid()).removeEventListener(this);
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                     TaskModel task = dataSnapshot.getValue(TaskModel.class);
 
