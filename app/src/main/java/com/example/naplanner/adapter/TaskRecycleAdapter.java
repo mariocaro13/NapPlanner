@@ -2,7 +2,6 @@ package com.example.naplanner.adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
@@ -41,8 +40,9 @@ public class TaskRecycleAdapter extends RecyclerView.Adapter<TaskRecycleAdapter.
 
 
         holder.binding.tasksListItemNameTaskTextView.setText(tasks.get(pos).getName());
+        holder.binding.taskListItemCompleteTaskCheckbox.setChecked(tasks.get(pos).isComplete());
 
-        switch (tasks.get(pos).getTaskType()) {
+        switch (tasks.get(pos).getType()) {
             case LEGENDARY:
                 holder.binding.getRoot().setBackground(AppCompatResources.getDrawable(context, R.drawable.border_task_legendary_blue));
                 break;
@@ -55,18 +55,8 @@ public class TaskRecycleAdapter extends RecyclerView.Adapter<TaskRecycleAdapter.
             default:
         }
 
-        holder.binding.taskListItemCompleteTaskCheckbox.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                listener.onCheckboxTap(pos);
-            }
-        });
-        holder.binding.taskListItemEditTaskImageView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                listener.onEditTap(holder.binding.taskListItemCompleteTaskCheckbox.isChecked());
-            }
-        });
+        holder.binding.taskListItemCompleteTaskCheckbox.setOnClickListener(view -> listener.onCheckboxTap(tasks.get(pos).getId()));
+        holder.binding.taskListItemEditTaskImageView.setOnClickListener(view -> listener.onEditTap(tasks.get(pos).getId()));
     }
 
 

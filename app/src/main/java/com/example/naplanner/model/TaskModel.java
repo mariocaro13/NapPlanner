@@ -2,18 +2,18 @@ package com.example.naplanner.model;
 
 public class TaskModel {
 
-    private int taskId;
+    private int id;
     private String name;
-    private TaskType taskType;
+    private TaskType type;
     private boolean complete;
 
     public TaskModel() {
     }
 
-    public TaskModel(int taskId, String name, TaskType taskType, boolean complete) {
-        this.taskId = taskId;
+    public TaskModel(int id, String name, TaskType type, boolean complete) {
+        this.id = id;
         this.name = name;
-        this.taskType = taskType;
+        this.type = type;
         this.complete = complete;
     }
 
@@ -25,20 +25,20 @@ public class TaskModel {
         this.name = name;
     }
 
-    public int getTaskId() {
-        return taskId;
+    public int getId() {
+        return id;
     }
 
-    public void setTaskId(int taskId) {
-        this.taskId = taskId;
+    public void setId(int id) {
+        this.id = id;
     }
 
-    public TaskType getTaskType() {
-        return taskType;
+    public TaskType getType() {
+        return type;
     }
 
-    public void setTaskType(TaskType taskType) {
-        this.taskType = taskType;
+    public void setType(TaskType type) {
+        this.type = type;
     }
 
     public boolean isComplete() {

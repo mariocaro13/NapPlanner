@@ -130,7 +130,7 @@ public class SignUpFragment extends Fragment {
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if(task.isSuccessful()) {
                     Log.d("Auth Test:", "Correctly Signed in");
-                    FirebaseDatabase.getInstance(Constants.databaseURL).getReference("User")
+                    FirebaseDatabase.getInstance(Constants.databaseURL).getReference("Users")
                             .child(Objects.requireNonNull(fAuth.getCurrentUser()).getUid())
                             .setValue(user).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
