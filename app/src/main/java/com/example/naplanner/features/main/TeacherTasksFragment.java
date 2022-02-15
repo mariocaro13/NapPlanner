@@ -31,7 +31,6 @@ import java.util.Objects;
 public class TeacherTasksFragment extends Fragment implements TaskItemListener {
 
     private FragmentTeacherTasksBinding binding;
-    private FirebaseDatabase database;
     private FirebaseAuth fAuth;
     public ArrayList<TaskModel> tasks = new ArrayList<>();
 
@@ -70,8 +69,8 @@ public class TeacherTasksFragment extends Fragment implements TaskItemListener {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for(DataSnapshot dataSnapshot : snapshot.getChildren()) {
                     tasks.add(dataSnapshot.getValue(TaskModel.class));
-                    adapter.notifyDataSetChanged();
                 }
+                adapter.notifyDataSetChanged();
             }
 
             @Override
@@ -86,8 +85,11 @@ public class TeacherTasksFragment extends Fragment implements TaskItemListener {
     }
 
     @Override
-    public void onEditTap(boolean isComplete) {
-        Navigation.findNavController(requireView()).navigate(TeacherTasksFragmentDirections.actionTeacherTasksFragmentToTaskForm().setIsComplete(isComplete));
+    public void onEditTap(int TaskID) {
+        TeacherTasksFragmentDirections.ActionTeacherTasksFragmentToTaskForm action = TeacherTasksFragmentDirections.actionTeacherTasksFragmentToTaskForm();
+        action.setIsEdit(true);
+        action.setId(TaskID);
+        Navigation.findNavController(requireView()).navigate(action);
     }
 
     @Override

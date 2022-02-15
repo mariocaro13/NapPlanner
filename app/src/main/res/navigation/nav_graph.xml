@@ -79,9 +79,13 @@
         android:label="fragment_task_form"
         tools:layout="@layout/fragment_create_task" >
         <argument
-            android:name="isComplete"
+            android:name="isEdit"
             app:argType="boolean"
             android:defaultValue="false" />
+        <argument
+            android:name="id"
+            app:argType="integer"
+            android:defaultValue="-1" />
     </fragment>
     <fragment
         android:id="@+id/profileFragment"
