@@ -6,7 +6,7 @@
     android:layout_height="wrap_content"
     android:gravity="center"
     android:orientation="vertical"
-    tools:context=".LogInFragment">
+    tools:context=".features.login.LogInFragment">
 
     <LinearLayout
         android:id="@+id/sign_up_fragment_username_linear_layout"

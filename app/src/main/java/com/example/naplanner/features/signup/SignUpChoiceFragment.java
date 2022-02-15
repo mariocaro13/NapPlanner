@@ -1,4 +1,4 @@
-package com.example.naplanner;
+package com.example.naplanner.features.signup;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;

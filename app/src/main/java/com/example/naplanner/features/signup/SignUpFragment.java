@@ -1,4 +1,4 @@
-package com.example.naplanner;
+package com.example.naplanner.features.signup;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -14,6 +14,7 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
+import com.example.naplanner.R;
 import com.example.naplanner.databinding.FragmentSignUpBinding;
 import com.example.naplanner.helperclasses.Constants;
 import com.example.naplanner.model.UserModel;
@@ -141,7 +142,7 @@ public class SignUpFragment extends Fragment {
                         }
                     });
 
-                    //TODO:Navigate to Main Screen
+                    Navigation.findNavController(requireView()).navigate(R.id.action_signUpFragment_to_teacherTasksFragment2);
                 }else{
                     Log.d("Auth Test:", Objects.requireNonNull(task.getException()).getMessage());
                 }

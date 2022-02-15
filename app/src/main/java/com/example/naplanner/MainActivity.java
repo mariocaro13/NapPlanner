@@ -20,6 +20,7 @@ import com.example.naplanner.databinding.ActivityMainBinding;
 import com.google.android.material.navigation.NavigationBarView;
 
 public class MainActivity extends AppCompatActivity {
+    private NavController navController;
 
     private AppBarConfiguration appBarConfiguration;
     private ActivityMainBinding binding;
@@ -31,7 +32,8 @@ public class MainActivity extends AppCompatActivity {
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
+        navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
+
         setupToolbar();
     }
 
@@ -63,20 +65,19 @@ public class MainActivity extends AppCompatActivity {
 
         int id = item.getItemId();
 
-        if(id == R.id.action_add_task){
+        if (id == R.id.action_add_task) {
             //TODO: NAVIGATE TO CREATE TASK SCREEN
             Log.d("Action Check: ", "TODO: Navigate to add Task Screen");
             return true;
-        }else if(id == R.id.action_profile){
-            //TODO: NAVIGATE TO PROFILE SCREEN
-            Log.d("Action Check: ", "TODO: Navigate to Profile Screen");
+        } else if (id == R.id.action_profile) {
+            navController.navigate(R.id.action_teacherTasksFragment_to_profileFragment);
             return true;
         }
 
         return super.onOptionsItemSelected(item);
     }
 
-    private void setupToolbar(){
+    private void setupToolbar() {
         binding.activityMainToolbar.setTitle("Login");
         setSupportActionBar(binding.activityMainToolbar);
     }

@@ -5,14 +5,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/background_gray"
-    tools:context=".LogInFragment">
+    tools:context=".features.login.LogInFragment">
 
     <ImageView
         android:id="@+id/log_in_fragment_app_icon_image_view"
         android:layout_width="224dp"
         android:layout_height="224dp"
         android:layout_marginTop="45dp"
-        android:src="@drawable/app_icon"
+        android:src="@drawable/boocks_app_ico"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
