@@ -80,7 +80,7 @@ public class CreateTaskFragment extends Fragment implements OnDataChange {
     private void editTask() {
         int id = CreateTaskFragmentArgs.fromBundle(getArguments()).getId();
         if (id != -1)
-            FirebaseDatabase.getInstance(Constants.databaseURL).getReference().child("Tasks").child(Objects.requireNonNull(fAuth.getCurrentUser()).getUid()).child("Task-" + id).addValueEventListener(new ValueEventListener() {
+            FirebaseDatabase.getInstance(Constants.databaseURL).getReference().child("Tasks").child(Objects.requireNonNull(fAuth.getCurrentUser()).getUid()).child("Task" + id).addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                     if (snapshot.exists()) {
@@ -89,6 +89,7 @@ public class CreateTaskFragment extends Fragment implements OnDataChange {
                         binding.taskFormRadioButtonLeg.setChecked(task.getType() == TaskModel.TaskType.LEGENDARY);
                         binding.taskFormRadioButtonEpic.setChecked(task.getType() == TaskModel.TaskType.EPIC);
                         binding.taskFormRadioButtonNormal.setChecked(task.getType() == TaskModel.TaskType.NORMAL);
+                        FirebaseDatabase.getInstance(Constants.databaseURL).getReference().child("Tasks").child(Objects.requireNonNull(fAuth.getCurrentUser()).getUid()).child("Task" + id).removeEventListener(this);
                     }
                 }
 
@@ -103,6 +104,7 @@ public class CreateTaskFragment extends Fragment implements OnDataChange {
             public void onClick(View view) {
                 TaskModel task = new TaskModel();
                 task.setName(binding.taskFormFragmentNameEdittext.getText().toString());
+                task.setId((id));
                 if (binding.taskFormRadioButtonLeg.isChecked())
                     task.setType(TaskModel.TaskType.LEGENDARY);
                 else if (binding.taskFormRadioButtonEpic.isChecked())
@@ -111,19 +113,6 @@ public class CreateTaskFragment extends Fragment implements OnDataChange {
                     task.setType(TaskModel.TaskType.NORMAL);
                 else
                     sendErrorMsg("Seleccione una opcion de tipo de tarea");
-
-                database.child("Tasks").child(Objects.requireNonNull(fAuth.getCurrentUser()).getUid()).addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        if (snapshot.exists())
-                            task.setId((int) (snapshot.getChildrenCount() + 1));
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
-
-                    }
-                });
 
                 database.child("Tasks").child(Objects.requireNonNull(fAuth.getCurrentUser()).getUid()).child("Task" + (task.getId())).setValue(task)
                         .addOnCompleteListener(task1 -> Navigation.findNavController(requireView()).navigateUp());
@@ -155,6 +144,7 @@ public class CreateTaskFragment extends Fragment implements OnDataChange {
                             task.setId((int) (snapshot.getChildrenCount() + 1));
                             Log.d("ID: ", Integer.toString(task.getId()));
                             onDataChanged(task);
+                            database.child("Tasks").child(Objects.requireNonNull(fAuth.getCurrentUser()).getUid()).removeEventListener(this);
                         } else {
                             task.setId(1);
                             database.child("Tasks").child(Objects.requireNonNull(fAuth.getCurrentUser()).getUid()).child("Task1").setValue(task)
@@ -169,9 +159,6 @@ public class CreateTaskFragment extends Fragment implements OnDataChange {
                 };
 
                 database.child("Tasks").child(Objects.requireNonNull(fAuth.getCurrentUser()).getUid()).addValueEventListener(eventListener);
-
-
-
             }
         });
     }

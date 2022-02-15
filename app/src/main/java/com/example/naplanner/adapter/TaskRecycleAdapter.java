@@ -58,7 +58,7 @@ public class TaskRecycleAdapter extends RecyclerView.Adapter<TaskRecycleAdapter.
         holder.binding.taskListItemCompleteTaskCheckbox.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                listener.onCheckboxTap(pos);
+                listener.onCheckboxTap(tasks.get(pos).getId());
             }
         });
         holder.binding.taskListItemEditTaskImageView.setOnClickListener(new View.OnClickListener() {
