@@ -70,6 +70,7 @@ public class TeacherTasksFragment extends Fragment implements TaskItemListener {
         FirebaseDatabase.getInstance(Constants.databaseURL).getReference().child("Tasks").child(Objects.requireNonNull(fAuth.getCurrentUser()).getUid()).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
+                FirebaseDatabase.getInstance(Constants.databaseURL).getReference().child("Tasks").child(Objects.requireNonNull(fAuth.getCurrentUser()).getUid()).removeEventListener(this);
                 for(DataSnapshot dataSnapshot : snapshot.getChildren()) {
                     Handler handler = new Handler();
                     handler.postDelayed(() -> {

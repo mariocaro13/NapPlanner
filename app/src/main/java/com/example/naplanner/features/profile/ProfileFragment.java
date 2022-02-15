@@ -66,7 +66,6 @@ public class ProfileFragment extends Fragment {
 
         countCompleteTasks();
 
-
         binding.profileFragmentUserMailTextView.setText(Objects.requireNonNull(fAuth.getCurrentUser()).getEmail());
         FirebaseDatabase.getInstance(Constants.databaseURL).getReference().child("User").child(Objects.requireNonNull(fAuth.getCurrentUser()).getUid()).addValueEventListener(new ValueEventListener() {
             @SuppressLint("SetTextI18n")
