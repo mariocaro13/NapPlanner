@@ -66,6 +66,7 @@ public class StudentListFragment extends Fragment {
         FirebaseDatabase.getInstance(Constants.databaseURL).getReference().child("User").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
+                FirebaseDatabase.getInstance(Constants.databaseURL).getReference().child("Tasks").child(Objects.requireNonNull(fAuth.getCurrentUser()).getUid()).removeEventListener(this);
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                     Handler handler = new Handler();
                     handler.postDelayed(() -> {
