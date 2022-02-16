@@ -122,6 +122,4 @@ public class TeacherTasksFragment extends Fragment implements TaskItemListener {
         tasks.get(taskID-1).setComplete(!tasks.get(taskID-1).isComplete());
         FirebaseDatabase.getInstance(Constants.databaseURL).getReference().child("Tasks").child(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid()).child("Task"+taskID).child("complete").setValue(tasks.get(taskID-1).isComplete());
     }
-
-
 }

@@ -15,7 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.example.naplanner.MainActivity;
 import com.example.naplanner.adapter.TaskRecycleAdapter;
-import com.example.naplanner.databinding.FragmentCompleteTasksBinding;
+import com.example.naplanner.databinding.FragmentOwnTasksBinding;
 import com.example.naplanner.helperclasses.Constants;
 import com.example.naplanner.interfaces.TaskItemListener;
 import com.example.naplanner.model.TaskModel;
@@ -30,16 +30,15 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.Objects;
 
-public class CompleteTasksFragment extends Fragment implements TaskItemListener {
+public class OwnTasksFragment extends Fragment implements TaskItemListener {
 
-
-    private FragmentCompleteTasksBinding binding;
+    private FragmentOwnTasksBinding binding;
     private FirebaseAuth fAuth;
     public ArrayList<TaskModel> tasks = new ArrayList<>();
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        binding = FragmentCompleteTasksBinding.inflate(inflater, container, false);
+        binding = FragmentOwnTasksBinding.inflate(inflater, container, false);
         return binding.getRoot();
     }
 
@@ -63,22 +62,19 @@ public class CompleteTasksFragment extends Fragment implements TaskItemListener 
         binding = null;
     }
 
-    private void setupRecyclerView() {
-        binding.completeTasksFragmentTasksListRecycleview.setHasFixedSize(true);
+    private void setupRecyclerView(){
+        binding.ownTasksFragmentTasksListRecycleview.setHasFixedSize(true);
         tasks = new ArrayList<>();
         TaskRecycleAdapter adapter = new TaskRecycleAdapter(tasks, this, getContext());
         FirebaseDatabase.getInstance(Constants.databaseURL).getReference().child("Tasks").child(Objects.requireNonNull(fAuth.getCurrentUser()).getUid()).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 FirebaseDatabase.getInstance(Constants.databaseURL).getReference().child("Tasks").child(Objects.requireNonNull(fAuth.getCurrentUser()).getUid()).removeEventListener(this);
-                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                for(DataSnapshot dataSnapshot : snapshot.getChildren()) {
                     Handler handler = new Handler();
                     handler.postDelayed(() -> {
-                        TaskModel task = dataSnapshot.getValue(TaskModel.class);
-                        if(task.isComplete()){
-                            tasks.add(dataSnapshot.getValue(TaskModel.class));
-                            adapter.notifyItemInserted(tasks.size());
-                        }
+                        tasks.add(dataSnapshot.getValue(TaskModel.class));
+                        adapter.notifyItemInserted(tasks.size());
                     }, 300);
                 }
             }
@@ -90,11 +86,11 @@ public class CompleteTasksFragment extends Fragment implements TaskItemListener 
         });
 
         tasks.sort(new TasksSorter());
-        binding.completeTasksFragmentTasksListRecycleview.setLayoutManager(new LinearLayoutManager(this.getContext(), LinearLayoutManager.VERTICAL, false));
-        binding.completeTasksFragmentTasksListRecycleview.setAdapter(adapter);
+        binding.ownTasksFragmentTasksListRecycleview.setLayoutManager(new LinearLayoutManager(this.getContext(), LinearLayoutManager.VERTICAL, false));
+        binding.ownTasksFragmentTasksListRecycleview.setAdapter(adapter);
     }
 
-    private void setupUI() {
+    private void setupUI(){
         FirebaseDatabase.getInstance(Constants.databaseURL).getReference().child("User").child(Objects.requireNonNull(fAuth.getCurrentUser()).getUid()).addValueEventListener(new ValueEventListener() {
             @SuppressLint("SetTextI18n")
             @Override
@@ -123,6 +119,8 @@ public class CompleteTasksFragment extends Fragment implements TaskItemListener 
     @Override
     public void onCheckboxTap(int taskID) {
         tasks.get(taskID).setComplete(!tasks.get(taskID).isComplete());
-        FirebaseDatabase.getInstance(Constants.databaseURL).getReference().child("Tasks").child(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid()).child("Task" + taskID).child("complete").setValue(tasks.get(taskID).isComplete());
+        FirebaseDatabase.getInstance(Constants.databaseURL).getReference().child("Tasks").child(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid()).child("Task"+taskID).child("complete").setValue(tasks.get(taskID).isComplete());
     }
+
+
 }
