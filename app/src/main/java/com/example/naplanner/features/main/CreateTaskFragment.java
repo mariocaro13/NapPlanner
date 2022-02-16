@@ -169,7 +169,7 @@ public class CreateTaskFragment extends Fragment implements OnDataChange {
                     return;
                 }
 
-
+                task.setCreatorID(Objects.requireNonNull(fAuth.getCurrentUser()).getUid());
                 ValueEventListener eventListener = new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {

@@ -24,6 +24,7 @@ import com.example.naplanner.utils.TasksSorter;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
@@ -35,6 +36,7 @@ public class CompleteTasksFragment extends Fragment implements TaskItemListener 
 
     private FragmentCompleteTasksBinding binding;
     private FirebaseAuth fAuth;
+    private DatabaseReference dRef;
     public ArrayList<TaskModel> tasks = new ArrayList<>();
 
     @Override
@@ -48,6 +50,7 @@ public class CompleteTasksFragment extends Fragment implements TaskItemListener 
         super.onStart();
         ((MainActivity) requireActivity()).showInteractionBars();
         fAuth = FirebaseAuth.getInstance();
+        dRef = FirebaseDatabase.getInstance(Constants.databaseURL).getReference();
         setupUI();
     }
 
@@ -67,7 +70,7 @@ public class CompleteTasksFragment extends Fragment implements TaskItemListener 
         binding.completeTasksFragmentTasksListRecycleview.setHasFixedSize(true);
         tasks = new ArrayList<>();
         TaskRecycleAdapter adapter = new TaskRecycleAdapter(tasks, this, getContext());
-        FirebaseDatabase.getInstance(Constants.databaseURL).getReference().child("Tasks").child(Objects.requireNonNull(fAuth.getCurrentUser()).getUid()).addValueEventListener(new ValueEventListener() {
+        dRef.child("Tasks").child(Objects.requireNonNull(fAuth.getCurrentUser()).getUid()).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 FirebaseDatabase.getInstance(Constants.databaseURL).getReference().child("Tasks").child(Objects.requireNonNull(fAuth.getCurrentUser()).getUid()).removeEventListener(this);
@@ -75,7 +78,7 @@ public class CompleteTasksFragment extends Fragment implements TaskItemListener 
                     Handler handler = new Handler();
                     handler.postDelayed(() -> {
                         TaskModel task = dataSnapshot.getValue(TaskModel.class);
-                        if(task.isComplete()){
+                        if(Objects.requireNonNull(task).isComplete()){
                             tasks.add(dataSnapshot.getValue(TaskModel.class));
                             adapter.notifyItemInserted(tasks.size());
                         }
@@ -95,10 +98,11 @@ public class CompleteTasksFragment extends Fragment implements TaskItemListener 
     }
 
     private void setupUI() {
-        FirebaseDatabase.getInstance(Constants.databaseURL).getReference().child("User").child(Objects.requireNonNull(fAuth.getCurrentUser()).getUid()).addValueEventListener(new ValueEventListener() {
+        dRef.child("User").child(Objects.requireNonNull(fAuth.getCurrentUser()).getUid()).addValueEventListener(new ValueEventListener() {
             @SuppressLint("SetTextI18n")
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
+                dRef.child("User").child(Objects.requireNonNull(fAuth.getCurrentUser()).getUid()).removeEventListener(this);
                 if (snapshot.exists()) {
                     String name = Objects.requireNonNull(snapshot.getValue(UserModel.class)).getUsername();
                     ((MainActivity) requireActivity()).setupToolbar(name.substring(0, 1).toUpperCase() + name.substring(1));
@@ -122,7 +126,7 @@ public class CompleteTasksFragment extends Fragment implements TaskItemListener 
 
     @Override
     public void onCheckboxTap(int taskID) {
-        tasks.get(taskID).setComplete(!tasks.get(taskID).isComplete());
-        FirebaseDatabase.getInstance(Constants.databaseURL).getReference().child("Tasks").child(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid()).child("Task" + taskID).child("complete").setValue(tasks.get(taskID).isComplete());
+        tasks.get(taskID-1).setComplete(!tasks.get(taskID-1).isComplete());
+        FirebaseDatabase.getInstance(Constants.databaseURL).getReference().child("Tasks").child(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid()).child("Task" + taskID).child("complete").setValue(tasks.get(taskID-1).isComplete());
     }
 }

@@ -24,6 +24,7 @@ import com.example.naplanner.utils.TasksSorter;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
@@ -34,6 +35,7 @@ public class OwnTasksFragment extends Fragment implements TaskItemListener {
 
     private FragmentOwnTasksBinding binding;
     private FirebaseAuth fAuth;
+    private DatabaseReference dRef;
     public ArrayList<TaskModel> tasks = new ArrayList<>();
 
     @Override
@@ -47,6 +49,7 @@ public class OwnTasksFragment extends Fragment implements TaskItemListener {
         super.onStart();
         ((MainActivity) requireActivity()).showInteractionBars();
         fAuth = FirebaseAuth.getInstance();
+        dRef = FirebaseDatabase.getInstance(Constants.databaseURL).getReference();
         setupUI();
     }
 
@@ -72,8 +75,10 @@ public class OwnTasksFragment extends Fragment implements TaskItemListener {
                 FirebaseDatabase.getInstance(Constants.databaseURL).getReference().child("Tasks").child(Objects.requireNonNull(fAuth.getCurrentUser()).getUid()).removeEventListener(this);
                 for(DataSnapshot dataSnapshot : snapshot.getChildren()) {
                     Handler handler = new Handler();
+                    TaskModel task = dataSnapshot.getValue(TaskModel.class);
                     handler.postDelayed(() -> {
-                        tasks.add(dataSnapshot.getValue(TaskModel.class));
+                        if(Objects.requireNonNull(task).getCreatorID().equals(fAuth.getCurrentUser().getUid()) && !task.isComplete())
+                        tasks.add(task);
                         adapter.notifyItemInserted(tasks.size());
                     }, 300);
                 }
@@ -91,10 +96,11 @@ public class OwnTasksFragment extends Fragment implements TaskItemListener {
     }
 
     private void setupUI(){
-        FirebaseDatabase.getInstance(Constants.databaseURL).getReference().child("User").child(Objects.requireNonNull(fAuth.getCurrentUser()).getUid()).addValueEventListener(new ValueEventListener() {
+        dRef.child("User").child(Objects.requireNonNull(fAuth.getCurrentUser()).getUid()).addValueEventListener(new ValueEventListener() {
             @SuppressLint("SetTextI18n")
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
+                dRef.child("User").child(Objects.requireNonNull(fAuth.getCurrentUser()).getUid()).removeEventListener(this);
                 if (snapshot.exists()) {
                     String name = Objects.requireNonNull(snapshot.getValue(UserModel.class)).getUsername();
                     ((MainActivity) requireActivity()).setupToolbar(name.substring(0, 1).toUpperCase() + name.substring(1));

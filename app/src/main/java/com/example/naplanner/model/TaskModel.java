@@ -6,15 +6,9 @@ public class TaskModel {
     private String name;
     private TaskType type;
     private boolean complete;
+    private String creatorID;
 
     public TaskModel() {
-    }
-
-    public TaskModel(int id, String name, TaskType type, boolean complete) {
-        this.id = id;
-        this.name = name;
-        this.type = type;
-        this.complete = complete;
     }
 
     public String getName() {
@@ -47,6 +41,14 @@ public class TaskModel {
 
     public void setComplete(boolean complete) {
         this.complete = complete;
+    }
+
+    public String getCreatorID() {
+        return creatorID;
+    }
+
+    public void setCreatorID(String creatorID) {
+        this.creatorID = creatorID;
     }
 
     public enum TaskType{

@@ -20,13 +20,13 @@ public class TaskRecycleAdapter extends RecyclerView.Adapter<TaskRecycleAdapter.
     private ArrayList<TaskModel> tasks;
     private TaskItemListener listener;
     private Context context;
+    private boolean isStudent;
 
     public TaskRecycleAdapter(ArrayList<TaskModel> tasks, TaskItemListener listener, Context context) {
         this.tasks = tasks;
         this.listener = listener;
         this.context = context;
     }
-
 
     @NonNull
     @Override
@@ -39,18 +39,10 @@ public class TaskRecycleAdapter extends RecyclerView.Adapter<TaskRecycleAdapter.
         holder.binding.tasksListItemNameTaskTextView.setText(tasks.get(position).getName());
         holder.binding.taskListItemCompleteTaskCheckbox.setChecked(tasks.get(position).isComplete());
 
-        switch (tasks.get(position).getType()) {
-            case LEGENDARY:
-                holder.binding.getRoot().setBackground(AppCompatResources.getDrawable(context, R.drawable.border_task_legendary_blue));
-                break;
-            case EPIC:
-                holder.binding.getRoot().setBackground(AppCompatResources.getDrawable(context, R.drawable.border_task_epic_blue));
-                break;
-            case NORMAL:
-                holder.binding.getRoot().setBackground(AppCompatResources.getDrawable(context, R.drawable.border_task_normal_blue));
-                break;
-            default:
-        }
+        if(isStudent)
+            useStudentPalette(holder, position);
+        else
+            useTeacherPalette(holder, position);
 
         holder.binding.taskListItemCompleteTaskCheckbox.setOnClickListener(view -> listener.onCheckboxTap(tasks.get(position).getId()));
         holder.binding.taskListItemEditTaskImageView.setOnClickListener(view -> listener.onEditTap(tasks.get(position).getId()));
@@ -68,6 +60,36 @@ public class TaskRecycleAdapter extends RecyclerView.Adapter<TaskRecycleAdapter.
         public ViewHolder(TasksListItemBinding mbinding) {
             super(mbinding.getRoot());
             binding = mbinding;
+        }
+    }
+
+    private void useTeacherPalette(ViewHolder holder, int position){
+        switch (tasks.get(position).getType()) {
+            case LEGENDARY:
+                holder.binding.getRoot().setBackground(AppCompatResources.getDrawable(context, R.drawable.border_task_legendary_blue));
+                break;
+            case EPIC:
+                holder.binding.getRoot().setBackground(AppCompatResources.getDrawable(context, R.drawable.border_task_epic_blue));
+                break;
+            case NORMAL:
+                holder.binding.getRoot().setBackground(AppCompatResources.getDrawable(context, R.drawable.border_task_normal_blue));
+                break;
+            default:
+        }
+    }
+
+    private void useStudentPalette(ViewHolder holder, int position){
+        switch (tasks.get(position).getType()) {
+            case LEGENDARY:
+                holder.binding.getRoot().setBackground(AppCompatResources.getDrawable(context, R.drawable.border_task_legendary_green));
+                break;
+            case EPIC:
+                holder.binding.getRoot().setBackground(AppCompatResources.getDrawable(context, R.drawable.border_task_epic_green));
+                break;
+            case NORMAL:
+                holder.binding.getRoot().setBackground(AppCompatResources.getDrawable(context, R.drawable.border_task_normal_green));
+                break;
+            default:
         }
     }
 
