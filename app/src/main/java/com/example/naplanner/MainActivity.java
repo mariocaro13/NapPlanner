@@ -32,14 +32,14 @@ public class MainActivity extends AppCompatActivity {
          binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
-        setupToolbar("Login");
     }
 
     @Override
     protected void onStart() {
         super.onStart();
         setupNavigationBar();
+        navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
+        setupToolbar("Login");
     }
 
 

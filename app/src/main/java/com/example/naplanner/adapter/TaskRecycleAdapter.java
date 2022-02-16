@@ -36,13 +36,10 @@ public class TaskRecycleAdapter extends RecyclerView.Adapter<TaskRecycleAdapter.
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        int pos = position;
+        holder.binding.tasksListItemNameTaskTextView.setText(tasks.get(position).getName());
+        holder.binding.taskListItemCompleteTaskCheckbox.setChecked(tasks.get(position).isComplete());
 
-
-        holder.binding.tasksListItemNameTaskTextView.setText(tasks.get(pos).getName());
-        holder.binding.taskListItemCompleteTaskCheckbox.setChecked(tasks.get(pos).isComplete());
-
-        switch (tasks.get(pos).getType()) {
+        switch (tasks.get(position).getType()) {
             case LEGENDARY:
                 holder.binding.getRoot().setBackground(AppCompatResources.getDrawable(context, R.drawable.border_task_legendary_blue));
                 break;
@@ -55,8 +52,8 @@ public class TaskRecycleAdapter extends RecyclerView.Adapter<TaskRecycleAdapter.
             default:
         }
 
-        holder.binding.taskListItemCompleteTaskCheckbox.setOnClickListener(view -> listener.onCheckboxTap(tasks.get(pos).getId()));
-        holder.binding.taskListItemEditTaskImageView.setOnClickListener(view -> listener.onEditTap(tasks.get(pos).getId()));
+        holder.binding.taskListItemCompleteTaskCheckbox.setOnClickListener(view -> listener.onCheckboxTap(tasks.get(position).getId()));
+        holder.binding.taskListItemEditTaskImageView.setOnClickListener(view -> listener.onEditTap(tasks.get(position).getId()));
     }
 
 

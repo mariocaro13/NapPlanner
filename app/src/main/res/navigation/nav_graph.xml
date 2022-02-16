@@ -98,4 +98,9 @@
             app:popUpTo="@id/teacherTasksFragment"
             app:popUpToInclusive="true" />
     </fragment>
+    <fragment
+        android:id="@+id/studentListFragment"
+        android:name="com.example.naplanner.features.main.StudentListFragment"
+        android:label="fragment_student_list"
+        tools:layout="@layout/fragment_student_list" />
 </navigation>

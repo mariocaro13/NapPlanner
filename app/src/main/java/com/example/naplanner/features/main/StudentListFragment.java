@@ -10,18 +10,14 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.example.naplanner.MainActivity;
-import com.example.naplanner.adapter.TaskRecycleAdapter;
-import com.example.naplanner.databinding.FragmentCreateTaskBinding;
-import com.example.naplanner.databinding.FragmentTeacherTasksBinding;
+import com.example.naplanner.adapter.StudentListRecycleAdapter;
+import com.example.naplanner.databinding.FragmentStudentListBinding;
 import com.example.naplanner.helperclasses.Constants;
-import com.example.naplanner.interfaces.TaskItemListener;
 import com.example.naplanner.model.TaskModel;
 import com.example.naplanner.model.UserModel;
-import com.example.naplanner.utils.TasksSorter;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -31,15 +27,15 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.Objects;
 
-public class TeacherTasksFragment extends Fragment implements TaskItemListener {
+public class StudentListFragment extends Fragment {
 
-    private FragmentTeacherTasksBinding binding;
+    private FragmentStudentListBinding binding;
     private FirebaseAuth fAuth;
-    public ArrayList<TaskModel> tasks = new ArrayList<>();
+    public ArrayList<UserModel> users = new ArrayList<>();
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        binding = FragmentTeacherTasksBinding.inflate(inflater, container, false);
+        binding = FragmentStudentListBinding.inflate(inflater, container, false);
         return binding.getRoot();
     }
 
@@ -63,19 +59,27 @@ public class TeacherTasksFragment extends Fragment implements TaskItemListener {
         binding = null;
     }
 
-    private void setupRecyclerView(){
-        binding.teacherTasksFragmentTasksListRecycleview.setHasFixedSize(true);
-        tasks = new ArrayList<>();
-        TaskRecycleAdapter adapter = new TaskRecycleAdapter(tasks, this, getContext());
-        FirebaseDatabase.getInstance(Constants.databaseURL).getReference().child("Tasks").child(Objects.requireNonNull(fAuth.getCurrentUser()).getUid()).addValueEventListener(new ValueEventListener() {
+    private void setupRecyclerView() {
+        binding.studentListFragmentTasksListRecycleview.setHasFixedSize(true);
+        users = new ArrayList<>();
+        StudentListRecycleAdapter adapter = new StudentListRecycleAdapter(users, getContext());
+        FirebaseDatabase.getInstance(Constants.databaseURL).getReference().child("User").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 FirebaseDatabase.getInstance(Constants.databaseURL).getReference().child("Tasks").child(Objects.requireNonNull(fAuth.getCurrentUser()).getUid()).removeEventListener(this);
-                for(DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                     Handler handler = new Handler();
                     handler.postDelayed(() -> {
-                        tasks.add(dataSnapshot.getValue(TaskModel.class));
-                        adapter.notifyItemInserted(tasks.size());
+
+                        UserModel user = dataSnapshot.getValue(UserModel.class);
+
+                        if (Objects.requireNonNull(user).getStudent()) {
+                            String name = Objects.requireNonNull(user).getUsername();
+                            user.setUsername(name.substring(0, 1).toUpperCase() + name.substring(1));
+                            users.add(user);
+                            adapter.notifyItemInserted(users.size());
+                        }
+
                     }, 300);
                 }
             }
@@ -86,12 +90,11 @@ public class TeacherTasksFragment extends Fragment implements TaskItemListener {
             }
         });
 
-        tasks.sort(new TasksSorter());
-        binding.teacherTasksFragmentTasksListRecycleview.setLayoutManager(new LinearLayoutManager(this.getContext(), LinearLayoutManager.VERTICAL, false));
-        binding.teacherTasksFragmentTasksListRecycleview.setAdapter(adapter);
+        binding.studentListFragmentTasksListRecycleview.setLayoutManager(new LinearLayoutManager(this.getContext(), LinearLayoutManager.VERTICAL, false));
+        binding.studentListFragmentTasksListRecycleview.setAdapter(adapter);
     }
 
-    private void setupUI(){
+    private void setupUI() {
         FirebaseDatabase.getInstance(Constants.databaseURL).getReference().child("User").child(Objects.requireNonNull(fAuth.getCurrentUser()).getUid()).addValueEventListener(new ValueEventListener() {
             @SuppressLint("SetTextI18n")
             @Override
@@ -107,20 +110,6 @@ public class TeacherTasksFragment extends Fragment implements TaskItemListener {
 
             }
         });
-    }
-
-    @Override
-    public void onEditTap(int taskID) {
-        TeacherTasksFragmentDirections.ActionTeacherTasksFragmentToTaskForm action = TeacherTasksFragmentDirections.actionTeacherTasksFragmentToTaskForm();
-        action.setIsEdit(true);
-        action.setId(taskID);
-        Navigation.findNavController(requireView()).navigate(action);
-    }
-
-    @Override
-    public void onCheckboxTap(int taskID) {
-        tasks.get(taskID-1).setComplete(!tasks.get(taskID-1).isComplete());
-        FirebaseDatabase.getInstance(Constants.databaseURL).getReference().child("Tasks").child(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid()).child("Task"+taskID).child("complete").setValue(tasks.get(taskID-1).isComplete());
     }
 
 

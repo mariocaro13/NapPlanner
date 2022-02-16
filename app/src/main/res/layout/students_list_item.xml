@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="40dp"
+    android:layout_marginTop="6dp"
+    android:background="@drawable/border_task_legendary_blue"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:weightSum="3"
+    android:id="@+id/users_list_item_layout">
+
+    <TextView
+        android:id="@+id/users_list_item_name_task_text_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="14dp"
+        android:layout_weight="2"
+        android:background="@drawable/border_task_epic_blue"
+        android:padding="5dp"
+        android:textAlignment="center"
+        android:textColor="@color/black"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="Name" />
+
+    <TextView
+        android:id="@+id/users_list_item_mail_task_text_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="14dp"
+        android:layout_weight="1"
+        android:background="@drawable/border_task_epic_blue"
+        android:padding="5dp"
+        android:paddingStart="6dp"
+        android:textAlignment="textStart"
+        android:textColor="@color/black"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="Mail" />
+
+
+</LinearLayout>
