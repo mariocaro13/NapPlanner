@@ -16,7 +16,7 @@ import androidx.navigation.Navigation;
 import com.example.naplanner.MainActivity;
 import com.example.naplanner.databinding.FragmentCreateTaskBinding;
 import com.example.naplanner.helperclasses.Constants;
-import com.example.naplanner.interfaces.OnDataChange;
+import com.example.naplanner.interfaces.StudentListener;
 import com.example.naplanner.model.TaskModel;
 import com.example.naplanner.model.UserModel;
 import com.google.firebase.auth.FirebaseAuth;
@@ -28,10 +28,12 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.Objects;
 
-public class CreateTaskFragment extends Fragment implements OnDataChange {
+public class CreateTaskFragment extends Fragment {
 
     private FragmentCreateTaskBinding binding;
     private FirebaseAuth fAuth;
+    private String id;
+    private String teacherID;
     private DatabaseReference database;
 
     @Override
@@ -51,6 +53,15 @@ public class CreateTaskFragment extends Fragment implements OnDataChange {
     public void onStart() {
         super.onStart();
         ((MainActivity) requireActivity()).hideInteractionBars();
+        if (!CreateTaskFragmentArgs.fromBundle(getArguments()).getUserID().equals("-1")) {
+            id = CreateTaskFragmentArgs.fromBundle(getArguments()).getUserID();
+        } else {
+            id = Objects.requireNonNull(fAuth.getCurrentUser()).getUid();
+        }
+        if (!CreateTaskFragmentArgs.fromBundle(getArguments()).getTeacherID().equals("-1"))
+            teacherID = CreateTaskFragmentArgs.fromBundle(getArguments()).getTeacherID();
+        else
+            teacherID = "0";
         setupUI();
     }
 
@@ -69,11 +80,11 @@ public class CreateTaskFragment extends Fragment implements OnDataChange {
             createTask();
         }
 
-        FirebaseDatabase.getInstance(Constants.databaseURL).getReference().child("User").child(Objects.requireNonNull(fAuth.getCurrentUser()).getUid()).addValueEventListener(new ValueEventListener() {
+        FirebaseDatabase.getInstance(Constants.databaseURL).getReference().child("User").child(id).addValueEventListener(new ValueEventListener() {
             @SuppressLint("SetTextI18n")
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                FirebaseDatabase.getInstance(Constants.databaseURL).getReference().child("User").child(Objects.requireNonNull(fAuth.getCurrentUser()).getUid()).removeEventListener(this);
+                FirebaseDatabase.getInstance(Constants.databaseURL).getReference().child("User").child(id).removeEventListener(this);
                 if (snapshot.exists()){
                     String name = Objects.requireNonNull(snapshot.getValue(UserModel.class)).getUsername();
                     binding.taskFormFragmentUsernameTextView.setText(name.substring(0, 1).toUpperCase() + name.substring(1));
@@ -95,9 +106,9 @@ public class CreateTaskFragment extends Fragment implements OnDataChange {
 
 
     private void editTask() {
-        int id = CreateTaskFragmentArgs.fromBundle(getArguments()).getId();
-        if (id != -1)
-            FirebaseDatabase.getInstance(Constants.databaseURL).getReference().child("Tasks").child(Objects.requireNonNull(fAuth.getCurrentUser()).getUid()).child("Task" + id).addValueEventListener(new ValueEventListener() {
+        int taskID = CreateTaskFragmentArgs.fromBundle(getArguments()).getTaskID();
+        if (taskID != -1)
+            FirebaseDatabase.getInstance(Constants.databaseURL).getReference().child("Tasks").child(id).child("Task" + taskID).addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                     if (snapshot.exists()) {
@@ -106,7 +117,7 @@ public class CreateTaskFragment extends Fragment implements OnDataChange {
                         binding.taskFormRadioButtonLeg.setChecked(task.getType() == TaskModel.TaskType.LEGENDARY);
                         binding.taskFormRadioButtonEpic.setChecked(task.getType() == TaskModel.TaskType.EPIC);
                         binding.taskFormRadioButtonNormal.setChecked(task.getType() == TaskModel.TaskType.NORMAL);
-                        FirebaseDatabase.getInstance(Constants.databaseURL).getReference().child("Tasks").child(Objects.requireNonNull(fAuth.getCurrentUser()).getUid()).child("Task" + id).removeEventListener(this);
+                        FirebaseDatabase.getInstance(Constants.databaseURL).getReference().child("Tasks").child(id).child("Task" + taskID).removeEventListener(this);
                     }
                 }
 
@@ -126,7 +137,8 @@ public class CreateTaskFragment extends Fragment implements OnDataChange {
                     sendErrorMsg("Introduzca un nombre para la tarea");
                     return;
                 }
-                task.setId((id));
+                task.setId((taskID));
+                task.setCreatorID(teacherID);
                 if (binding.taskFormRadioButtonLeg.isChecked())
                     task.setType(TaskModel.TaskType.LEGENDARY);
                 else if (binding.taskFormRadioButtonEpic.isChecked())
@@ -138,7 +150,7 @@ public class CreateTaskFragment extends Fragment implements OnDataChange {
                     return;
                 }
 
-                database.child("Tasks").child(Objects.requireNonNull(fAuth.getCurrentUser()).getUid()).child("Task" + (task.getId())).setValue(task)
+                database.child("Tasks").child(id).child("Task" + (task.getId())).setValue(task)
                         .addOnCompleteListener(task1 -> Navigation.findNavController(requireView()).navigateUp());
             }
         });
@@ -169,18 +181,19 @@ public class CreateTaskFragment extends Fragment implements OnDataChange {
                     return;
                 }
 
-                task.setCreatorID(Objects.requireNonNull(fAuth.getCurrentUser()).getUid());
+                task.setCreatorID(teacherID);
                 ValueEventListener eventListener = new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        database.child("Tasks").child(Objects.requireNonNull(fAuth.getCurrentUser()).getUid()).removeEventListener(this);
+                        database.child("Tasks").child(id).removeEventListener(this);
                         if (snapshot.exists()) {
                             task.setId((int) (snapshot.getChildrenCount() + 1));
                             Log.d("ID: ", Integer.toString(task.getId()));
-                            onDataChanged(task);
+                            database.child("Tasks").child(id).child("Task" + (task.getId())).setValue(task)
+                                    .addOnCompleteListener(task1 -> Navigation.findNavController(requireView()).navigateUp());
                         } else {
                             task.setId(1);
-                            database.child("Tasks").child(Objects.requireNonNull(fAuth.getCurrentUser()).getUid()).child("Task1").setValue(task)
+                            database.child("Tasks").child(id).child("Task1").setValue(task)
                                     .addOnCompleteListener(task1 -> Navigation.findNavController(requireView()).navigateUp());
                         }
                     }
@@ -191,17 +204,9 @@ public class CreateTaskFragment extends Fragment implements OnDataChange {
                     }
                 };
 
-                database.child("Tasks").child(Objects.requireNonNull(fAuth.getCurrentUser()).getUid()).addValueEventListener(eventListener);
+                database.child("Tasks").child(id).addValueEventListener(eventListener);
             }
         });
     }
-
-    @Override
-    public void onDataChanged(TaskModel task) {
-        database.child("Tasks").child(Objects.requireNonNull(fAuth.getCurrentUser()).getUid()).child("Task" + (task.getId())).setValue(task)
-                .addOnCompleteListener(task1 -> Navigation.findNavController(requireView()).navigateUp());
-
-    }
-
 }
 

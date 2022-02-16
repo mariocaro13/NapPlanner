@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.naplanner.R;
 import com.example.naplanner.databinding.StudentsListItemBinding;
+import com.example.naplanner.interfaces.StudentListener;
 import com.example.naplanner.model.UserModel;
 
 import java.util.ArrayList;
@@ -19,12 +20,12 @@ public class StudentListRecycleAdapter extends RecyclerView.Adapter<StudentListR
 
 
     private ArrayList<UserModel> users;
-    private Context context;
-    public StudentListRecycleAdapter(ArrayList<UserModel> tasks, Context context) {
-        this.users = tasks;
-        this.context = context;
-    }
+    private StudentListener listener;
 
+    public StudentListRecycleAdapter(ArrayList<UserModel> users, StudentListener listener) {
+        this.users = users;
+        this.listener = listener;
+    }
 
     @NonNull
     @Override
@@ -39,11 +40,7 @@ public class StudentListRecycleAdapter extends RecyclerView.Adapter<StudentListR
         holder.binding.usersListItemNameTaskTextView.setText(users.get(pos).getUsername());
         holder.binding.usersListItemMailTaskTextView.setText(userMail);
 
-        holder.binding.usersListItemLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-            }
-        });
+        holder.binding.usersListItemLayout.setOnClickListener(v -> listener.onItemClicked(users.get(pos)));
 
     }
 

@@ -41,7 +41,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        setupNavigationBar();
+        setupNavigationBar(false);
         navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
         setupToolbar("Login");
 
@@ -88,27 +88,47 @@ public class MainActivity extends AppCompatActivity {
 
     // Bottom Navigation Bar Config
 
-    private void setupNavigationBar() {
+    public void setupNavigationBar(boolean isStudent) {
         binding.activityMainBottomNav.setSelectedItemId(R.id.bottom_menu_own_task);
-        binding.activityMainBottomNav.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                int id = item.getItemId();
+        if(!isStudent)
+            binding.activityMainBottomNav.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
+                @Override
+                public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                    int id = item.getItemId();
 
-                if (id == R.id.bottom_menu_own_task) {
-                    navController.navigate(R.id.ownTasksFragment);
-                    return true;
-                } else if (id == R.id.bottom_menu_completed_tasks) {
-                    navController.navigate(R.id.completeTasksFragment);
-                    return true;
-                } else if (id == R.id.bottom_menu_student_list) {
-                    navController.navigate(R.id.studentListFragment);
+                    if (id == R.id.bottom_menu_own_task) {
+                        navController.navigate(R.id.ownTasksFragment);
+                        return true;
+                    } else if (id == R.id.bottom_menu_completed_tasks) {
+                        navController.navigate(R.id.completeTasksFragment);
+                        return true;
+                    } else if (id == R.id.bottom_menu_student_list) {
+                        navController.navigate(R.id.studentListFragment);
+                        return true;
+                    }
+
                     return true;
                 }
+            });
+        else
+            binding.activityMainBottomNav.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
+                @Override
+                public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                    int id = item.getItemId();
 
-                return true;
-            }
-        });
+                    if (id == R.id.bottom_menu_own_task) {
+                        navController.navigate(R.id.ownTasksFragment);
+                        return true;
+                    } else if (id == R.id.bottom_menu_completed_tasks) {
+                        navController.navigate(R.id.completeTasksFragment);
+                        return true;
+                    } else if (id == R.id.bottom_menu_student_list) {
+                        navController.navigate(R.id.teacherTasksFragment);
+                        return true;
+                    }
+                    return true;
+                }
+            });
 
         binding.activityMainBottomNav.setOnItemReselectedListener(new NavigationBarView.OnItemReselectedListener() {
             @Override

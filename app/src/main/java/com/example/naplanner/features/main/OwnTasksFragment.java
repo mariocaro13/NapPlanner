@@ -77,7 +77,7 @@ public class OwnTasksFragment extends Fragment implements TaskItemListener {
                     Handler handler = new Handler();
                     TaskModel task = dataSnapshot.getValue(TaskModel.class);
                     handler.postDelayed(() -> {
-                        if(Objects.requireNonNull(task).getCreatorID().equals(fAuth.getCurrentUser().getUid()) && !task.isComplete())
+                        if(Objects.requireNonNull(task).getCreatorID().equals("0") && !task.isComplete())
                         tasks.add(task);
                         adapter.notifyItemInserted(tasks.size());
                     }, 300);
@@ -103,6 +103,7 @@ public class OwnTasksFragment extends Fragment implements TaskItemListener {
                 dRef.child("User").child(Objects.requireNonNull(fAuth.getCurrentUser()).getUid()).removeEventListener(this);
                 if (snapshot.exists()) {
                     String name = Objects.requireNonNull(snapshot.getValue(UserModel.class)).getUsername();
+                    ((MainActivity) requireActivity()).setupNavigationBar(Objects.requireNonNull(snapshot.getValue(UserModel.class)).getStudent());
                     ((MainActivity) requireActivity()).setupToolbar(name.substring(0, 1).toUpperCase() + name.substring(1));
                 }
             }
@@ -118,7 +119,7 @@ public class OwnTasksFragment extends Fragment implements TaskItemListener {
     public void onEditTap(int taskID) {
         OwnTasksFragmentDirections.ActionOwnTasksFragmentToTaskForm action = OwnTasksFragmentDirections.actionOwnTasksFragmentToTaskForm();
         action.setIsEdit(true);
-        action.setId(taskID);
+        action.setTaskID(taskID);
         Navigation.findNavController(requireView()).navigate(action);
     }
 

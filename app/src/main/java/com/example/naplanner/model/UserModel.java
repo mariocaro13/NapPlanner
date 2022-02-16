@@ -1,6 +1,7 @@
 package com.example.naplanner.model;
 
 public class UserModel {
+    private String uID;
     private String mail;
     private String username;
     private Boolean isStudent = false;
@@ -8,7 +9,8 @@ public class UserModel {
     public UserModel() {
     }
 
-    public UserModel(String mail, String username, Boolean isStudent) {
+    public UserModel(String uID, String mail, String username, Boolean isStudent) {
+        this.uID = uID;
         this.mail = mail;
         this.username = username;
         this.isStudent = isStudent;
@@ -36,5 +38,13 @@ public class UserModel {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public String getuID() {
+        return uID;
+    }
+
+    public void setuID(String uID) {
+        this.uID = uID;
     }
 }

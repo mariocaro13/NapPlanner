@@ -9,13 +9,15 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.constraintlayout.widget.ConstraintSet;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.example.naplanner.MainActivity;
+import com.example.naplanner.R;
 import com.example.naplanner.adapter.TaskRecycleAdapter;
-import com.example.naplanner.databinding.FragmentCreateTaskBinding;
 import com.example.naplanner.databinding.FragmentTeacherTasksBinding;
 import com.example.naplanner.helperclasses.Constants;
 import com.example.naplanner.interfaces.TaskItemListener;
@@ -37,6 +39,7 @@ public class TeacherTasksFragment extends Fragment implements TaskItemListener {
     private FragmentTeacherTasksBinding binding;
     private FirebaseAuth fAuth;
     private DatabaseReference dRef;
+    private String id;
     public ArrayList<TaskModel> tasks = new ArrayList<>();
 
     @Override
@@ -48,9 +51,16 @@ public class TeacherTasksFragment extends Fragment implements TaskItemListener {
     @Override
     public void onStart() {
         super.onStart();
-        ((MainActivity) requireActivity()).showInteractionBars();
         fAuth = FirebaseAuth.getInstance();
         dRef = FirebaseDatabase.getInstance(Constants.databaseURL).getReference();
+        if (!TeacherTasksFragmentArgs.fromBundle(getArguments()).getId().equals("-1")) {
+            id = TeacherTasksFragmentArgs.fromBundle(getArguments()).getId();
+            ((MainActivity) requireActivity()).hideInteractionBars();
+        } else {
+            id = Objects.requireNonNull(fAuth.getCurrentUser()).getUid();
+            ((MainActivity) requireActivity()).showInteractionBars();
+            hideButtons();
+        }
         setupUI();
     }
 
@@ -66,20 +76,26 @@ public class TeacherTasksFragment extends Fragment implements TaskItemListener {
         binding = null;
     }
 
-    private void setupRecyclerView(){
+    private void setupRecyclerView() {
         binding.teacherTasksFragmentTasksListRecycleview.setHasFixedSize(true);
         tasks = new ArrayList<>();
 
         TaskRecycleAdapter adapter = new TaskRecycleAdapter(tasks, this, getContext());
-        dRef.child("Tasks").child(Objects.requireNonNull(fAuth.getCurrentUser()).getUid()).addValueEventListener(new ValueEventListener() {
+        dRef.child("Tasks").child(id).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                FirebaseDatabase.getInstance(Constants.databaseURL).getReference().child("Tasks").child(Objects.requireNonNull(fAuth.getCurrentUser()).getUid()).removeEventListener(this);
-                for(DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                FirebaseDatabase.getInstance(Constants.databaseURL).getReference().child("Tasks").child(id).removeEventListener(this);
+                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                     Handler handler = new Handler();
                     handler.postDelayed(() -> {
-                        tasks.add(dataSnapshot.getValue(TaskModel.class));
-                        adapter.notifyItemInserted(tasks.size());
+                        TaskModel task = dataSnapshot.getValue(TaskModel.class);
+                        if(!Objects.requireNonNull(task).getCreatorID().equals("0") && !Objects.requireNonNull(task).getCreatorID().equals(id) && id.equals(Objects.requireNonNull(fAuth.getCurrentUser()).getUid())) {
+                            tasks.add(dataSnapshot.getValue(TaskModel.class));
+                            adapter.notifyItemInserted(tasks.size());
+                        }else if (task.getCreatorID().equals(Objects.requireNonNull(fAuth.getCurrentUser()).getUid())){
+                            tasks.add(dataSnapshot.getValue(TaskModel.class));
+                            adapter.notifyItemInserted(tasks.size());
+                        }
                     }, 300);
                 }
             }
@@ -95,12 +111,26 @@ public class TeacherTasksFragment extends Fragment implements TaskItemListener {
         binding.teacherTasksFragmentTasksListRecycleview.setAdapter(adapter);
     }
 
+    @Override
+    public void onEditTap(int taskID) {
+        TeacherTasksFragmentDirections.ActionTeacherTasksFragmentToTaskForm action = TeacherTasksFragmentDirections.actionTeacherTasksFragmentToTaskForm();
+        action.setIsEdit(true);
+        action.setTaskID(taskID);
+        Navigation.findNavController(requireView()).navigate(action);
+    }
+
+    @Override
+    public void onCheckboxTap(int taskID) {
+        tasks.get(taskID - 1).setComplete(!tasks.get(taskID - 1).isComplete());
+        FirebaseDatabase.getInstance(Constants.databaseURL).getReference().child("Tasks").child(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid()).child("Task" + taskID).child("complete").setValue(tasks.get(taskID - 1).isComplete());
+    }
+
     private void setupUI(){
-        dRef.child("User").child(Objects.requireNonNull(fAuth.getCurrentUser()).getUid()).addValueEventListener(new ValueEventListener() {
+        dRef.child("User").child(id).addValueEventListener(new ValueEventListener() {
             @SuppressLint("SetTextI18n")
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                dRef.child("User").child(Objects.requireNonNull(fAuth.getCurrentUser()).getUid()).removeEventListener(this);
+                dRef.child("User").child(id).removeEventListener(this);
                 if (snapshot.exists()) {
                     String name = Objects.requireNonNull(snapshot.getValue(UserModel.class)).getUsername();
                     ((MainActivity) requireActivity()).setupToolbar(name.substring(0, 1).toUpperCase() + name.substring(1));
@@ -112,19 +142,31 @@ public class TeacherTasksFragment extends Fragment implements TaskItemListener {
 
             }
         });
+        binding.teacherTasksFragmentReturnButton.setOnClickListener(v -> Navigation.findNavController(requireView()).navigateUp());
+        binding.teacherTasksFragmentCreateButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                TeacherTasksFragmentDirections.ActionTeacherTasksFragmentToTaskForm action = TeacherTasksFragmentDirections.actionTeacherTasksFragmentToTaskForm();
+                action.setUserID(id);
+                action.setTeacherID(Objects.requireNonNull(fAuth.getCurrentUser()).getUid());
+                Navigation.findNavController(requireView()).navigate(action);
+            }
+        });
     }
 
-    @Override
-    public void onEditTap(int taskID) {
-        TeacherTasksFragmentDirections.ActionTeacherTasksFragmentToTaskForm action = TeacherTasksFragmentDirections.actionTeacherTasksFragmentToTaskForm();
-        action.setIsEdit(true);
-        action.setId(taskID);
-        Navigation.findNavController(requireView()).navigate(action);
-    }
+    public void hideButtons() {
+        binding.teacherTasksFragmentReturnButton.setVisibility(View.GONE);
+        ConstraintLayout constraintLayout = binding.getRoot();
+        ConstraintSet constraintSet = new ConstraintSet();
+        constraintSet.clone(constraintLayout);
+        constraintSet.connect(R.id.teacher_tasks_fragment_return_button, ConstraintSet.TOP, ConstraintSet.PARENT_ID, ConstraintSet.BOTTOM, 0);
+        constraintSet.clear(R.id.teacher_tasks_fragment_return_button, ConstraintSet.BOTTOM);
+        constraintSet.applyTo(constraintLayout);
 
-    @Override
-    public void onCheckboxTap(int taskID) {
-        tasks.get(taskID-1).setComplete(!tasks.get(taskID-1).isComplete());
-        FirebaseDatabase.getInstance(Constants.databaseURL).getReference().child("Tasks").child(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid()).child("Task"+taskID).child("complete").setValue(tasks.get(taskID-1).isComplete());
+        binding.teacherTasksFragmentCreateButton.setVisibility(View.GONE);
+        constraintSet.clone(constraintLayout);
+        constraintSet.connect(R.id.teacher_tasks_fragment_create_button, ConstraintSet.TOP, ConstraintSet.PARENT_ID, ConstraintSet.BOTTOM, 0);
+        constraintSet.clear(R.id.teacher_tasks_fragment_create_button, ConstraintSet.BOTTOM);
+        constraintSet.applyTo(constraintLayout);
     }
 }

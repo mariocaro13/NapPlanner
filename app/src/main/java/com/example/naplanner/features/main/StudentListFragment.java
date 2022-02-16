@@ -1,6 +1,5 @@
 package com.example.naplanner.features.main;
 
-import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.LayoutInflater;
@@ -10,27 +9,30 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.example.naplanner.MainActivity;
 import com.example.naplanner.adapter.StudentListRecycleAdapter;
 import com.example.naplanner.databinding.FragmentStudentListBinding;
 import com.example.naplanner.helperclasses.Constants;
-import com.example.naplanner.model.TaskModel;
+import com.example.naplanner.interfaces.StudentListener;
 import com.example.naplanner.model.UserModel;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.Objects;
 
-public class StudentListFragment extends Fragment {
+public class StudentListFragment extends Fragment implements StudentListener {
 
     private FragmentStudentListBinding binding;
     private FirebaseAuth fAuth;
+    private DatabaseReference dRef;
     public ArrayList<UserModel> users = new ArrayList<>();
 
     @Override
@@ -44,7 +46,7 @@ public class StudentListFragment extends Fragment {
         super.onStart();
         ((MainActivity) requireActivity()).showInteractionBars();
         fAuth = FirebaseAuth.getInstance();
-        setupUI();
+        dRef = FirebaseDatabase.getInstance(Constants.databaseURL).getReference();
     }
 
     @Override
@@ -62,8 +64,8 @@ public class StudentListFragment extends Fragment {
     private void setupRecyclerView() {
         binding.studentListFragmentTasksListRecycleview.setHasFixedSize(true);
         users = new ArrayList<>();
-        StudentListRecycleAdapter adapter = new StudentListRecycleAdapter(users, getContext());
-        FirebaseDatabase.getInstance(Constants.databaseURL).getReference().child("User").addValueEventListener(new ValueEventListener() {
+        StudentListRecycleAdapter adapter = new StudentListRecycleAdapter(users, this);
+        dRef.child("User").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 FirebaseDatabase.getInstance(Constants.databaseURL).getReference().child("Tasks").child(Objects.requireNonNull(fAuth.getCurrentUser()).getUid()).removeEventListener(this);
@@ -94,23 +96,11 @@ public class StudentListFragment extends Fragment {
         binding.studentListFragmentTasksListRecycleview.setAdapter(adapter);
     }
 
-    private void setupUI() {
-        FirebaseDatabase.getInstance(Constants.databaseURL).getReference().child("User").child(Objects.requireNonNull(fAuth.getCurrentUser()).getUid()).addValueEventListener(new ValueEventListener() {
-            @SuppressLint("SetTextI18n")
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if (snapshot.exists()) {
-                    String name = Objects.requireNonNull(snapshot.getValue(UserModel.class)).getUsername();
-                    ((MainActivity) requireActivity()).setupToolbar(name.substring(0, 1).toUpperCase() + name.substring(1));
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
+    @Override
+    public void onItemClicked(UserModel user) {
+        StudentListFragmentDirections.ActionStudentListFragmentToTeacherTasksFragment action = StudentListFragmentDirections.actionStudentListFragmentToTeacherTasksFragment();
+        action.setId(user.getuID());
+        Navigation.findNavController(requireView()).navigate(action);
     }
-
 
 }

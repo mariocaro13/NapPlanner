@@ -69,6 +69,10 @@
         <action
             android:id="@+id/action_teacherTasksFragment_to_taskForm"
             app:destination="@id/taskForm" />
+        <argument
+            android:name="id"
+            app:argType="string"
+            android:defaultValue="-1" />
     </fragment>
     <fragment
         android:id="@+id/taskForm"
@@ -80,8 +84,16 @@
             app:argType="boolean"
             android:defaultValue="false" />
         <argument
-            android:name="id"
+            android:name="taskID"
             app:argType="integer"
+            android:defaultValue="-1" />
+        <argument
+            android:name="userID"
+            app:argType="string"
+            android:defaultValue="-1" />
+        <argument
+            android:name="teacherID"
+            app:argType="string"
             android:defaultValue="-1" />
     </fragment>
     <fragment
@@ -99,7 +111,11 @@
         android:id="@+id/completeTasksFragment"
         android:name="com.example.naplanner.features.main.CompleteTasksFragment"
         android:label="fragment_complete_tasks"
-        tools:layout="@layout/fragment_complete_tasks" />
+        tools:layout="@layout/fragment_complete_tasks" >
+        <action
+            android:id="@+id/action_completeTasksFragment_to_taskForm"
+            app:destination="@id/taskForm" />
+    </fragment>
     <fragment
         android:id="@+id/ownTasksFragment"
         android:name="com.example.naplanner.features.main.OwnTasksFragment"
@@ -113,5 +129,9 @@
         android:id="@+id/studentListFragment"
         android:name="com.example.naplanner.features.main.StudentListFragment"
         android:label="fragment_student_list"
-        tools:layout="@layout/fragment_student_list" />
+        tools:layout="@layout/fragment_student_list" >
+        <action
+            android:id="@+id/action_studentListFragment_to_teacherTasksFragment"
+            app:destination="@id/teacherTasksFragment" />
+    </fragment>
 </navigation>

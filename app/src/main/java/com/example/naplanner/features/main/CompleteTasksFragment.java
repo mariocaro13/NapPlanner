@@ -51,7 +51,6 @@ public class CompleteTasksFragment extends Fragment implements TaskItemListener 
         ((MainActivity) requireActivity()).showInteractionBars();
         fAuth = FirebaseAuth.getInstance();
         dRef = FirebaseDatabase.getInstance(Constants.databaseURL).getReference();
-        setupUI();
     }
 
     @Override
@@ -97,30 +96,11 @@ public class CompleteTasksFragment extends Fragment implements TaskItemListener 
         binding.completeTasksFragmentTasksListRecycleview.setAdapter(adapter);
     }
 
-    private void setupUI() {
-        dRef.child("User").child(Objects.requireNonNull(fAuth.getCurrentUser()).getUid()).addValueEventListener(new ValueEventListener() {
-            @SuppressLint("SetTextI18n")
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                dRef.child("User").child(Objects.requireNonNull(fAuth.getCurrentUser()).getUid()).removeEventListener(this);
-                if (snapshot.exists()) {
-                    String name = Objects.requireNonNull(snapshot.getValue(UserModel.class)).getUsername();
-                    ((MainActivity) requireActivity()).setupToolbar(name.substring(0, 1).toUpperCase() + name.substring(1));
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
-    }
-
     @Override
     public void onEditTap(int taskID) {
-        TeacherTasksFragmentDirections.ActionTeacherTasksFragmentToTaskForm action = TeacherTasksFragmentDirections.actionTeacherTasksFragmentToTaskForm();
+        CompleteTasksFragmentDirections.ActionCompleteTasksFragmentToTaskForm action = CompleteTasksFragmentDirections.actionCompleteTasksFragmentToTaskForm();
         action.setIsEdit(true);
-        action.setId(taskID);
+        action.setTaskID(taskID);
         Navigation.findNavController(requireView()).navigate(action);
     }
 

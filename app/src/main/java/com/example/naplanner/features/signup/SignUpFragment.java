@@ -125,6 +125,7 @@ public class SignUpFragment extends Fragment {
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if(task.isSuccessful()) {
                     sendMsg("Correctly Signed in");
+                    user.setuID(Objects.requireNonNull(fAuth.getCurrentUser()).getUid());
                     FirebaseDatabase.getInstance(Constants.databaseURL).getReference("User")
                             .child(Objects.requireNonNull(fAuth.getCurrentUser()).getUid())
                             .setValue(user).addOnCompleteListener(new OnCompleteListener<Void>() {
