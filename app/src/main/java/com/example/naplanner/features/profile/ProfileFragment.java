@@ -58,7 +58,7 @@ public class ProfileFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         binding.profileFragmentBackButton.setOnClickListener(view1 -> Navigation.findNavController(requireView()).navigateUp());
-        binding.profileFragmentLogOutButton.setOnClickListener(view12 -> Navigation.findNavController(requireView()).navigate(R.id.action_profileFragment_to_FirstFragment));
+        binding.profileFragmentLogOutButton.setOnClickListener(view12 -> Navigation.findNavController(requireView()).navigate(R.id.action_profileFragment_to_LoginFragment));
 
     }
 

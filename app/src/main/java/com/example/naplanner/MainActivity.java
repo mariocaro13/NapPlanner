@@ -17,7 +17,11 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import com.example.naplanner.databinding.ActivityMainBinding;
+import com.example.naplanner.features.main.CompleteTasksFragment;
+import com.example.naplanner.features.main.OwnTasksFragment;
 import com.google.android.material.navigation.NavigationBarView;
+
+import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -29,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-         binding = ActivityMainBinding.inflate(getLayoutInflater());
+        binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
     }
@@ -40,6 +44,7 @@ public class MainActivity extends AppCompatActivity {
         setupNavigationBar();
         navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
         setupToolbar("Login");
+
     }
 
 
@@ -64,18 +69,18 @@ public class MainActivity extends AppCompatActivity {
 
         int id = item.getItemId();
 
-        if(id == R.id.action_add_task){
-            navController.navigate(R.id.action_teacherTasksFragment_to_taskForm);
+        if (id == R.id.action_add_task) {
+            navController.navigate(R.id.taskForm);
             return true;
         } else if (id == R.id.action_profile) {
-            navController.navigate(R.id.action_teacherTasksFragment_to_profileFragment);
+            navController.navigate(R.id.profileFragment);
             return true;
         }
 
         return super.onOptionsItemSelected(item);
     }
 
-    public void setupToolbar(String title){
+    public void setupToolbar(String title) {
         binding.activityMainToolbar.setTitle(title);
         setSupportActionBar(binding.activityMainToolbar);
     }
@@ -84,22 +89,20 @@ public class MainActivity extends AppCompatActivity {
     // Bottom Navigation Bar Config
 
     private void setupNavigationBar() {
+        binding.activityMainBottomNav.setSelectedItemId(R.id.bottom_menu_own_task);
         binding.activityMainBottomNav.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 int id = item.getItemId();
 
                 if (id == R.id.bottom_menu_own_task) {
-                    //TODO: NAVIGATE TO OWN TASKS
-                    Log.d("Navigation Check: ", "TODO: Navigate to Own Tasks");
+                    navController.navigate(R.id.ownTasksFragment);
                     return true;
                 } else if (id == R.id.bottom_menu_completed_tasks) {
-                    //TODO: NAVIGATE TO COMPLETED TASKS
-                    Log.d("Navigation Check: ", "TODO: Navigate to Completed Tasks");
+                    navController.navigate(R.id.completeTasksFragment);
                     return true;
                 } else if (id == R.id.bottom_menu_student_list) {
-                    //TODO: NAVIGATE TO STUDENTS LISTS
-                    Log.d("Navigation Check: ", "TODO: Navigate to Students List");
+                    navController.navigate(R.id.studentListFragment);
                     return true;
                 }
 

@@ -110,7 +110,7 @@ public class OwnTasksFragment extends Fragment implements TaskItemListener {
 
     @Override
     public void onEditTap(int taskID) {
-        TeacherTasksFragmentDirections.ActionTeacherTasksFragmentToTaskForm action = TeacherTasksFragmentDirections.actionTeacherTasksFragmentToTaskForm();
+        OwnTasksFragmentDirections.ActionOwnTasksFragmentToTaskForm action = OwnTasksFragmentDirections.actionOwnTasksFragmentToTaskForm();
         action.setIsEdit(true);
         action.setId(taskID);
         Navigation.findNavController(requireView()).navigate(action);
@@ -118,8 +118,8 @@ public class OwnTasksFragment extends Fragment implements TaskItemListener {
 
     @Override
     public void onCheckboxTap(int taskID) {
-        tasks.get(taskID).setComplete(!tasks.get(taskID).isComplete());
-        FirebaseDatabase.getInstance(Constants.databaseURL).getReference().child("Tasks").child(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid()).child("Task"+taskID).child("complete").setValue(tasks.get(taskID).isComplete());
+        tasks.get(taskID-1).setComplete(!tasks.get(taskID-1).isComplete());
+        FirebaseDatabase.getInstance(Constants.databaseURL).getReference().child("Tasks").child(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid()).child("Task"+taskID).child("complete").setValue(tasks.get(taskID-1).isComplete());
     }
 
 

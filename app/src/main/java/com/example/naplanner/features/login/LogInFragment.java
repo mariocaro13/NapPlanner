@@ -70,7 +70,7 @@ public class LogInFragment extends Fragment {
             }
         });
 
-        binding.logInFragmentLinkToSignUpText.setOnClickListener(view -> Navigation.findNavController(requireView()).navigate(R.id.action_FirstFragment_to_signUpChoiceFragment));
+        binding.logInFragmentLinkToSignUpText.setOnClickListener(view -> Navigation.findNavController(requireView()).navigate(R.id.action_LoginFragment_to_signUpChoiceFragment));
 
     }
 
@@ -93,7 +93,7 @@ public class LogInFragment extends Fragment {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()) {
-                    Navigation.findNavController(requireView()).navigate(R.id.action_FirstFragment_to_teacherTasksFragment);
+                    Navigation.findNavController(requireView()).navigate(R.id.action_LoginFragment_to_ownTasksFragment);
                 } else {
                     sendErrorMsg("Correo o Contraseña incorrectos");
                 }

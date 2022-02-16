@@ -131,7 +131,7 @@ public class SignUpFragment extends Fragment {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
                             if(task.isSuccessful()) {
-                                Navigation.findNavController(requireView()).navigate(R.id.action_signUpFragment_to_teacherTasksFragment2);
+                                Navigation.findNavController(requireView()).navigate(R.id.action_signUpFragment_to_teacherTasksFragment);
                             }
                             else
                                 sendMsg(Objects.requireNonNull(task.getException()).getMessage());
