@@ -1,6 +1,7 @@
 package com.example.naplanner.features.signup;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,12 +16,15 @@ import androidx.navigation.Navigation;
 
 import com.example.naplanner.R;
 import com.example.naplanner.databinding.FragmentSignUpBinding;
+import com.example.naplanner.features.login.LogInFragment;
 import com.example.naplanner.helperclasses.Constants;
 import com.example.naplanner.model.UserModel;
+import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.Objects;
@@ -42,7 +46,7 @@ public class SignUpFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         setupUI();
-        if(SignUpFragmentArgs.fromBundle(getArguments()).getIsStudent()){
+        if (SignUpFragmentArgs.fromBundle(getArguments()).getIsStudent()) {
             useStudentPalette();
             data.setStudent((true));
         }
@@ -119,11 +123,15 @@ public class SignUpFragment extends Fragment {
         Toast.makeText(requireActivity().getApplicationContext(), error, Toast.LENGTH_SHORT).show();
     }
 
-    private OnCompleteListener<AuthResult> authComplete(UserModel user){
+    private OnCompleteListener<AuthResult> authComplete(final UserModel user) {
         return new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
-                if(task.isSuccessful()) {
+                if (task.isSuccessful()) {
+
+                    //Send verification mail
+                    Objects.requireNonNull(fAuth.getCurrentUser()).sendEmailVerification();
+
                     sendMsg("Correctly Signed in");
                     user.setuID(Objects.requireNonNull(fAuth.getCurrentUser()).getUid());
                     FirebaseDatabase.getInstance(Constants.databaseURL).getReference("User")
@@ -131,15 +139,14 @@ public class SignUpFragment extends Fragment {
                             .setValue(user).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
-                            if(task.isSuccessful()) {
+                            if (task.isSuccessful()) {
                                 Navigation.findNavController(requireView()).navigate(R.id.action_signUpFragment_to_teacherTasksFragment);
-                            }
-                            else
+                            } else
                                 sendMsg(Objects.requireNonNull(task.getException()).getMessage());
                         }
                     });
 
-                }else{
+                } else {
                     sendMsg(Objects.requireNonNull(task.getException()).getMessage());
                 }
             }
