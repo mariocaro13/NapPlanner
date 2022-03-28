@@ -124,6 +124,10 @@ public class SignUpFragment extends Fragment {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if(task.isSuccessful()) {
+
+                    //Verification mail
+                    fAuth.getCurrentUser().sendEmailVerification();
+
                     sendMsg("Correctly Signed in");
                     user.setuID(Objects.requireNonNull(fAuth.getCurrentUser()).getUid());
                     FirebaseDatabase.getInstance(Constants.databaseURL).getReference("User")
