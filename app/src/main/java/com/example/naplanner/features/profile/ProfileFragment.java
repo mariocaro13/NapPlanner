@@ -1,10 +1,15 @@
 package com.example.naplanner.features.profile;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
+import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -14,9 +19,12 @@ import androidx.navigation.Navigation;
 import com.example.naplanner.MainActivity;
 import com.example.naplanner.R;
 import com.example.naplanner.databinding.FragmentProfileBinding;
+import com.example.naplanner.features.login.LogInFragment;
 import com.example.naplanner.helperclasses.Constants;
 import com.example.naplanner.model.TaskModel;
 import com.example.naplanner.model.UserModel;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -74,6 +82,7 @@ public class ProfileFragment extends Fragment {
         countCompleteTasks();
 
         binding.profileFragmentUserMailTextView.setText(Objects.requireNonNull(fAuth.getCurrentUser()).getEmail());
+        binding.fragmentProfileResetPasswordTextView.setOnClickListener(updatePassword());
         FirebaseDatabase.getInstance(Constants.databaseURL).getReference().child("User").child(Objects.requireNonNull(fAuth.getCurrentUser()).getUid()).addValueEventListener(new ValueEventListener() {
             @SuppressLint("SetTextI18n")
             @Override
@@ -115,5 +124,43 @@ public class ProfileFragment extends Fragment {
             }
         });
 
+    }
+
+    private View.OnClickListener updatePassword(){
+        return new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                EditText newPassword = new EditText(view.getContext());
+                newPassword.setInputType(InputType.TYPE_TEXT_VARIATION_PASSWORD);
+                AlertDialog.Builder passwordReset = new AlertDialog.Builder(view.getContext());
+                passwordReset.setTitle("Cambiar Contraseña?");
+                passwordReset.setMessage("Introduzca una nueva contraseña (minimo 6 de longitud)");
+                passwordReset.setView(newPassword);
+
+                passwordReset.setPositiveButton("Confirmar", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        String password = newPassword.getText().toString();
+                        Objects.requireNonNull(fAuth.getCurrentUser()).updatePassword(password).addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                if(task.isSuccessful())
+                                    Toast.makeText(ProfileFragment.this.getContext(), "Contraseña Cambiada Correctamente", Toast.LENGTH_SHORT).show();
+                                else
+                                    Toast.makeText(ProfileFragment.this.getContext(), "Un Error Ha Ocurrido", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    }
+                });
+                passwordReset.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+
+                    }
+                });
+
+                passwordReset.create().show();
+            }
+        };
     }
 }
