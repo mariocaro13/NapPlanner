@@ -42,4 +42,6 @@
     <string name="profile_fragment_log_out">Cerrar Sesion</string>
     <string name="profile_fragment_back">Volver</string>
     <string name="profile_fragment_create_task_text">Crear Tarea</string>
+    <string name="fragment_profile_reset_password">Cambiar Contraseña</string>
+    <string name="log_in_forgot_password">Olvide mi contraseña</string>
 </resources>

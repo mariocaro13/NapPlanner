@@ -1,12 +1,18 @@
 package com.example.naplanner.features.login;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
+import android.text.InputType;
 import android.util.Patterns;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.Toast;
 
+import androidx.annotation.GravityInt;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -17,6 +23,7 @@ import com.example.naplanner.R;
 import com.example.naplanner.databinding.FragmentLogInBinding;
 import com.example.naplanner.model.UserModel;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
@@ -74,7 +81,7 @@ public class LogInFragment extends Fragment {
         });
 
         binding.logInFragmentLinkToSignUpText.setOnClickListener(view -> Navigation.findNavController(requireView()).navigate(R.id.action_LoginFragment_to_signUpChoiceFragment));
-
+        binding.logInFragmentForgotPasswordTextView.setOnClickListener(resetPassword());
     }
 
     @Override
@@ -106,8 +113,45 @@ public class LogInFragment extends Fragment {
         };
     }
 
+    private View.OnClickListener resetPassword(){
+        return new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                EditText mailToSend = new EditText(view.getContext());
+                mailToSend.setInputType(InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
+                AlertDialog.Builder passwordReset = new AlertDialog.Builder(view.getContext());
+                passwordReset.setTitle("Restablecer Contraseña?");
+                passwordReset.setMessage("Introduzca su correo para obtener un enlace");
+                passwordReset.setView(mailToSend);
+
+                passwordReset.setPositiveButton("Enviar", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        String mail = mailToSend.getText().toString();
+                        fAuth.sendPasswordResetEmail(mail).addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                if(task.isSuccessful())
+                                    Toast.makeText(LogInFragment.this.getContext(), "Enlace Enviado", Toast.LENGTH_SHORT).show();
+                                else
+                                    Toast.makeText(LogInFragment.this.getContext(), "Un Error Ha Ocurrido", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    }
+                });
+                passwordReset.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+
+                    }
+                });
+
+                passwordReset.create().show();
+            }
+        };
+    }
+  
     private boolean checkIfEmailVerified() {
         return Objects.requireNonNull(fAuth.getCurrentUser()).isEmailVerified();
     }
-
 }
