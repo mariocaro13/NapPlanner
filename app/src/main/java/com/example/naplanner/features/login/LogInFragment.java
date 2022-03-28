@@ -21,6 +21,8 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
+import java.util.Objects;
+
 public class LogInFragment extends Fragment {
 
     private FragmentLogInBinding binding;
@@ -63,6 +65,7 @@ public class LogInFragment extends Fragment {
                 String pass = binding.logInFragmentPasswordEditText.getText().toString();
                 if (!pass.isEmpty())
                     fAuth.signInWithEmailAndPassword(data.getMail(), pass).addOnCompleteListener(authComplete());
+
                 else {
                     sendErrorMsg("Introduzca una contraseña");
                 }
@@ -93,12 +96,18 @@ public class LogInFragment extends Fragment {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()) {
-                    Navigation.findNavController(requireView()).navigate(R.id.action_LoginFragment_to_ownTasksFragment);
+                    if (checkIfEmailVerified())
+                        Navigation.findNavController(requireView()).navigate(R.id.action_LoginFragment_to_ownTasksFragment);
+                    else sendErrorMsg("Verifique su correo");
                 } else {
                     sendErrorMsg("Correo o Contraseña incorrectos");
                 }
             }
         };
+    }
+
+    private boolean checkIfEmailVerified() {
+        return Objects.requireNonNull(fAuth.getCurrentUser()).isEmailVerified();
     }
 
 }
