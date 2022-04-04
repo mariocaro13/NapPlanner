@@ -98,9 +98,7 @@ public class LogInFragment extends Fragment {
                     if (checkIfEmailVerified())
                         Navigation.findNavController(requireView()).navigate(R.id.action_LoginFragment_to_ownTasksFragment);
                     else sendErrorMsg("Verifique su correo");
-                } else {
-                    sendErrorMsg("Correo o Contraseña incorrectos");
-                }
+                } else sendErrorMsg("Correo o Contraseña incorrectos");
             }
         };
     }
@@ -120,24 +118,24 @@ public class LogInFragment extends Fragment {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         String mail = mailToSend.getText().toString();
-                        fAuth.sendPasswordResetEmail(mail).addOnCompleteListener(new OnCompleteListener<Void>() {
-                            @Override
-                            public void onComplete(@NonNull Task<Void> task) {
-                                if (task.isSuccessful())
-                                    Toast.makeText(LogInFragment.this.getContext(), "Enlace Enviado", Toast.LENGTH_SHORT).show();
-                                else
-                                    Toast.makeText(LogInFragment.this.getContext(), "Un Error Ha Ocurrido", Toast.LENGTH_SHORT).show();
-                            }
-                        });
+                        if (!mail.isEmpty()) {
+                            fAuth.sendPasswordResetEmail(mail).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+                                    if (task.isSuccessful())
+                                        sendErrorMsg("Enlace Enviado");
+                                    else
+                                        sendErrorMsg("Un Error Ha Ocurrido");
+                                }
+                            });
+                        } else sendErrorMsg("Por favor introduzca un correo");
                     }
                 });
                 passwordReset.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-
                     }
                 });
-
                 passwordReset.create().show();
             }
         };

@@ -48,19 +48,9 @@ public class TaskRecycleAdapter extends RecyclerView.Adapter<TaskRecycleAdapter.
         holder.binding.taskListItemEditTaskImageView.setOnClickListener(view -> listener.onEditTap(tasks.get(position).getId()));
     }
 
-
     @Override
     public int getItemCount() {
         return tasks.size();
-    }
-
-    public static class ViewHolder extends RecyclerView.ViewHolder {
-        TasksListItemBinding binding;
-
-        public ViewHolder(TasksListItemBinding mbinding) {
-            super(mbinding.getRoot());
-            binding = mbinding;
-        }
     }
 
     private void useTeacherPalette(ViewHolder holder, int position) {
@@ -93,4 +83,12 @@ public class TaskRecycleAdapter extends RecyclerView.Adapter<TaskRecycleAdapter.
         }
     }
 
+    public static class ViewHolder extends RecyclerView.ViewHolder {
+        TasksListItemBinding binding;
+
+        public ViewHolder(TasksListItemBinding mbinding) {
+            super(mbinding.getRoot());
+            binding = mbinding;
+        }
+    }
 }
