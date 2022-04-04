@@ -1,30 +1,24 @@
 package com.example.naplanner.features.signup;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
-
 import com.example.naplanner.R;
 import com.example.naplanner.databinding.FragmentSignUpBinding;
-import com.example.naplanner.features.login.LogInFragment;
 import com.example.naplanner.helperclasses.Constants;
 import com.example.naplanner.model.UserModel;
-import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.Objects;
@@ -63,18 +57,17 @@ public class SignUpFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 String username = binding.signUpFragmentFormLayout.signUpFragmentUsernameEditText.getText().toString();
-                if (username.length() > 18)
+                if (username.length() > 18) {
                     sendMsg("Nombre muy largo (Maximo 18)");
-                else if (!username.isEmpty())
-                    data.setUsername(username);
+                    return;
+                } else if (!username.isEmpty()) data.setUsername(username);
                 else {
                     sendMsg("El Nombre de usuario esta vacio");
                     return;
                 }
 
                 String mail = binding.signUpFragmentFormLayout.signUpFragmentMailEditText.getText().toString();
-                if (validateEmail(mail))
-                    data.setMail(mail);
+                if (validateEmail(mail)) data.setMail(mail);
                 else {
                     sendMsg("Por favor introduzca un email valido");
                     return;
@@ -82,8 +75,7 @@ public class SignUpFragment extends Fragment {
 
                 String pass = binding.signUpFragmentFormLayout.signUpFragmentPassEditText.getText().toString();
                 String conPass = binding.signUpFragmentFormLayout.signUpFragmentConfirmPassEditText.getText().toString();
-                if (pass.isEmpty())
-                    sendMsg("Introduzca una contraseña");
+                if (pass.isEmpty()) sendMsg("Introduzca una contraseña");
                 else if (pass.equals(conPass))
                     fAuth.createUserWithEmailAndPassword(data.getMail(), pass).addOnCompleteListener(authComplete(data));
                 else {
@@ -134,15 +126,12 @@ public class SignUpFragment extends Fragment {
 
                     sendMsg("Correctly Signed in");
                     user.setuID(Objects.requireNonNull(fAuth.getCurrentUser()).getUid());
-                    FirebaseDatabase.getInstance(Constants.databaseURL).getReference("User")
-                            .child(Objects.requireNonNull(fAuth.getCurrentUser()).getUid())
-                            .setValue(user).addOnCompleteListener(new OnCompleteListener<Void>() {
+                    FirebaseDatabase.getInstance(Constants.databaseURL).getReference("User").child(Objects.requireNonNull(fAuth.getCurrentUser()).getUid()).setValue(user).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
                             if (task.isSuccessful()) {
                                 Navigation.findNavController(requireView()).navigate(R.id.action_signUpFragment_to_teacherTasksFragment);
-                            } else
-                                sendMsg(Objects.requireNonNull(task.getException()).getMessage());
+                            } else sendMsg(Objects.requireNonNull(task.getException()).getMessage());
                         }
                     });
 
