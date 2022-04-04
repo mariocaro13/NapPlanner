@@ -51,7 +51,7 @@ public class TaskModel {
         this.creatorID = creatorID;
     }
 
-    public enum TaskType{
+    public enum TaskType {
         LEGENDARY,
         EPIC,
         NORMAL

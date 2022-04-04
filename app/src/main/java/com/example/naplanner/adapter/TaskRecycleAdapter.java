@@ -17,9 +17,9 @@ import java.util.ArrayList;
 
 public class TaskRecycleAdapter extends RecyclerView.Adapter<TaskRecycleAdapter.ViewHolder> {
 
-    private ArrayList<TaskModel> tasks;
-    private TaskItemListener listener;
-    private Context context;
+    private final ArrayList<TaskModel> tasks;
+    private final TaskItemListener listener;
+    private final Context context;
     private boolean isStudent;
 
     public TaskRecycleAdapter(ArrayList<TaskModel> tasks, TaskItemListener listener, Context context) {
@@ -39,7 +39,7 @@ public class TaskRecycleAdapter extends RecyclerView.Adapter<TaskRecycleAdapter.
         holder.binding.tasksListItemNameTaskTextView.setText(tasks.get(position).getName());
         holder.binding.taskListItemCompleteTaskCheckbox.setChecked(tasks.get(position).isComplete());
 
-        if(isStudent)
+        if (isStudent)
             useStudentPalette(holder, position);
         else
             useTeacherPalette(holder, position);
@@ -54,7 +54,7 @@ public class TaskRecycleAdapter extends RecyclerView.Adapter<TaskRecycleAdapter.
         return tasks.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public static class ViewHolder extends RecyclerView.ViewHolder {
         TasksListItemBinding binding;
 
         public ViewHolder(TasksListItemBinding mbinding) {
@@ -63,7 +63,7 @@ public class TaskRecycleAdapter extends RecyclerView.Adapter<TaskRecycleAdapter.
         }
     }
 
-    private void useTeacherPalette(ViewHolder holder, int position){
+    private void useTeacherPalette(ViewHolder holder, int position) {
         switch (tasks.get(position).getType()) {
             case LEGENDARY:
                 holder.binding.getRoot().setBackground(AppCompatResources.getDrawable(context, R.drawable.border_task_legendary_blue));
@@ -78,7 +78,7 @@ public class TaskRecycleAdapter extends RecyclerView.Adapter<TaskRecycleAdapter.
         }
     }
 
-    private void useStudentPalette(ViewHolder holder, int position){
+    private void useStudentPalette(ViewHolder holder, int position) {
         switch (tasks.get(position).getType()) {
             case LEGENDARY:
                 holder.binding.getRoot().setBackground(AppCompatResources.getDrawable(context, R.drawable.border_task_legendary_green));

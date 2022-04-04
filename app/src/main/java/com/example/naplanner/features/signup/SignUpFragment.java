@@ -6,11 +6,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
+
 import com.example.naplanner.R;
 import com.example.naplanner.databinding.FragmentSignUpBinding;
 import com.example.naplanner.helperclasses.Constants;
@@ -25,9 +27,9 @@ import java.util.Objects;
 
 public class SignUpFragment extends Fragment {
 
+    private final UserModel data = new UserModel();
     private FragmentSignUpBinding binding;
     private FirebaseAuth fAuth;
-    private UserModel data = new UserModel();
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -78,9 +80,7 @@ public class SignUpFragment extends Fragment {
                 if (pass.isEmpty()) sendMsg("Introduzca una contraseña");
                 else if (pass.equals(conPass))
                     fAuth.createUserWithEmailAndPassword(data.getMail(), pass).addOnCompleteListener(authComplete(data));
-                else {
-                    sendMsg("Las contraseñas no son iguales");
-                }
+                else sendMsg("Las contraseñas no son iguales");
             }
         });
 
@@ -121,7 +121,6 @@ public class SignUpFragment extends Fragment {
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()) {
 
-                    //Send verification mail
                     Objects.requireNonNull(fAuth.getCurrentUser()).sendEmailVerification();
 
                     sendMsg("Correctly Signed in");
@@ -129,15 +128,15 @@ public class SignUpFragment extends Fragment {
                     FirebaseDatabase.getInstance(Constants.databaseURL).getReference("User").child(Objects.requireNonNull(fAuth.getCurrentUser()).getUid()).setValue(user).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
-                            if (task.isSuccessful()) {
+                            if (task.isSuccessful())
                                 Navigation.findNavController(requireView()).navigate(R.id.action_signUpFragment_to_teacherTasksFragment);
-                            } else sendMsg(Objects.requireNonNull(task.getException()).getMessage());
+                            else
+                                sendMsg(Objects.requireNonNull(task.getException()).getMessage());
                         }
                     });
 
-                } else {
+                } else
                     sendMsg(Objects.requireNonNull(task.getException()).getMessage());
-                }
             }
         };
     }

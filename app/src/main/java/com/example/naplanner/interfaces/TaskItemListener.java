@@ -2,7 +2,7 @@ package com.example.naplanner.interfaces;
 
 public interface TaskItemListener {
 
-        void onEditTap(int taskID);
+    void onEditTap(int taskID);
 
-        void onCheckboxTap(int taskID);
+    void onCheckboxTap(int taskID);
 }

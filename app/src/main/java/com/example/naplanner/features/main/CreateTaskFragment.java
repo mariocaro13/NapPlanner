@@ -16,7 +16,6 @@ import androidx.navigation.Navigation;
 import com.example.naplanner.MainActivity;
 import com.example.naplanner.databinding.FragmentCreateTaskBinding;
 import com.example.naplanner.helperclasses.Constants;
-import com.example.naplanner.interfaces.StudentListener;
 import com.example.naplanner.model.TaskModel;
 import com.example.naplanner.model.UserModel;
 import com.google.firebase.auth.FirebaseAuth;
@@ -53,15 +52,14 @@ public class CreateTaskFragment extends Fragment {
     public void onStart() {
         super.onStart();
         ((MainActivity) requireActivity()).hideInteractionBars();
-        if (!CreateTaskFragmentArgs.fromBundle(getArguments()).getUserID().equals("-1")) {
+        if (!CreateTaskFragmentArgs.fromBundle(getArguments()).getUserID().equals("-1"))
             id = CreateTaskFragmentArgs.fromBundle(getArguments()).getUserID();
-        } else {
+        else
             id = Objects.requireNonNull(fAuth.getCurrentUser()).getUid();
-        }
+
         if (!CreateTaskFragmentArgs.fromBundle(getArguments()).getTeacherID().equals("-1"))
             teacherID = CreateTaskFragmentArgs.fromBundle(getArguments()).getTeacherID();
-        else
-            teacherID = "0";
+        else teacherID = "0";
         setupUI();
     }
 
@@ -71,21 +69,18 @@ public class CreateTaskFragment extends Fragment {
         binding = null;
     }
 
-
     private void setupUI() {
-
-        if (CreateTaskFragmentArgs.fromBundle(getArguments()).getIsEdit()) {
+        if (CreateTaskFragmentArgs.fromBundle(getArguments()).getIsEdit())
             editTask();
-        } else {
+        else
             createTask();
-        }
 
         FirebaseDatabase.getInstance(Constants.databaseURL).getReference().child("User").child(id).addValueEventListener(new ValueEventListener() {
             @SuppressLint("SetTextI18n")
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 FirebaseDatabase.getInstance(Constants.databaseURL).getReference().child("User").child(id).removeEventListener(this);
-                if (snapshot.exists()){
+                if (snapshot.exists()) {
                     String name = Objects.requireNonNull(snapshot.getValue(UserModel.class)).getUsername();
                     binding.taskFormFragmentUsernameTextView.setText(name.substring(0, 1).toUpperCase() + name.substring(1));
                 }
@@ -93,10 +88,8 @@ public class CreateTaskFragment extends Fragment {
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-
             }
         });
-
         binding.taskFormFragmentCancelButton.setOnClickListener(view -> Navigation.findNavController(requireView()).navigateUp());
     }
 
@@ -123,7 +116,6 @@ public class CreateTaskFragment extends Fragment {
 
                 @Override
                 public void onCancelled(@NonNull DatabaseError error) {
-
                 }
             });
 
@@ -131,7 +123,7 @@ public class CreateTaskFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 TaskModel task = new TaskModel();
-                if(!binding.taskFormFragmentNameEdittext.getText().toString().isEmpty())
+                if (!binding.taskFormFragmentNameEdittext.getText().toString().isEmpty())
                     task.setName(binding.taskFormFragmentNameEdittext.getText().toString());
                 else {
                     sendErrorMsg("Introduzca un nombre para la tarea");
@@ -157,15 +149,14 @@ public class CreateTaskFragment extends Fragment {
     }
 
     private void createTask() {
-
         binding.taskFormFragmentConfirmButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 TaskModel task = new TaskModel();
 
-                if(!binding.taskFormFragmentNameEdittext.getText().toString().isEmpty())
+                if (!binding.taskFormFragmentNameEdittext.getText().toString().isEmpty())
                     task.setName(binding.taskFormFragmentNameEdittext.getText().toString());
-                else{
+                else {
                     sendErrorMsg("Introduzca un nombre para la tarea");
                     return;
                 }
@@ -200,7 +191,6 @@ public class CreateTaskFragment extends Fragment {
 
                     @Override
                     public void onCancelled(@NonNull DatabaseError error) {
-
                     }
                 };
 

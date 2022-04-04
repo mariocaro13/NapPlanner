@@ -30,10 +30,10 @@ import java.util.Objects;
 
 public class StudentListFragment extends Fragment implements StudentListener {
 
+    public ArrayList<UserModel> users = new ArrayList<>();
     private FragmentStudentListBinding binding;
     private FirebaseAuth fAuth;
     private DatabaseReference dRef;
-    public ArrayList<UserModel> users = new ArrayList<>();
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -102,5 +102,4 @@ public class StudentListFragment extends Fragment implements StudentListener {
         action.setId(user.getuID());
         Navigation.findNavController(requireView()).navigate(action);
     }
-
 }

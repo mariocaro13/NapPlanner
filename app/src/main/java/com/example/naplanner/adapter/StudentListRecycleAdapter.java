@@ -1,15 +1,11 @@
 package com.example.naplanner.adapter;
 
-import android.content.Context;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
-import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.naplanner.R;
 import com.example.naplanner.databinding.StudentsListItemBinding;
 import com.example.naplanner.interfaces.StudentListener;
 import com.example.naplanner.model.UserModel;
@@ -18,9 +14,8 @@ import java.util.ArrayList;
 
 public class StudentListRecycleAdapter extends RecyclerView.Adapter<StudentListRecycleAdapter.ViewHolder> {
 
-
-    private ArrayList<UserModel> users;
-    private StudentListener listener;
+    final private ArrayList<UserModel> users;
+    final private StudentListener listener;
 
     public StudentListRecycleAdapter(ArrayList<UserModel> users, StudentListener listener) {
         this.users = users;
@@ -30,27 +25,24 @@ public class StudentListRecycleAdapter extends RecyclerView.Adapter<StudentListR
     @NonNull
     @Override
     public StudentListRecycleAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType) {
-        return new StudentListRecycleAdapter.ViewHolder(StudentsListItemBinding.inflate(LayoutInflater.from(viewGroup.getContext()), viewGroup, false));
+        return new ViewHolder(StudentsListItemBinding.inflate(LayoutInflater.from(viewGroup.getContext()), viewGroup, false));
     }
 
     @Override
     public void onBindViewHolder(@NonNull StudentListRecycleAdapter.ViewHolder holder, int position) {
-        int pos = position;
-        String userMail = users.get(pos).getMail();
-        holder.binding.usersListItemNameTaskTextView.setText(users.get(pos).getUsername());
+        String userMail = users.get(position).getMail();
+        holder.binding.usersListItemNameTaskTextView.setText(users.get(position).getUsername());
         holder.binding.usersListItemMailTaskTextView.setText(userMail);
 
-        holder.binding.usersListItemLayout.setOnClickListener(v -> listener.onItemClicked(users.get(pos)));
-
+        holder.binding.usersListItemLayout.setOnClickListener(v -> listener.onItemClicked(users.get(position)));
     }
-
 
     @Override
     public int getItemCount() {
         return users.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public static class ViewHolder extends RecyclerView.ViewHolder {
         StudentsListItemBinding binding;
 
         public ViewHolder(StudentsListItemBinding mbinding) {

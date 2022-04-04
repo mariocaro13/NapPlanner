@@ -33,10 +33,10 @@ import java.util.Objects;
 
 public class OwnTasksFragment extends Fragment implements TaskItemListener {
 
+    public ArrayList<TaskModel> tasks = new ArrayList<>();
     private FragmentOwnTasksBinding binding;
     private FirebaseAuth fAuth;
     private DatabaseReference dRef;
-    public ArrayList<TaskModel> tasks = new ArrayList<>();
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -65,7 +65,7 @@ public class OwnTasksFragment extends Fragment implements TaskItemListener {
         binding = null;
     }
 
-    private void setupRecyclerView(){
+    private void setupRecyclerView() {
         binding.ownTasksFragmentTasksListRecycleview.setHasFixedSize(true);
         tasks = new ArrayList<>();
         TaskRecycleAdapter adapter = new TaskRecycleAdapter(tasks, this, getContext());
@@ -73,12 +73,12 @@ public class OwnTasksFragment extends Fragment implements TaskItemListener {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 FirebaseDatabase.getInstance(Constants.databaseURL).getReference().child("Tasks").child(Objects.requireNonNull(fAuth.getCurrentUser()).getUid()).removeEventListener(this);
-                for(DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                     Handler handler = new Handler();
                     TaskModel task = dataSnapshot.getValue(TaskModel.class);
                     handler.postDelayed(() -> {
-                        if(Objects.requireNonNull(task).getCreatorID().equals("0") && !task.isComplete())
-                        tasks.add(task);
+                        if (Objects.requireNonNull(task).getCreatorID().equals("0") && !task.isComplete())
+                            tasks.add(task);
                         adapter.notifyItemInserted(tasks.size());
                     }, 300);
                 }
@@ -86,7 +86,6 @@ public class OwnTasksFragment extends Fragment implements TaskItemListener {
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-
             }
         });
 
@@ -95,7 +94,7 @@ public class OwnTasksFragment extends Fragment implements TaskItemListener {
         binding.ownTasksFragmentTasksListRecycleview.setAdapter(adapter);
     }
 
-    private void setupUI(){
+    private void setupUI() {
         dRef.child("User").child(Objects.requireNonNull(fAuth.getCurrentUser()).getUid()).addValueEventListener(new ValueEventListener() {
             @SuppressLint("SetTextI18n")
             @Override
@@ -110,7 +109,6 @@ public class OwnTasksFragment extends Fragment implements TaskItemListener {
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-
             }
         });
     }
@@ -125,8 +123,8 @@ public class OwnTasksFragment extends Fragment implements TaskItemListener {
 
     @Override
     public void onCheckboxTap(int taskID) {
-        tasks.get(taskID-1).setComplete(!tasks.get(taskID-1).isComplete());
-        FirebaseDatabase.getInstance(Constants.databaseURL).getReference().child("Tasks").child(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid()).child("Task"+taskID).child("complete").setValue(tasks.get(taskID-1).isComplete());
+        tasks.get(taskID - 1).setComplete(!tasks.get(taskID - 1).isComplete());
+        FirebaseDatabase.getInstance(Constants.databaseURL).getReference().child("Tasks").child(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid()).child("Task" + taskID).child("complete").setValue(tasks.get(taskID - 1).isComplete());
     }
 
 

@@ -36,11 +36,11 @@ import java.util.Objects;
 
 public class TeacherTasksFragment extends Fragment implements TaskItemListener {
 
+    public ArrayList<TaskModel> tasks = new ArrayList<>();
     private FragmentTeacherTasksBinding binding;
     private FirebaseAuth fAuth;
     private DatabaseReference dRef;
     private String id;
-    public ArrayList<TaskModel> tasks = new ArrayList<>();
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -89,10 +89,10 @@ public class TeacherTasksFragment extends Fragment implements TaskItemListener {
                     Handler handler = new Handler();
                     handler.postDelayed(() -> {
                         TaskModel task = dataSnapshot.getValue(TaskModel.class);
-                        if(!Objects.requireNonNull(task).getCreatorID().equals("0") && !Objects.requireNonNull(task).getCreatorID().equals(id) && id.equals(Objects.requireNonNull(fAuth.getCurrentUser()).getUid())) {
+                        if (!Objects.requireNonNull(task).getCreatorID().equals("0") && !Objects.requireNonNull(task).getCreatorID().equals(id) && id.equals(Objects.requireNonNull(fAuth.getCurrentUser()).getUid())) {
                             tasks.add(dataSnapshot.getValue(TaskModel.class));
                             adapter.notifyItemInserted(tasks.size());
-                        }else if (task.getCreatorID().equals(Objects.requireNonNull(fAuth.getCurrentUser()).getUid())){
+                        } else if (task.getCreatorID().equals(Objects.requireNonNull(fAuth.getCurrentUser()).getUid())) {
                             tasks.add(dataSnapshot.getValue(TaskModel.class));
                             adapter.notifyItemInserted(tasks.size());
                         }
@@ -102,7 +102,6 @@ public class TeacherTasksFragment extends Fragment implements TaskItemListener {
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-
             }
         });
 
@@ -125,7 +124,7 @@ public class TeacherTasksFragment extends Fragment implements TaskItemListener {
         FirebaseDatabase.getInstance(Constants.databaseURL).getReference().child("Tasks").child(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid()).child("Task" + taskID).child("complete").setValue(tasks.get(taskID - 1).isComplete());
     }
 
-    private void setupUI(){
+    private void setupUI() {
         dRef.child("User").child(id).addValueEventListener(new ValueEventListener() {
             @SuppressLint("SetTextI18n")
             @Override
@@ -139,7 +138,6 @@ public class TeacherTasksFragment extends Fragment implements TaskItemListener {
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-
             }
         });
         binding.teacherTasksFragmentReturnButton.setOnClickListener(v -> Navigation.findNavController(requireView()).navigateUp());

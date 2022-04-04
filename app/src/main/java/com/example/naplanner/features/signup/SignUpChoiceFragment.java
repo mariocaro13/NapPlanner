@@ -20,7 +20,6 @@ public class SignUpChoiceFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentSignUpChoiceBinding.inflate(inflater, container, false);
         return binding.getRoot();
-
     }
 
     @Override
@@ -35,7 +34,7 @@ public class SignUpChoiceFragment extends Fragment {
         binding = null;
     }
 
-    private void setupUI(){
+    private void setupUI() {
         binding.signUpChoiceFragmentProfessorButton.setOnClickListener(navigateWithChoice(false));
 
         binding.signUpChoiceFragmentStudentButton.setOnClickListener(navigateWithChoice(true));

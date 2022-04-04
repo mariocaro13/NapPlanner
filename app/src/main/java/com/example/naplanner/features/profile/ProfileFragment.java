@@ -19,7 +19,6 @@ import androidx.navigation.Navigation;
 import com.example.naplanner.MainActivity;
 import com.example.naplanner.R;
 import com.example.naplanner.databinding.FragmentProfileBinding;
-import com.example.naplanner.features.login.LogInFragment;
 import com.example.naplanner.helperclasses.Constants;
 import com.example.naplanner.model.TaskModel;
 import com.example.naplanner.model.UserModel;
@@ -51,8 +50,6 @@ public class ProfileFragment extends Fragment {
         ((MainActivity) requireActivity()).hideInteractionBars();
         fAuth = FirebaseAuth.getInstance();
         setupUI();
-
-
     }
 
     @Override
@@ -73,8 +70,6 @@ public class ProfileFragment extends Fragment {
                 Navigation.findNavController(requireView()).navigate(R.id.action_profileFragment_to_LoginFragment);
             }
         });
-
-
     }
 
     public void setupUI() {
@@ -95,7 +90,6 @@ public class ProfileFragment extends Fragment {
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-
             }
         });
 
@@ -111,22 +105,20 @@ public class ProfileFragment extends Fragment {
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                     TaskModel task = dataSnapshot.getValue(TaskModel.class);
 
-                    if (Objects.requireNonNull(task).isComplete()) {
+                    if (Objects.requireNonNull(task).isComplete())
                         tasksCompleteCount++;
-                    }
                 }
                 binding.profileFragmentTasksCountTextView.setText(Integer.toString(tasksCompleteCount));
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-
             }
         });
 
     }
 
-    private View.OnClickListener updatePassword(){
+    private View.OnClickListener updatePassword() {
         return new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -144,7 +136,7 @@ public class ProfileFragment extends Fragment {
                         Objects.requireNonNull(fAuth.getCurrentUser()).updatePassword(password).addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
-                                if(task.isSuccessful())
+                                if (task.isSuccessful())
                                     Toast.makeText(ProfileFragment.this.getContext(), "Contraseña Cambiada Correctamente", Toast.LENGTH_SHORT).show();
                                 else
                                     Toast.makeText(ProfileFragment.this.getContext(), "Un Error Ha Ocurrido", Toast.LENGTH_SHORT).show();
@@ -155,7 +147,6 @@ public class ProfileFragment extends Fragment {
                 passwordReset.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-
                     }
                 });
 

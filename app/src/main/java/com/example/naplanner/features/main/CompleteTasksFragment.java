@@ -1,6 +1,5 @@
 package com.example.naplanner.features.main;
 
-import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.LayoutInflater;
@@ -19,7 +18,6 @@ import com.example.naplanner.databinding.FragmentCompleteTasksBinding;
 import com.example.naplanner.helperclasses.Constants;
 import com.example.naplanner.interfaces.TaskItemListener;
 import com.example.naplanner.model.TaskModel;
-import com.example.naplanner.model.UserModel;
 import com.example.naplanner.utils.TasksSorter;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -32,7 +30,6 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 public class CompleteTasksFragment extends Fragment implements TaskItemListener {
-
 
     private FragmentCompleteTasksBinding binding;
     private FirebaseAuth fAuth;
@@ -77,7 +74,7 @@ public class CompleteTasksFragment extends Fragment implements TaskItemListener 
                     Handler handler = new Handler();
                     handler.postDelayed(() -> {
                         TaskModel task = dataSnapshot.getValue(TaskModel.class);
-                        if(Objects.requireNonNull(task).isComplete()){
+                        if (Objects.requireNonNull(task).isComplete()) {
                             tasks.add(dataSnapshot.getValue(TaskModel.class));
                             adapter.notifyItemInserted(tasks.size());
                         }
@@ -87,7 +84,6 @@ public class CompleteTasksFragment extends Fragment implements TaskItemListener 
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-
             }
         });
 
@@ -106,7 +102,7 @@ public class CompleteTasksFragment extends Fragment implements TaskItemListener 
 
     @Override
     public void onCheckboxTap(int taskID) {
-        tasks.get(taskID-1).setComplete(!tasks.get(taskID-1).isComplete());
-        FirebaseDatabase.getInstance(Constants.databaseURL).getReference().child("Tasks").child(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid()).child("Task" + taskID).child("complete").setValue(tasks.get(taskID-1).isComplete());
+        tasks.get(taskID - 1).setComplete(!tasks.get(taskID - 1).isComplete());
+        FirebaseDatabase.getInstance(Constants.databaseURL).getReference().child("Tasks").child(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid()).child("Task" + taskID).child("complete").setValue(tasks.get(taskID - 1).isComplete());
     }
 }

@@ -1,14 +1,12 @@
 package com.example.naplanner;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.constraintlayout.widget.ConstraintSet;
 import androidx.navigation.NavController;
@@ -17,11 +15,7 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import com.example.naplanner.databinding.ActivityMainBinding;
-import com.example.naplanner.features.main.CompleteTasksFragment;
-import com.example.naplanner.features.main.OwnTasksFragment;
 import com.google.android.material.navigation.NavigationBarView;
-
-import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -32,10 +26,8 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-
     }
 
     @Override
@@ -44,9 +36,7 @@ public class MainActivity extends AppCompatActivity {
         setupNavigationBar(false);
         navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
         setupToolbar("Login");
-
     }
-
 
     @Override
     public boolean onSupportNavigateUp() {
@@ -56,19 +46,15 @@ public class MainActivity extends AppCompatActivity {
     }
 
     // Toolbar Config
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return super.onCreateOptionsMenu(menu);
     }
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-
         int id = item.getItemId();
-
         if (id == R.id.action_add_task) {
             navController.navigate(R.id.taskForm);
             return true;
@@ -76,7 +62,6 @@ public class MainActivity extends AppCompatActivity {
             navController.navigate(R.id.profileFragment);
             return true;
         }
-
         return super.onOptionsItemSelected(item);
     }
 
@@ -85,17 +70,14 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(binding.activityMainToolbar);
     }
 
-
     // Bottom Navigation Bar Config
-
     public void setupNavigationBar(boolean isStudent) {
         binding.activityMainBottomNav.setSelectedItemId(R.id.bottom_menu_own_task);
-        if(!isStudent)
+        if (!isStudent)
             binding.activityMainBottomNav.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
                 @Override
                 public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                     int id = item.getItemId();
-
                     if (id == R.id.bottom_menu_own_task) {
                         navController.navigate(R.id.ownTasksFragment);
                         return true;
@@ -106,7 +88,6 @@ public class MainActivity extends AppCompatActivity {
                         navController.navigate(R.id.studentListFragment);
                         return true;
                     }
-
                     return true;
                 }
             });
@@ -115,7 +96,6 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                     int id = item.getItemId();
-
                     if (id == R.id.bottom_menu_own_task) {
                         navController.navigate(R.id.ownTasksFragment);
                         return true;
@@ -133,13 +113,11 @@ public class MainActivity extends AppCompatActivity {
         binding.activityMainBottomNav.setOnItemReselectedListener(new NavigationBarView.OnItemReselectedListener() {
             @Override
             public void onNavigationItemReselected(@NonNull MenuItem item) {
-
             }
         });
     }
 
     // Helper Functions to hide and Show the Navigation Bars
-
     public void showInteractionBars() {
         binding.activityMainBottomNav.setVisibility(View.VISIBLE);
         ConstraintLayout constraintLayout = binding.getRoot();

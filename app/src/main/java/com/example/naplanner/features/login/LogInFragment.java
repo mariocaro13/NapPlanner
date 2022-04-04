@@ -5,14 +5,12 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.text.InputType;
 import android.util.Patterns;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import androidx.annotation.GravityInt;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -23,7 +21,6 @@ import com.example.naplanner.R;
 import com.example.naplanner.databinding.FragmentLogInBinding;
 import com.example.naplanner.model.UserModel;
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
@@ -56,15 +53,14 @@ public class LogInFragment extends Fragment {
 
     private void setupUI() {
         binding.logInFragmentSendButton.setOnClickListener(new View.OnClickListener() {
-            UserModel data = new UserModel();
+            final UserModel data = new UserModel();
 
             @Override
             public void onClick(View view) {
 
                 String input = binding.logInFragmentMailEditText.getText().toString();
-                if (!input.isEmpty() && validateEmail(input)) {
-                    data.setMail(input);
-                } else {
+                if (!input.isEmpty() && validateEmail(input)) data.setMail(input);
+                else {
                     sendErrorMsg("Introduzca un correo valido");
                     return;
                 }
@@ -72,11 +68,7 @@ public class LogInFragment extends Fragment {
                 String pass = binding.logInFragmentPasswordEditText.getText().toString();
                 if (!pass.isEmpty())
                     fAuth.signInWithEmailAndPassword(data.getMail(), pass).addOnCompleteListener(authComplete());
-
-                else {
-                    sendErrorMsg("Introduzca una contraseña");
-                }
-
+                else sendErrorMsg("Introduzca una contraseña");
             }
         });
 
@@ -113,7 +105,7 @@ public class LogInFragment extends Fragment {
         };
     }
 
-    private View.OnClickListener resetPassword(){
+    private View.OnClickListener resetPassword() {
         return new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -131,7 +123,7 @@ public class LogInFragment extends Fragment {
                         fAuth.sendPasswordResetEmail(mail).addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
-                                if(task.isSuccessful())
+                                if (task.isSuccessful())
                                     Toast.makeText(LogInFragment.this.getContext(), "Enlace Enviado", Toast.LENGTH_SHORT).show();
                                 else
                                     Toast.makeText(LogInFragment.this.getContext(), "Un Error Ha Ocurrido", Toast.LENGTH_SHORT).show();
@@ -150,7 +142,7 @@ public class LogInFragment extends Fragment {
             }
         };
     }
-  
+
     private boolean checkIfEmailVerified() {
         return Objects.requireNonNull(fAuth.getCurrentUser()).isEmailVerified();
     }
