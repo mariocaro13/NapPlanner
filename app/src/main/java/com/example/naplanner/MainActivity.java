@@ -1,11 +1,14 @@
 package com.example.naplanner;
 
+import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.constraintlayout.widget.ConstraintSet;
@@ -14,8 +17,18 @@ import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.Request;
+import com.bumptech.glide.request.target.CustomTarget;
+import com.bumptech.glide.request.target.SizeReadyCallback;
+import com.bumptech.glide.request.target.Target;
+import com.bumptech.glide.request.transition.Transition;
 import com.example.naplanner.databinding.ActivityMainBinding;
 import com.google.android.material.navigation.NavigationBarView;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.storage.FirebaseStorage;
+
+import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -49,6 +62,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_main, menu);
+        getAndApplyProfilePicture(menu);
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -140,5 +154,25 @@ public class MainActivity extends AppCompatActivity {
         constraintSet.applyTo(constraintLayout);
 
         binding.activityMainToolbar.setVisibility(View.GONE);
+    }
+
+    private void getAndApplyProfilePicture(Menu menu) {
+        FirebaseStorage.getInstance().getReference().child("/users/" + Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid())
+                .getDownloadUrl().addOnSuccessListener(uri -> {
+            Glide.with(getApplicationContext())
+                    .load(uri)
+                    .into(new CustomTarget<Drawable>() {
+                        @Override
+                        public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
+                            if(menu.findItem(R.id.action_profile).getIcon() != resource)
+                            menu.findItem(R.id.action_profile).setIcon(resource);
+                        }
+
+                        @Override
+                        public void onLoadCleared(@Nullable Drawable placeholder) {
+
+                        }
+                    });
+        });
     }
 }

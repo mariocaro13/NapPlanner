@@ -20,12 +20,14 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
+import com.bumptech.glide.Glide;
 import com.example.naplanner.MainActivity;
 import com.example.naplanner.R;
 import com.example.naplanner.databinding.FragmentProfileBinding;
 import com.example.naplanner.helperclasses.Constants;
 import com.example.naplanner.model.TaskModel;
 import com.example.naplanner.model.UserModel;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -77,6 +79,7 @@ public class ProfileFragment extends Fragment {
     public void setupUI() {
 
         countCompleteTasks();
+        loadImage();
 
         binding.profileFragmentUserMailTextView.setText(Objects.requireNonNull(fAuth.getCurrentUser()).getEmail());
         binding.fragmentProfileResetPasswordTextView.setOnClickListener(updatePassword());
@@ -146,16 +149,28 @@ public class ProfileFragment extends Fragment {
         };
     }
 
+    private void loadImage() {
+        fStorage.getReference().child("/users/" + Objects.requireNonNull(fAuth.getCurrentUser()).getUid()).getDownloadUrl().addOnSuccessListener(uri -> {
+            Glide.with(requireContext())
+                    .load(uri)
+                    .fitCenter()
+                    .into(binding.profileFragmentAppIconImageView);
+        });
+    }
 
-    private ActivityResultCallback<Uri> UploadSelectedImage(){
+
+    private ActivityResultCallback<Uri> UploadSelectedImage() {
         return uri -> {
-            UploadTask uploadTask = fStorage.getReference().child("/users/" + Objects.requireNonNull(fAuth.getCurrentUser()).getUid()).putFile(uri);
-            uploadTask.addOnSuccessListener(taskSnapshot -> {
-                Toast.makeText(ProfileFragment.this.getContext(), "Imagen Subida Correctamente", Toast.LENGTH_SHORT).show();
-            }).addOnFailureListener(e -> {
-                Toast.makeText(ProfileFragment.this.getContext(), "Fallo en la carga de la Imagen", Toast.LENGTH_SHORT).show();
-                Log.d("Image Load Failure: ", e.getMessage());
-            });
+            if(uri != null) {
+                UploadTask uploadTask = fStorage.getReference().child("/users/" + Objects.requireNonNull(fAuth.getCurrentUser()).getUid()).putFile(uri);
+                uploadTask.addOnSuccessListener(taskSnapshot -> {
+                    Toast.makeText(ProfileFragment.this.getContext(), "Imagen Subida Correctamente", Toast.LENGTH_SHORT).show();
+                    loadImage();
+                }).addOnFailureListener(e -> {
+                    Toast.makeText(ProfileFragment.this.getContext(), "Fallo en la carga de la Imagen", Toast.LENGTH_SHORT).show();
+                    Log.d("Image Load Failure: ", e.getMessage());
+                });
+            }
         };
     }
 
