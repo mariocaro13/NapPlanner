@@ -123,8 +123,15 @@ public class OwnTasksFragment extends Fragment implements TaskItemListener {
 
     @Override
     public void onCheckboxTap(int taskID) {
-        tasks.get(taskID - 1).setComplete(!tasks.get(taskID - 1).isComplete());
-        FirebaseDatabase.getInstance(Constants.databaseURL).getReference().child("Tasks").child(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid()).child("Task" + taskID).child("complete").setValue(tasks.get(taskID - 1).isComplete());
+        for (TaskModel task: tasks) {
+            if(task.getId() == taskID) {
+                task.setComplete(!task.isComplete());
+                FirebaseDatabase.getInstance(Constants.databaseURL).getReference().child("Tasks")
+                        .child(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid())
+                        .child("Task" + taskID).child("complete").setValue(task.isComplete());
+            }
+        }
+
     }
 
 
