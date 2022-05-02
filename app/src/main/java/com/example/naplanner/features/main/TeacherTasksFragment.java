@@ -40,7 +40,7 @@ public class TeacherTasksFragment extends Fragment implements TaskItemListener {
     private FragmentTeacherTasksBinding binding;
     private FirebaseAuth fAuth;
     private DatabaseReference dRef;
-    private String id;
+    private String studentId;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -54,10 +54,10 @@ public class TeacherTasksFragment extends Fragment implements TaskItemListener {
         fAuth = FirebaseAuth.getInstance();
         dRef = FirebaseDatabase.getInstance(Constants.databaseURL).getReference();
         if (!TeacherTasksFragmentArgs.fromBundle(getArguments()).getId().equals("-1")) {
-            id = TeacherTasksFragmentArgs.fromBundle(getArguments()).getId();
+            studentId = TeacherTasksFragmentArgs.fromBundle(getArguments()).getId();
             ((MainActivity) requireActivity()).hideInteractionBars();
         } else {
-            id = Objects.requireNonNull(fAuth.getCurrentUser()).getUid();
+            studentId = Objects.requireNonNull(fAuth.getCurrentUser()).getUid();
             ((MainActivity) requireActivity()).showInteractionBars();
             hideButtons();
         }
@@ -81,15 +81,15 @@ public class TeacherTasksFragment extends Fragment implements TaskItemListener {
         tasks = new ArrayList<>();
 
         TaskRecycleAdapter adapter = new TaskRecycleAdapter(tasks, this, getContext());
-        dRef.child("Tasks").child(id).addValueEventListener(new ValueEventListener() {
+        dRef.child("Tasks").child(studentId).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                FirebaseDatabase.getInstance(Constants.databaseURL).getReference().child("Tasks").child(id).removeEventListener(this);
+                FirebaseDatabase.getInstance(Constants.databaseURL).getReference().child("Tasks").child(studentId).removeEventListener(this);
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                     Handler handler = new Handler();
                     handler.postDelayed(() -> {
                         TaskModel task = dataSnapshot.getValue(TaskModel.class);
-                        if (!Objects.requireNonNull(task).getCreatorID().equals("0") && !Objects.requireNonNull(task).getCreatorID().equals(id) && id.equals(Objects.requireNonNull(fAuth.getCurrentUser()).getUid())) {
+                        if (!Objects.requireNonNull(task).getCreatorID().equals("0") && !Objects.requireNonNull(task).getCreatorID().equals(studentId) && studentId.equals(Objects.requireNonNull(fAuth.getCurrentUser()).getUid())) {
                             tasks.add(dataSnapshot.getValue(TaskModel.class));
                             adapter.notifyItemInserted(tasks.size());
                         } else if (task.getCreatorID().equals(Objects.requireNonNull(fAuth.getCurrentUser()).getUid())) {
@@ -114,22 +114,30 @@ public class TeacherTasksFragment extends Fragment implements TaskItemListener {
     public void onEditTap(int taskID) {
         TeacherTasksFragmentDirections.ActionTeacherTasksFragmentToTaskForm action = TeacherTasksFragmentDirections.actionTeacherTasksFragmentToTaskForm();
         action.setIsEdit(true);
+        action.setUserID(studentId);
         action.setTaskID(taskID);
         Navigation.findNavController(requireView()).navigate(action);
     }
 
     @Override
     public void onCheckboxTap(int taskID) {
-        tasks.get(taskID - 1).setComplete(!tasks.get(taskID - 1).isComplete());
-        FirebaseDatabase.getInstance(Constants.databaseURL).getReference().child("Tasks").child(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid()).child("Task" + taskID).child("complete").setValue(tasks.get(taskID - 1).isComplete());
+        for (TaskModel task: tasks) {
+            if(task.getId() == taskID) {
+                task.setComplete(!task.isComplete());
+                FirebaseDatabase.getInstance(Constants.databaseURL).getReference().child("Tasks")
+                        .child(studentId)
+                        .child("Task" + taskID).child("complete").setValue(task.isComplete());
+            }
+        }
+
     }
 
     private void setupUI() {
-        dRef.child("User").child(id).addValueEventListener(new ValueEventListener() {
+        dRef.child("User").child(studentId).addValueEventListener(new ValueEventListener() {
             @SuppressLint("SetTextI18n")
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                dRef.child("User").child(id).removeEventListener(this);
+                dRef.child("User").child(studentId).removeEventListener(this);
                 if (snapshot.exists()) {
                     String name = Objects.requireNonNull(snapshot.getValue(UserModel.class)).getUsername();
                     ((MainActivity) requireActivity()).setupToolbar(name.substring(0, 1).toUpperCase() + name.substring(1));
@@ -141,14 +149,11 @@ public class TeacherTasksFragment extends Fragment implements TaskItemListener {
             }
         });
         binding.teacherTasksFragmentReturnButton.setOnClickListener(v -> Navigation.findNavController(requireView()).navigateUp());
-        binding.teacherTasksFragmentCreateButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                TeacherTasksFragmentDirections.ActionTeacherTasksFragmentToTaskForm action = TeacherTasksFragmentDirections.actionTeacherTasksFragmentToTaskForm();
-                action.setUserID(id);
-                action.setTeacherID(Objects.requireNonNull(fAuth.getCurrentUser()).getUid());
-                Navigation.findNavController(requireView()).navigate(action);
-            }
+        binding.teacherTasksFragmentCreateButton.setOnClickListener(v -> {
+            TeacherTasksFragmentDirections.ActionTeacherTasksFragmentToTaskForm action = TeacherTasksFragmentDirections.actionTeacherTasksFragmentToTaskForm();
+            action.setUserID(studentId);
+            action.setTeacherID(Objects.requireNonNull(fAuth.getCurrentUser()).getUid());
+            Navigation.findNavController(requireView()).navigate(action);
         });
     }
 
