@@ -1,11 +1,15 @@
 package com.example.naplanner;
 
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.constraintlayout.widget.ConstraintSet;
@@ -14,8 +18,16 @@ import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.target.CustomTarget;
+import com.bumptech.glide.request.transition.Transition;
 import com.example.naplanner.databinding.ActivityMainBinding;
+import com.example.naplanner.utils.BitmapCropper;
 import com.google.android.material.navigation.NavigationBarView;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.storage.FirebaseStorage;
+
+import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -49,6 +61,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_main, menu);
+        getAndApplyProfilePicture(menu.findItem(R.id.action_profile));
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -106,6 +119,7 @@ public class MainActivity extends AppCompatActivity {
                         navController.navigate(R.id.teacherTasksFragment);
                         return true;
                     }
+                    getSupportFragmentManager().popBackStack();
                     return true;
                 }
             });
@@ -126,7 +140,6 @@ public class MainActivity extends AppCompatActivity {
         constraintSet.connect(R.id.activity_main_bottom_nav, ConstraintSet.BOTTOM, ConstraintSet.PARENT_ID, ConstraintSet.BOTTOM, 0);
         constraintSet.clear(R.id.activity_main_bottom_nav, ConstraintSet.TOP);
         constraintSet.applyTo(constraintLayout);
-
         binding.activityMainToolbar.setVisibility(View.VISIBLE);
     }
 
@@ -140,5 +153,26 @@ public class MainActivity extends AppCompatActivity {
         constraintSet.applyTo(constraintLayout);
 
         binding.activityMainToolbar.setVisibility(View.GONE);
+    }
+
+    private void getAndApplyProfilePicture(MenuItem profileItem) {
+        FirebaseStorage.getInstance().getReference().child("/users/" + Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid())
+                .getDownloadUrl().addOnSuccessListener(uri -> {
+            Glide.with(getApplicationContext())
+                    .asBitmap()
+                    .load(uri)
+                    .into(new CustomTarget<Bitmap>() {
+                              @Override
+                              public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
+                                  BitmapDrawable croppedResource = new BitmapDrawable(getResources(), BitmapCropper.getRoundCroppedBitmap(resource));
+                                  profileItem.setIcon(croppedResource);
+                              }
+
+                              @Override
+                              public void onLoadCleared(@Nullable Drawable placeholder) {
+
+                              }
+                          });
+        });
     }
 }

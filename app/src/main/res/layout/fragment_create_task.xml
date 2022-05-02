@@ -13,7 +13,7 @@
         android:layout_height="100dp"
         android:layout_marginStart="60dp"
         android:layout_marginTop="46dp"
-        android:src="@drawable/boocks_app_ico"
+        android:src="@drawable/books_app_ico"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
