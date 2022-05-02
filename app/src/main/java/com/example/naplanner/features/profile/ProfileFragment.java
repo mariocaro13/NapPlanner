@@ -2,6 +2,9 @@ package com.example.naplanner.features.profile;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.InputType;
@@ -17,17 +20,20 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.content.res.AppCompatResources;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.target.CustomTarget;
+import com.bumptech.glide.request.transition.Transition;
 import com.example.naplanner.MainActivity;
 import com.example.naplanner.R;
 import com.example.naplanner.databinding.FragmentProfileBinding;
 import com.example.naplanner.helperclasses.Constants;
 import com.example.naplanner.model.TaskModel;
 import com.example.naplanner.model.UserModel;
-import com.google.android.gms.tasks.OnSuccessListener;
+import com.example.naplanner.utils.BitmapCropper;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -41,10 +47,10 @@ import java.util.Objects;
 public class ProfileFragment extends Fragment {
 
     private FragmentProfileBinding binding;
-    private FirebaseAuth fAuth = FirebaseAuth.getInstance();
-    private FirebaseStorage fStorage = FirebaseStorage.getInstance();
+    private final FirebaseAuth fAuth = FirebaseAuth.getInstance();
+    private final FirebaseStorage fStorage = FirebaseStorage.getInstance();
     private int tasksCompleteCount;
-    private ActivityResultLauncher<String> mGetContent = registerForActivityResult(new ActivityResultContracts.GetContent(), UploadSelectedImage());
+    private final ActivityResultLauncher<String> mGetContent = registerForActivityResult(new ActivityResultContracts.GetContent(), UploadSelectedImage());
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -152,9 +158,20 @@ public class ProfileFragment extends Fragment {
     private void loadImage() {
         fStorage.getReference().child("/users/" + Objects.requireNonNull(fAuth.getCurrentUser()).getUid()).getDownloadUrl().addOnSuccessListener(uri -> {
             Glide.with(requireContext())
+                    .asBitmap()
                     .load(uri)
                     .fitCenter()
-                    .into(binding.profileFragmentAppIconImageView);
+                    .into(new CustomTarget<Bitmap>() {
+                        @Override
+                        public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
+                            BitmapDrawable croppedResource = new BitmapDrawable(getResources(), BitmapCropper.getRoundCroppedBitmap(resource));
+                            binding.profileFragmentAppIconImageView.setImageDrawable(croppedResource);
+                        }
+
+                        @Override
+                        public void onLoadCleared(@Nullable Drawable placeholder) {
+                        }
+                    });
         });
     }
 
