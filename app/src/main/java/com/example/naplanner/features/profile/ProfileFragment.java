@@ -155,23 +155,22 @@ public class ProfileFragment extends Fragment {
     }
 
     private void loadImage() {
-        fStorage.getReference().child("/users/" + Objects.requireNonNull(fAuth.getCurrentUser()).getUid()).getDownloadUrl().addOnSuccessListener(uri -> {
-            Glide.with(requireContext())
-                    .asBitmap()
-                    .load(uri)
-                    .fitCenter()
-                    .into(new CustomTarget<Bitmap>() {
-                        @Override
-                        public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
-                            BitmapDrawable croppedResource = new BitmapDrawable(getResources(), BitmapCropper.getRoundCroppedBitmap(resource));
-                            binding.profileFragmentAppIconImageView.setImageDrawable(croppedResource);
-                        }
+        fStorage.getReference().child("/users/" + Objects.requireNonNull(fAuth.getCurrentUser()).getUid()).getDownloadUrl().addOnSuccessListener(uri ->
+                Glide.with(requireContext())
+                .asBitmap()
+                .load(uri)
+                .fitCenter()
+                .into(new CustomTarget<Bitmap>() {
+                    @Override
+                    public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
+                        BitmapDrawable croppedResource = new BitmapDrawable(getResources(), BitmapCropper.getRoundCroppedBitmap(resource));
+                        binding.profileFragmentAppIconImageView.setImageDrawable(croppedResource);
+                    }
 
-                        @Override
-                        public void onLoadCleared(@Nullable Drawable placeholder) {
-                        }
-                    });
-        });
+                    @Override
+                    public void onLoadCleared(@Nullable Drawable placeholder) {
+                    }
+                }));
     }
 
 

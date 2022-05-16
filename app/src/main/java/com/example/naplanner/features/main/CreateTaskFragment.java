@@ -119,32 +119,29 @@ public class CreateTaskFragment extends Fragment {
                 }
             });
 
-        binding.taskFormFragmentConfirmButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                TaskModel task = new TaskModel();
-                if (!binding.taskFormFragmentNameEdittext.getText().toString().isEmpty())
-                    task.setName(binding.taskFormFragmentNameEdittext.getText().toString());
-                else {
-                    sendErrorMsg("Introduzca un nombre para la tarea");
-                    return;
-                }
-                task.setId((taskID));
-                task.setCreatorID(teacherId);
-                if (binding.taskFormRadioButtonLeg.isChecked())
-                    task.setType(TaskModel.TaskType.LEGENDARY);
-                else if (binding.taskFormRadioButtonEpic.isChecked())
-                    task.setType(TaskModel.TaskType.EPIC);
-                else if (binding.taskFormRadioButtonNormal.isChecked())
-                    task.setType(TaskModel.TaskType.NORMAL);
-                else {
-                    sendErrorMsg("Seleccione una opcion de importancia de tarea");
-                    return;
-                }
-
-                database.child("Tasks").child(studentId).child("Task" + (task.getId())).setValue(task)
-                        .addOnCompleteListener(task1 -> Navigation.findNavController(requireView()).navigateUp());
+        binding.taskFormFragmentConfirmButton.setOnClickListener(view -> {
+            TaskModel task = new TaskModel();
+            if (!binding.taskFormFragmentNameEdittext.getText().toString().isEmpty())
+                task.setName(binding.taskFormFragmentNameEdittext.getText().toString());
+            else {
+                sendErrorMsg("Introduzca un nombre para la tarea");
+                return;
             }
+            task.setId((taskID));
+            task.setCreatorID(teacherId);
+            if (binding.taskFormRadioButtonLeg.isChecked())
+                task.setType(TaskModel.TaskType.LEGENDARY);
+            else if (binding.taskFormRadioButtonEpic.isChecked())
+                task.setType(TaskModel.TaskType.EPIC);
+            else if (binding.taskFormRadioButtonNormal.isChecked())
+                task.setType(TaskModel.TaskType.NORMAL);
+            else {
+                sendErrorMsg("Seleccione una opcion de importancia de tarea");
+                return;
+            }
+
+            database.child("Tasks").child(studentId).child("Task" + (task.getId())).setValue(task)
+                    .addOnCompleteListener(task1 -> Navigation.findNavController(requireView()).navigateUp());
         });
     }
 

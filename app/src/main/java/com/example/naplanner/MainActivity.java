@@ -87,47 +87,38 @@ public class MainActivity extends AppCompatActivity {
     public void setupNavigationBar(boolean isStudent) {
         binding.activityMainBottomNav.setSelectedItemId(R.id.bottom_menu_own_task);
         if (!isStudent)
-            binding.activityMainBottomNav.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
-                @Override
-                public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                    int id = item.getItemId();
-                    if (id == R.id.bottom_menu_own_task) {
-                        navController.navigate(R.id.ownTasksFragment);
-                        return true;
-                    } else if (id == R.id.bottom_menu_completed_tasks) {
-                        navController.navigate(R.id.completeTasksFragment);
-                        return true;
-                    } else if (id == R.id.bottom_menu_student_list) {
-                        navController.navigate(R.id.studentListFragment);
-                        return true;
-                    }
+            binding.activityMainBottomNav.setOnItemSelectedListener(item -> {
+                int id = item.getItemId();
+                if (id == R.id.bottom_menu_own_task) {
+                    navController.navigate(R.id.ownTasksFragment);
+                    return true;
+                } else if (id == R.id.bottom_menu_completed_tasks) {
+                    navController.navigate(R.id.completeTasksFragment);
+                    return true;
+                } else if (id == R.id.bottom_menu_student_list) {
+                    navController.navigate(R.id.studentListFragment);
                     return true;
                 }
+                return true;
             });
         else
-            binding.activityMainBottomNav.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
-                @Override
-                public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                    int id = item.getItemId();
-                    if (id == R.id.bottom_menu_own_task) {
-                        navController.navigate(R.id.ownTasksFragment);
-                        return true;
-                    } else if (id == R.id.bottom_menu_completed_tasks) {
-                        navController.navigate(R.id.completeTasksFragment);
-                        return true;
-                    } else if (id == R.id.bottom_menu_student_list) {
-                        navController.navigate(R.id.teacherTasksFragment);
-                        return true;
-                    }
-                    getSupportFragmentManager().popBackStack();
+            binding.activityMainBottomNav.setOnItemSelectedListener(item -> {
+                int id = item.getItemId();
+                if (id == R.id.bottom_menu_own_task) {
+                    navController.navigate(R.id.ownTasksFragment);
+                    return true;
+                } else if (id == R.id.bottom_menu_completed_tasks) {
+                    navController.navigate(R.id.completeTasksFragment);
+                    return true;
+                } else if (id == R.id.bottom_menu_student_list) {
+                    navController.navigate(R.id.teacherTasksFragment);
                     return true;
                 }
+                getSupportFragmentManager().popBackStack();
+                return true;
             });
 
-        binding.activityMainBottomNav.setOnItemReselectedListener(new NavigationBarView.OnItemReselectedListener() {
-            @Override
-            public void onNavigationItemReselected(@NonNull MenuItem item) {
-            }
+        binding.activityMainBottomNav.setOnItemReselectedListener(item -> {
         });
     }
 
@@ -157,22 +148,20 @@ public class MainActivity extends AppCompatActivity {
 
     private void getAndApplyProfilePicture(MenuItem profileItem) {
         FirebaseStorage.getInstance().getReference().child("/users/" + Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid())
-                .getDownloadUrl().addOnSuccessListener(uri -> {
-            Glide.with(getApplicationContext())
-                    .asBitmap()
-                    .load(uri)
-                    .into(new CustomTarget<Bitmap>() {
-                              @Override
-                              public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
-                                  BitmapDrawable croppedResource = new BitmapDrawable(getResources(), BitmapCropper.getRoundCroppedBitmap(resource));
-                                  profileItem.setIcon(croppedResource);
-                              }
+                .getDownloadUrl().addOnSuccessListener(uri -> Glide.with(getApplicationContext())
+                        .asBitmap()
+                        .load(uri)
+                        .into(new CustomTarget<Bitmap>() {
+                                  @Override
+                                  public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
+                                      BitmapDrawable croppedResource = new BitmapDrawable(getResources(), BitmapCropper.getRoundCroppedBitmap(resource));
+                                      profileItem.setIcon(croppedResource);
+                                  }
 
-                              @Override
-                              public void onLoadCleared(@Nullable Drawable placeholder) {
+                                  @Override
+                                  public void onLoadCleared(@Nullable Drawable placeholder) {
 
-                              }
-                          });
-        });
+                                  }
+                              }));
     }
 }

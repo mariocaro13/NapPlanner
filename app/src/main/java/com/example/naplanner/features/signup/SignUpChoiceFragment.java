@@ -39,22 +39,14 @@ public class SignUpChoiceFragment extends Fragment {
 
         binding.signUpChoiceFragmentStudentButton.setOnClickListener(navigateWithChoice(true));
 
-        binding.signUpChoiceFragmentLogInTextView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Navigation.findNavController(requireView()).navigateUp();
-            }
-        });
+        binding.signUpChoiceFragmentLogInTextView.setOnClickListener(view -> Navigation.findNavController(requireView()).navigateUp());
     }
 
 
     private View.OnClickListener navigateWithChoice(boolean isStudent) {
-        return new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                SignUpChoiceFragmentDirections.ActionSignUpChoiceFragmentToSignUpFragment action = SignUpChoiceFragmentDirections.actionSignUpChoiceFragmentToSignUpFragment(isStudent);
-                Navigation.findNavController(requireView()).navigate(action);
-            }
+        return view -> {
+            SignUpChoiceFragmentDirections.ActionSignUpChoiceFragmentToSignUpFragment action = SignUpChoiceFragmentDirections.actionSignUpChoiceFragmentToSignUpFragment(isStudent);
+            Navigation.findNavController(requireView()).navigate(action);
         };
     }
 }
