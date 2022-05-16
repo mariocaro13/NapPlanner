@@ -9,13 +9,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
-
 import com.example.naplanner.MainActivity;
 import com.example.naplanner.R;
 import com.example.naplanner.databinding.FragmentLogInBinding;
@@ -90,24 +88,26 @@ public class LogInFragment extends Fragment {
                 else
                     printMsg("Por favor introduzca un correo");
             });
-            passwordReset.setNegativeButton("Cancelar", (dialogInterface, i) -> {});
+            passwordReset.setNegativeButton("Cancelar", (dialogInterface, i) -> {
+            });
             passwordReset.create().show();
         };
     }
 
-    private AuthModel getCredentials(){
+    private AuthModel getCredentials() {
         final AuthModel authModel = new AuthModel();
 
         String input = binding.logInFragmentMailEditText.getText().toString();
         String pass = binding.logInFragmentPasswordEditText.getText().toString();
 
-        if (!input.isEmpty() && validateEmail(input)) authModel.setEmail(input);
+        if (!input.isEmpty() && validateEmail(input))
+            authModel.setEmail(input);
         else printMsg("Introduzca un correo valido");
 
-        if (!pass.isEmpty() && !authModel.getEmail().isEmpty()) authModel.setPassword(pass);
+        if (!pass.isEmpty() && !authModel.getEmail().isEmpty())
+            authModel.setPassword(pass);
         else printMsg("Introduzca una contraseña");
 
         return authModel;
     }
-
 }

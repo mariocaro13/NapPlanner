@@ -15,14 +15,14 @@ public class LogInViewModel extends ViewModel {
     private final MutableLiveData<String> notifyResetPassResponse = new MutableLiveData<>();
     private final FirebaseAuth fAuth = FirebaseAuth.getInstance();
 
-    public void login(AuthModel authModel){
+    public void login(AuthModel authModel) {
         fAuth.signInWithEmailAndPassword(authModel.getEmail(), authModel.getPassword())
                 .addOnSuccessListener(authResult -> {
                     checkEmailVerified();
                 }).addOnFailureListener(notifyLoginException::postValue);
     }
 
-    public void resetPassword(String email){
+    public void resetPassword(String email) {
         fAuth.sendPasswordResetEmail(email).addOnCompleteListener(task -> {
             if (task.isSuccessful())
                 notifyResetPassResponse.postValue("Enlace Enviado");
@@ -31,8 +31,8 @@ public class LogInViewModel extends ViewModel {
         });
     }
 
-    private void checkEmailVerified(){
-        if(Objects.requireNonNull(fAuth.getCurrentUser()).isEmailVerified())
+    private void checkEmailVerified() {
+        if (Objects.requireNonNull(fAuth.getCurrentUser()).isEmailVerified())
             navigate.postValue(null);
         else
             notifyLoginException.postValue(new Exception("Verifique su correo"));
@@ -41,9 +41,11 @@ public class LogInViewModel extends ViewModel {
     public MutableLiveData<Void> getNavigate() {
         return navigate;
     }
+
     public MutableLiveData<Exception> getNotifyLoginException() {
         return notifyLoginException;
     }
+
     public MutableLiveData<String> getNotifyResetPassResponse() {
         return notifyResetPassResponse;
     }
