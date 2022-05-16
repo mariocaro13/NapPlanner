@@ -1,4 +1,4 @@
-package com.example.naplanner.adapter;
+package com.example.naplanner.adapters;
 
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.naplanner.databinding.StudentsListItemBinding;
 import com.example.naplanner.interfaces.StudentListener;
-import com.example.naplanner.model.UserModel;
+import com.example.naplanner.models.UserModel;
 
 import java.util.ArrayList;
 

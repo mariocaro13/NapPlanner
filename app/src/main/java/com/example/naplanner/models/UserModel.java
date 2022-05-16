@@ -1,4 +1,4 @@
-package com.example.naplanner.model;
+package com.example.naplanner.models;
 
 public class UserModel {
     private String uID;

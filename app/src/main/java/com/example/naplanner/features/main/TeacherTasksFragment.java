@@ -17,12 +17,12 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.example.naplanner.MainActivity;
 import com.example.naplanner.R;
-import com.example.naplanner.adapter.TaskRecycleAdapter;
+import com.example.naplanner.adapters.TaskRecycleAdapter;
 import com.example.naplanner.databinding.FragmentTeacherTasksBinding;
 import com.example.naplanner.helperclasses.Constants;
 import com.example.naplanner.interfaces.TaskItemListener;
-import com.example.naplanner.model.TaskModel;
-import com.example.naplanner.model.UserModel;
+import com.example.naplanner.models.TaskModel;
+import com.example.naplanner.models.UserModel;
 import com.example.naplanner.utils.TasksSorter;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;

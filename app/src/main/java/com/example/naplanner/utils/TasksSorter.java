@@ -1,6 +1,6 @@
 package com.example.naplanner.utils;
 
-import com.example.naplanner.model.TaskModel;
+import com.example.naplanner.models.TaskModel;
 
 import java.util.Comparator;
 

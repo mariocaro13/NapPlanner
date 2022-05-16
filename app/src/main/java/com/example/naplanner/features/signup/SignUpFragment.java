@@ -16,7 +16,7 @@ import androidx.navigation.Navigation;
 import com.example.naplanner.R;
 import com.example.naplanner.databinding.FragmentSignUpBinding;
 import com.example.naplanner.helperclasses.Constants;
-import com.example.naplanner.model.UserModel;
+import com.example.naplanner.models.UserModel;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;

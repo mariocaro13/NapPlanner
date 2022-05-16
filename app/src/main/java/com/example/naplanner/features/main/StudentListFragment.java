@@ -13,11 +13,11 @@ import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.example.naplanner.MainActivity;
-import com.example.naplanner.adapter.StudentListRecycleAdapter;
+import com.example.naplanner.adapters.StudentListRecycleAdapter;
 import com.example.naplanner.databinding.FragmentStudentListBinding;
 import com.example.naplanner.helperclasses.Constants;
 import com.example.naplanner.interfaces.StudentListener;
-import com.example.naplanner.model.UserModel;
+import com.example.naplanner.models.UserModel;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;

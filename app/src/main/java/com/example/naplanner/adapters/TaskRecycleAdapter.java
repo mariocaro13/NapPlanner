@@ -1,4 +1,4 @@
-package com.example.naplanner.adapter;
+package com.example.naplanner.adapters;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.naplanner.R;
 import com.example.naplanner.databinding.TasksListItemBinding;
 import com.example.naplanner.interfaces.TaskItemListener;
-import com.example.naplanner.model.TaskModel;
+import com.example.naplanner.models.TaskModel;
 
 import java.util.ArrayList;
 
