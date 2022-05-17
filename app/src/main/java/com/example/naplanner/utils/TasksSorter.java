@@ -10,5 +10,4 @@ public class TasksSorter implements Comparator<TaskModel> {
     public int compare(TaskModel task1, TaskModel task2) {
         return task1.getType().compareTo(task2.getType());
     }
-
 }

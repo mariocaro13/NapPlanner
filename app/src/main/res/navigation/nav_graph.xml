@@ -50,7 +50,7 @@
     </fragment>
     <fragment
             android:id="@+id/signUpChoiceFragment"
-            android:name="com.example.naplanner.features.signup.SignUpChoiceFragment"
+            android:name="com.example.naplanner.features.signup.view.SignUpChoiceFragment"
             android:label="fragment_sign_up_choice"
             tools:layout="@layout/fragment_sign_up_choice">
         <action
@@ -109,7 +109,7 @@
     </fragment>
     <fragment
         android:id="@+id/completeTasksFragment"
-        android:name="com.example.naplanner.features.main.CompleteTasksFragment"
+        android:name="com.example.naplanner.features.main.tasks.view.CompleteTasksFragment"
         android:label="fragment_complete_tasks"
         tools:layout="@layout/fragment_complete_tasks" >
         <action
@@ -118,7 +118,7 @@
     </fragment>
     <fragment
         android:id="@+id/ownTasksFragment"
-        android:name="com.example.naplanner.features.main.owntasks.view.OwnTasksFragment"
+        android:name="com.example.naplanner.features.main.tasks.view.OwnTasksFragment"
         android:label="fragment_own_tasks"
         tools:layout="@layout/fragment_own_tasks" >
         <action

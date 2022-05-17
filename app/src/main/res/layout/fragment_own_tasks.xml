@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/background_blue"
-    tools:context=".features.main.owntasks.view.OwnTasksFragment">
+    tools:context=".features.main.tasks.view.OwnTasksFragment">
 
 
     <androidx.recyclerview.widget.RecyclerView
