@@ -30,7 +30,6 @@ public class OwnTasksFragment extends Fragment implements TaskItemListener {
     public void onStart() {
         super.onStart();
         ((MainActivity) requireActivity()).showInteractionBars();
-        viewModel.getIntance();
         setupUI();
     }
 
@@ -48,7 +47,7 @@ public class OwnTasksFragment extends Fragment implements TaskItemListener {
 
     private void setupRecyclerView() {
         binding.ownTasksFragmentTasksListRecycleview.setHasFixedSize(true);
-        viewModel.getDatabaseTaks(binding, getContext(), this);
+        viewModel.getDatabaseTasks(binding, getContext(), this);
     }
 
     private void setupUI() {

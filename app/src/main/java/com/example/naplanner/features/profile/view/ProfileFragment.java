@@ -1,13 +1,15 @@
 package com.example.naplanner.features.profile.view;
 
-import android.annotation.SuppressLint;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
+
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
@@ -16,29 +18,23 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
+
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.target.CustomTarget;
+import com.bumptech.glide.request.transition.Transition;
 import com.example.naplanner.MainActivity;
 import com.example.naplanner.R;
 import com.example.naplanner.databinding.FragmentProfileBinding;
 import com.example.naplanner.features.profile.viewmodel.ProfileViewModel;
-import com.example.naplanner.helperclasses.Constants;
-import com.example.naplanner.models.UserModel;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.UploadTask;
+import com.example.naplanner.utils.BitmapCropper;
 
 import java.util.Objects;
 
 public class ProfileFragment extends Fragment {
 
-    private final FirebaseAuth fAuth = FirebaseAuth.getInstance();
-    private final FirebaseStorage fStorage = FirebaseStorage.getInstance();
     private FragmentProfileBinding binding;
     private ProfileViewModel viewModel;
-    private final ActivityResultLauncher<String> mGetContent = registerForActivityResult(new ActivityResultContracts.GetContent(), UploadSelectedImage());
+    private final ActivityResultLauncher<String> imagePickerLauncher = registerForActivityResult(new ActivityResultContracts.GetContent(), UploadSelectedImage());
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -64,46 +60,69 @@ public class ProfileFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         setObservables();
-        binding.profileFragmentBackButton.setOnClickListener(view1 -> Navigation.findNavController(requireView()).navigateUp());
-        binding.profileFragmentLogOutButton.setOnClickListener(v -> {
-            fAuth.signOut();
-            Navigation.findNavController(requireView()).navigate(R.id.action_profileFragment_to_LoginFragment);
-        });
     }
 
     public void setupUI() {
-        viewModel.countCompleteTasks(binding);
-        viewModel.loadImage(binding, requireContext(), getResources());
+        viewModel.loadCompleteTaskCount();
+        viewModel.loadImage();
+        viewModel.loadUsername();
 
         binding.profileFragmentUserMailTextView.setText(Objects.requireNonNull(viewModel.getUser().getEmail()));
         binding.fragmentProfileResetPasswordTextView.setOnClickListener(viewModel.updatePassword());
-        binding.profileFragmentAppIconImageView.setOnClickListener(selectAndUploadImage());
+        binding.profileFragmentAppIconImageView.setOnClickListener(getPhotoFromImagePicker());
+        binding.profileFragmentBackButton.setOnClickListener(view1 -> Navigation.findNavController(requireView()).navigateUp());
+        binding.profileFragmentLogOutButton.setOnClickListener(v -> {
+            viewModel.logout();
+            Navigation.findNavController(requireView()).navigate(R.id.loginFragment);
+        });
 
-        viewModel.getInstance(binding);
     }
 
     private ActivityResultCallback<Uri> UploadSelectedImage() {
         return uri -> {
             if (uri != null) {
-                UploadTask uploadTask = fStorage.getReference().child("/users/" + Objects.requireNonNull(fAuth.getCurrentUser()).getUid()).putFile(uri);
-                uploadTask.addOnSuccessListener(taskSnapshot -> {
-                    Toast.makeText(ProfileFragment.this.getContext(), "Imagen Subida Correctamente", Toast.LENGTH_SHORT).show();
-                    viewModel.loadImage(binding, requireContext(), getResources());
-                }).addOnFailureListener(e -> {
-                    Toast.makeText(ProfileFragment.this.getContext(), "Fallo en la carga de la Imagen", Toast.LENGTH_SHORT).show();
-                    Log.d("Image Load Failure: ", e.getMessage());
-                });
+                viewModel.uploadSelectedImage(uri);
             }
         };
     }
 
-    private View.OnClickListener selectAndUploadImage() {
-        return view -> mGetContent.launch("image/*");
+    private View.OnClickListener getPhotoFromImagePicker() {
+        return view -> imagePickerLauncher.launch("image/*");
     }
 
     private void setObservables() {
         viewModel.getNavigate().observe(getViewLifecycleOwner(),
                 unused -> Navigation.findNavController(requireView()).navigate(R.id.action_LoginFragment_to_ownTasksFragment));
+        viewModel.getUsername().observe(getViewLifecycleOwner(),
+                name -> { String shortenedString = name.substring(0, 1).toUpperCase() + name.substring(1);
+                binding.profileFragmentUserNameTextView.setText(shortenedString);
+        });
+        viewModel.getImageUri().observe(getViewLifecycleOwner(), this::setUserImage);
+        viewModel.getCompletedTaskCount().observe(getViewLifecycleOwner(),
+                completedTaskCount -> binding.profileFragmentTasksCountTextView.setText(String.valueOf(completedTaskCount)));
+        viewModel.getUploadSelectedImageResponse().observe(getViewLifecycleOwner(),
+                unused -> printMsg("Imagen Subida Correctamente"));
+        viewModel.getNotifyProfileException().observe(getViewLifecycleOwner(),
+                exception -> printMsg(exception.getMessage()));
+    }
 
+    private void printMsg(String msg) {
+        Toast.makeText(requireActivity().getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
+    }
+    private void setUserImage(Uri uri){
+        Glide.with(requireActivity())
+                .asBitmap()
+                .load(uri)
+                .fitCenter()
+                .into(new CustomTarget<Bitmap>() {
+                    @Override
+                    public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
+                        BitmapDrawable croppedResource = new BitmapDrawable(getResources(), BitmapCropper.getRoundCroppedBitmap(resource));
+                        binding.profileFragmentAppIconImageView.setImageDrawable(croppedResource);
+                    }
+                    @Override
+                    public void onLoadCleared(@Nullable Drawable placeholder) {
+                    }
+                });
     }
 }

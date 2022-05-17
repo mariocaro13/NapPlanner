@@ -45,8 +45,17 @@ public class LogInFragment extends Fragment {
         ((MainActivity) requireActivity()).hideInteractionBars();
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        binding = null;
+    }
+
     private void setObservables() {
-        viewModel.getNavigate().observe(getViewLifecycleOwner(), unused -> Navigation.findNavController(requireView()).navigate(R.id.action_LoginFragment_to_ownTasksFragment));
+        viewModel.getLoginResponse().observe(getViewLifecycleOwner(), isStudent -> {
+            ((MainActivity) requireActivity()).setupNavigationBar(isStudent);
+            Navigation.findNavController(requireView()).navigate(R.id.action_LoginFragment_to_ownTasksFragment);
+        });
         viewModel.getNotifyLoginException().observe(getViewLifecycleOwner(), exception -> printMsg(exception.getMessage()));
         viewModel.getNotifyResetPassResponse().observe(getViewLifecycleOwner(), this::printMsg);
     }

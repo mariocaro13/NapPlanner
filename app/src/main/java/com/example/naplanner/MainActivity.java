@@ -23,7 +23,6 @@ import com.bumptech.glide.request.target.CustomTarget;
 import com.bumptech.glide.request.transition.Transition;
 import com.example.naplanner.databinding.ActivityMainBinding;
 import com.example.naplanner.utils.BitmapCropper;
-import com.google.android.material.navigation.NavigationBarView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.storage.FirebaseStorage;
 
@@ -34,6 +33,7 @@ public class MainActivity extends AppCompatActivity {
     private AppBarConfiguration appBarConfiguration;
     private ActivityMainBinding binding;
     private NavController navController;
+    private final FirebaseAuth fAuth = FirebaseAuth.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,8 +45,8 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        setupNavigationBar(false);
         navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
+        setupNavigationBar(false);
         setupToolbar("Login");
     }
 
@@ -61,7 +61,8 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_main, menu);
-        //getAndApplyProfilePicture(menu.findItem(R.id.action_profile));
+        if(fAuth.getCurrentUser() != null)
+            getAndApplyProfilePicture(menu.findItem(R.id.action_profile));
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -83,43 +84,14 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(binding.activityMainToolbar);
     }
 
-    // Bottom Navigation Bar Config
     public void setupNavigationBar(boolean isStudent) {
-        binding.activityMainBottomNav.setSelectedItemId(R.id.bottom_menu_own_task);
-        if (!isStudent)
-            binding.activityMainBottomNav.setOnItemSelectedListener(item -> {
-                int id = item.getItemId();
-                if (id == R.id.bottom_menu_own_task) {
-                    navController.navigate(R.id.ownTasksFragment);
-                    return true;
-                } else if (id == R.id.bottom_menu_completed_tasks) {
-                    navController.navigate(R.id.completeTasksFragment);
-                    return true;
-                } else if (id == R.id.bottom_menu_student_list) {
-                    navController.navigate(R.id.studentListFragment);
-                    return true;
-                }
-                return true;
-            });
+        binding.activityMainBottomNav.getMenu().clear();
+        if(isStudent)
+            binding.activityMainBottomNav.inflateMenu(R.menu.bottom_nav_menu_student);
         else
-            binding.activityMainBottomNav.setOnItemSelectedListener(item -> {
-                int id = item.getItemId();
-                if (id == R.id.bottom_menu_own_task) {
-                    navController.navigate(R.id.ownTasksFragment);
-                    return true;
-                } else if (id == R.id.bottom_menu_completed_tasks) {
-                    navController.navigate(R.id.completeTasksFragment);
-                    return true;
-                } else if (id == R.id.bottom_menu_student_list) {
-                    navController.navigate(R.id.teacherTasksFragment);
-                    return true;
-                }
-                getSupportFragmentManager().popBackStack();
-                return true;
-            });
+            binding.activityMainBottomNav.inflateMenu(R.menu.bottom_nav_menu_teacher);
 
-        binding.activityMainBottomNav.setOnItemReselectedListener(item -> {
-        });
+        NavigationUI.setupWithNavController(binding.activityMainBottomNav, navController);
     }
 
     // Helper Functions to hide and Show the Navigation Bars
@@ -147,7 +119,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void getAndApplyProfilePicture(MenuItem profileItem) {
-        FirebaseStorage.getInstance().getReference().child("/users/" + Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid())
+        FirebaseStorage.getInstance().getReference().child("/users/" + Objects.requireNonNull(fAuth.getCurrentUser()).getUid())
                 .getDownloadUrl().addOnSuccessListener(uri -> Glide.with(getApplicationContext())
                         .asBitmap()
                         .load(uri)

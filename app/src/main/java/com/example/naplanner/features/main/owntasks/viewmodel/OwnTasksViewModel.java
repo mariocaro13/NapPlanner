@@ -23,15 +23,11 @@ import java.util.Objects;
 public class OwnTasksViewModel extends ViewModel {
 
     private ArrayList<TaskModel> tasks;
-    private FirebaseAuth fAuth;
-    private DatabaseReference dRef;
-
-    public void getIntance() {
-        fAuth = FirebaseAuth.getInstance();
-        dRef = FirebaseDatabase.getInstance(Constants.databaseURL).getReference();
-    }
+    private final FirebaseAuth fAuth = FirebaseAuth.getInstance();;
+    private final DatabaseReference dRef = FirebaseDatabase.getInstance(Constants.databaseURL).getReference();
 
     public void getDatabaseUser() {
+        if(fAuth.getCurrentUser() != null)
         dRef.child("User").child(Objects.requireNonNull(fAuth.getCurrentUser()).getUid()).addValueEventListener(new ValueEventListener() {
             @SuppressLint("SetTextI18n")
             @Override
@@ -39,7 +35,6 @@ public class OwnTasksViewModel extends ViewModel {
                 dRef.child("User").child(Objects.requireNonNull(fAuth.getCurrentUser()).getUid()).removeEventListener(this);
                 if (snapshot.exists()) {
                     String name = Objects.requireNonNull(snapshot.getValue(UserModel.class)).getUsername();
-                    //((MainActivity) requireActivity()).setupNavigationBar(Objects.requireNonNull(snapshot.getValue(UserModel.class)).getStudent());
                     //((MainActivity) requireActivity()).setupToolbar(name.substring(0, 1).toUpperCase() + name.substring(1));
                 }
             }
@@ -50,10 +45,11 @@ public class OwnTasksViewModel extends ViewModel {
         });
     }
 
-    public void getDatabaseTaks(FragmentOwnTasksBinding binding, Context context, TaskItemListener listener) {
+    public void getDatabaseTasks(FragmentOwnTasksBinding binding, Context context, TaskItemListener listener) {
         tasks = new ArrayList<>();
         TaskRecycleAdapter adapter = new TaskRecycleAdapter(tasks, listener, context);
-        FirebaseDatabase.getInstance(Constants.databaseURL).getReference().child("Tasks").child(Objects.requireNonNull(fAuth.getCurrentUser()).getUid()).addValueEventListener(new ValueEventListener() {
+        if(fAuth.getCurrentUser() != null)
+        dRef.child("Tasks").child(Objects.requireNonNull(fAuth.getCurrentUser()).getUid()).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 FirebaseDatabase.getInstance(Constants.databaseURL).getReference().child("Tasks").child(Objects.requireNonNull(fAuth.getCurrentUser()).getUid()).removeEventListener(this);
