@@ -46,17 +46,14 @@ public class LogInFragment extends Fragment {
     }
 
     private void setObservables() {
-        viewModel.getNavigate().observe(getViewLifecycleOwner(),
-                unused -> Navigation.findNavController(requireView()).navigate(R.id.action_LoginFragment_to_ownTasksFragment));
-        viewModel.getNotifyLoginException().observe(getViewLifecycleOwner(),
-                exception -> printMsg(exception.getMessage()));
+        viewModel.getNavigate().observe(getViewLifecycleOwner(), unused -> Navigation.findNavController(requireView()).navigate(R.id.action_LoginFragment_to_ownTasksFragment));
+        viewModel.getNotifyLoginException().observe(getViewLifecycleOwner(), exception -> printMsg(exception.getMessage()));
         viewModel.getNotifyResetPassResponse().observe(getViewLifecycleOwner(), this::printMsg);
     }
 
     private void setupUI() {
         binding.logInFragmentSendButton.setOnClickListener(view -> {
-            if (!getCredentials().getPassword().isEmpty())
-                viewModel.login(getCredentials());
+            if (!getCredentials().getPassword().isEmpty()) viewModel.login(getCredentials());
         });
 
         binding.logInFragmentLinkToSignUpText.setOnClickListener(view -> Navigation.findNavController(requireView()).navigate(R.id.action_LoginFragment_to_signUpChoiceFragment));
@@ -82,10 +79,8 @@ public class LogInFragment extends Fragment {
             passwordReset.setView(mailToSend);
             passwordReset.setPositiveButton("Enviar", (dialogInterface, i) -> {
                 String mail = mailToSend.getText().toString();
-                if (!mail.isEmpty())
-                    viewModel.resetPassword(mail);
-                else
-                    printMsg("Por favor introduzca un correo");
+                if (!mail.isEmpty()) viewModel.resetPassword(mail);
+                else printMsg("Por favor introduzca un correo");
             });
             passwordReset.setNegativeButton("Cancelar", (dialogInterface, i) -> {
             });
@@ -99,12 +94,10 @@ public class LogInFragment extends Fragment {
         String input = binding.logInFragmentMailEditText.getText().toString();
         String pass = binding.logInFragmentPasswordEditText.getText().toString();
 
-        if (!input.isEmpty() && validateEmail(input))
-            authModel.setEmail(input);
+        if (!input.isEmpty() && validateEmail(input)) authModel.setEmail(input);
         else printMsg("Introduzca un correo valido");
 
-        if (!pass.isEmpty() && !authModel.getEmail().isEmpty())
-            authModel.setPassword(pass);
+        if (!pass.isEmpty() && !authModel.getEmail().isEmpty()) authModel.setPassword(pass);
         else printMsg("Introduzca una contraseña");
 
         return authModel;
