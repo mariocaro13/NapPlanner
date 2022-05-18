@@ -43,8 +43,7 @@ public class CreateTaskFragment extends Fragment{
     @Override
     public void onStart() {
         super.onStart();
-        studentId = CreateTaskFragmentArgs.fromBundle(getArguments()).getUserID();
-
+        setupVariables();
         setObservables();
         setupUI();
     }
@@ -55,17 +54,16 @@ public class CreateTaskFragment extends Fragment{
         binding = null;
     }
 
+    private void setupVariables(){
+        studentId = CreateTaskFragmentArgs.fromBundle(getArguments()).getUserID();
+    }
+
     private void setupUI() {
-
-        ((MainActivity) requireActivity()).hideInteractionBars();
-
-        if (CreateTaskFragmentArgs.fromBundle(getArguments()).getIsEdit())
-            editTask();
-        else
-            createTask();
 
         viewModel.loadUsername();
         viewModel.loadUserId();
+
+        ((MainActivity) requireActivity()).hideInteractionBars();
         binding.taskFormFragmentCancelButton.setOnClickListener(view -> Navigation.findNavController(requireView()).navigateUp());
     }
 
@@ -82,6 +80,11 @@ public class CreateTaskFragment extends Fragment{
         });
         viewModel.getUserId().observe(getViewLifecycleOwner(), userId -> {
             if(studentId.equals("-1")) studentId = userId;
+
+            if (CreateTaskFragmentArgs.fromBundle(getArguments()).getIsEdit())
+                editTask();
+            else
+                createTask();
         });
         viewModel.getNavigate().observe(getViewLifecycleOwner(), unused -> Navigation.findNavController(requireView()).navigateUp());
         viewModel.getNotifyCreateTaskViewModelException().observe(getViewLifecycleOwner(), exception -> printMsg(exception.getMessage()));

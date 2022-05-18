@@ -54,7 +54,6 @@ public class TeacherTasksFragment extends Fragment implements TaskItemListener {
             binding.teacherTasksFragmentTasksListRecycleview.setLayoutManager(new LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false));
             binding.teacherTasksFragmentTasksListRecycleview.setAdapter(adapter);
         });
-        viewModel.getUsername().observe(getViewLifecycleOwner(), username -> ((MainActivity) requireActivity()).setupToolbar(username.substring(0, 1).toUpperCase() + username.substring(1)));
         viewModel.getUserId().observe(getViewLifecycleOwner(), userId -> {
             TeacherTasksFragmentDirections.ActionTeacherTasksFragmentToTaskForm action = TeacherTasksFragmentDirections.actionTeacherTasksFragmentToTaskForm();
             action.setUserID(studentId);

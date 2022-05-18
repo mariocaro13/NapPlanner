@@ -48,12 +48,10 @@ public class OwnTasksFragment extends Fragment implements TaskItemListener {
             binding.ownTasksFragmentTasksListRecycleview.setLayoutManager(new LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false));
             binding.ownTasksFragmentTasksListRecycleview.setAdapter(adapter);
         });
-        viewModel.getUsername().observe(getViewLifecycleOwner(), username -> ((MainActivity) requireActivity()).setupToolbar(username.substring(0, 1).toUpperCase() + username.substring(1)));
         viewModel.getNotifyTaskViewModelException().observe(getViewLifecycleOwner(), exception -> printMsg(exception.getMessage()));
     }
 
     private void setupUI() {
-        viewModel.loadUsername();
         viewModel.loadOwnTasks(false);
         binding.ownTasksFragmentTasksListRecycleview.setHasFixedSize(true);
     }

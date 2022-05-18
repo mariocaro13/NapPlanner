@@ -54,6 +54,10 @@ public class LogInFragment extends Fragment {
     private void setObservables() {
         viewModel.getLoginResponse().observe(getViewLifecycleOwner(), isStudent -> {
             ((MainActivity) requireActivity()).setupNavigationBar(isStudent);
+            viewModel.loadUsername();
+        });
+        viewModel.getUsername().observe(getViewLifecycleOwner(), username -> {
+            ((MainActivity) requireActivity()).setupToolbar(username.substring(0, 1).toUpperCase() + username.substring(1));
             Navigation.findNavController(requireView()).navigate(R.id.action_LoginFragment_to_ownTasksFragment);
         });
         viewModel.getNotifyLoginException().observe(getViewLifecycleOwner(), exception -> printMsg(exception.getMessage()));

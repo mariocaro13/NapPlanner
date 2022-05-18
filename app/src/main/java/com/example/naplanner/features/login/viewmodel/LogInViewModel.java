@@ -1,5 +1,7 @@
 package com.example.naplanner.features.login.viewmodel;
 
+import android.annotation.SuppressLint;
+
 import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
@@ -10,6 +12,7 @@ import com.example.naplanner.models.UserModel;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
@@ -20,8 +23,9 @@ public class LogInViewModel extends ViewModel {
     private final MutableLiveData<Boolean> loginResponse = new MutableLiveData<>();
     private final MutableLiveData<Exception> notifyLoginException = new MutableLiveData<>();
     private final MutableLiveData<String> notifyResetPassResponse = new MutableLiveData<>();
+    private final MutableLiveData<String> username = new MutableLiveData<>();
     private final FirebaseAuth fAuth = FirebaseAuth.getInstance();
-    private final FirebaseDatabase fDatabase = FirebaseDatabase.getInstance(Constants.databaseURL);
+    private final DatabaseReference dRef = FirebaseDatabase.getInstance(Constants.databaseURL).getReference();
 
     public void login(AuthModel authModel) {
         fAuth.signInWithEmailAndPassword(authModel.getEmail(), authModel.getPassword())
@@ -44,7 +48,7 @@ public class LogInViewModel extends ViewModel {
     }
 
     private void getUserType(){
-        fDatabase.getReference().child("User").child(Objects.requireNonNull(fAuth.getCurrentUser()).getUid())
+        dRef.child("User").child(Objects.requireNonNull(fAuth.getCurrentUser()).getUid())
                 .addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -59,8 +63,32 @@ public class LogInViewModel extends ViewModel {
         });
     }
 
+    public void loadUsername() {
+        if (fAuth.getCurrentUser() != null)
+            dRef.child("User").child(Objects.requireNonNull(fAuth.getCurrentUser()).getUid()).addValueEventListener(new ValueEventListener() {
+                @SuppressLint("SetTextI18n")
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    dRef.child("User").child(Objects.requireNonNull(fAuth.getCurrentUser()).getUid()).removeEventListener(this);
+                    if (snapshot.exists()) {
+                        String name = Objects.requireNonNull(snapshot.getValue(UserModel.class)).getUsername();
+                        username.postValue(name);
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+                    notifyLoginException.postValue(error.toException());
+                }
+            });
+    }
+
     public MutableLiveData<Boolean> getLoginResponse() {
         return loginResponse;
+    }
+
+    public MutableLiveData<String> getUsername() {
+        return username;
     }
 
     public MutableLiveData<Exception> getNotifyLoginException() {

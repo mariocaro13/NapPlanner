@@ -18,29 +18,8 @@ public class TasksViewModel extends ViewModel {
     private final FirebaseAuth fAuth = FirebaseAuth.getInstance();
     private final DatabaseReference dRef = FirebaseDatabase.getInstance(Constants.databaseURL).getReference();
     private final MutableLiveData<ArrayList<TaskModel>> tasks = new MutableLiveData<>();
-    private final MutableLiveData<String> username = new MutableLiveData<>();
     private final MutableLiveData<String> userId = new MutableLiveData<>();
     private final MutableLiveData<Exception> notifyTaskViewModelException = new MutableLiveData<>();
-
-    public void loadUsername() {
-        if (fAuth.getCurrentUser() != null)
-            dRef.child("User").child(Objects.requireNonNull(fAuth.getCurrentUser()).getUid()).addValueEventListener(new ValueEventListener() {
-                @SuppressLint("SetTextI18n")
-                @Override
-                public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    dRef.child("User").child(Objects.requireNonNull(fAuth.getCurrentUser()).getUid()).removeEventListener(this);
-                    if (snapshot.exists()) {
-                        String name = Objects.requireNonNull(snapshot.getValue(UserModel.class)).getUsername();
-                        username.postValue(name);
-                    }
-                }
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError error) {
-                    notifyTaskViewModelException.postValue(error.toException());
-                }
-            });
-    }
 
     public void loadOwnTasks() {
         if (fAuth.getCurrentUser() != null)
@@ -145,10 +124,6 @@ public class TasksViewModel extends ViewModel {
 
     public MutableLiveData<ArrayList<TaskModel>> getTasks() {
         return tasks;
-    }
-
-    public MutableLiveData<String> getUsername() {
-        return username;
     }
 
     public MutableLiveData<String> getUserId() {

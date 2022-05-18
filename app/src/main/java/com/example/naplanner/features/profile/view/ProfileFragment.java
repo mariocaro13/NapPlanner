@@ -44,13 +44,6 @@ public class ProfileFragment extends Fragment {
     }
 
     @Override
-    public void onStart() {
-        super.onStart();
-        ((MainActivity) requireActivity()).hideInteractionBars();
-        setupUI();
-    }
-
-    @Override
     public void onDestroyView() {
         super.onDestroyView();
         binding = null;
@@ -60,6 +53,8 @@ public class ProfileFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         setObservables();
+        ((MainActivity) requireActivity()).hideInteractionBars();
+        setupUI();
     }
 
     public void setupUI() {

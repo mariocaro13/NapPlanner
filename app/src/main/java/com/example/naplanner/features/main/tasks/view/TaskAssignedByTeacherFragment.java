@@ -50,12 +50,10 @@ public class TaskAssignedByTeacherFragment extends Fragment implements TaskItemL
             binding.taskByTeacherFragmentTasksListRecycleview.setLayoutManager(new LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false));
             binding.taskByTeacherFragmentTasksListRecycleview.setAdapter(adapter);
         });
-        viewModel.getUsername().observe(getViewLifecycleOwner(), username -> ((MainActivity) requireActivity()).setupToolbar(username.substring(0, 1).toUpperCase() + username.substring(1)));
         viewModel.getNotifyTaskViewModelException().observe(getViewLifecycleOwner(), exception -> printMsg(exception.getMessage()));
     }
 
     private void setupUI() {
-        viewModel.loadUsername();
         viewModel.loadAllTeacherTasks();
         binding.taskByTeacherFragmentTasksListRecycleview.setHasFixedSize(true);
     }
