@@ -19,6 +19,7 @@ public class TasksViewModel extends ViewModel {
     private final DatabaseReference dRef = FirebaseDatabase.getInstance(Constants.databaseURL).getReference();
     private final MutableLiveData<ArrayList<TaskModel>> tasks = new MutableLiveData<>();
     private final MutableLiveData<String> username = new MutableLiveData<>();
+    private final MutableLiveData<String> userId = new MutableLiveData<>();
     private final MutableLiveData<Exception> notifyTaskViewModelException = new MutableLiveData<>();
 
     public void loadUsername() {
@@ -39,29 +40,6 @@ public class TasksViewModel extends ViewModel {
                     notifyTaskViewModelException.postValue(error.toException());
                 }
             });
-    }
-
-    public void loadUsername(String targetUserId) {
-        dRef.child("User").child(targetUserId).addListenerForSingleValueEvent(new ValueEventListener() {
-            @SuppressLint("SetTextI18n")
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if (snapshot.exists()) {
-                    String name = Objects.requireNonNull(snapshot.getValue(UserModel.class)).getUsername();
-                    username.postValue(name);
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                notifyTaskViewModelException.postValue(error.toException());
-            }
-        });
-    }
-
-    public void decideTaskToLoad(String userIdToCompare) {
-        if (userIdToCompare.equals(Objects.requireNonNull(fAuth.getCurrentUser()).getUid())) loadOwnTasks();
-        else loadAllTeacherTasks();
     }
 
     public void loadOwnTasks() {
@@ -106,6 +84,27 @@ public class TasksViewModel extends ViewModel {
             });
     }
 
+    public void loadTaskByTeacher(String studentId) {
+        if (fAuth.getCurrentUser() != null)
+            dRef.child("Tasks").child(studentId).addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    ArrayList<TaskModel> tempTasks = new ArrayList<>();
+                    for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                        TaskModel task = dataSnapshot.getValue(TaskModel.class);
+                        if (Objects.requireNonNull(task).getCreatorID().equals(fAuth.getCurrentUser().getUid()))
+                            tempTasks.add(task);
+                    }
+                    tasks.postValue(tempTasks);
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+                    notifyTaskViewModelException.postValue(error.toException());
+                }
+            });
+    }
+
     public void loadAllTeacherTasks() {
         if (fAuth.getCurrentUser() != null)
             dRef.child("Tasks").child(Objects.requireNonNull(fAuth.getCurrentUser()).getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
@@ -127,6 +126,10 @@ public class TasksViewModel extends ViewModel {
             });
     }
 
+    public void loadUserId() {
+        userId.postValue(Objects.requireNonNull(fAuth.getCurrentUser()).getUid());
+    }
+
     public void setTasksComplete(int taskID) {
         for (TaskModel task : Objects.requireNonNull(tasks.getValue())) {
             if (task.getId() == taskID) {
@@ -146,5 +149,9 @@ public class TasksViewModel extends ViewModel {
 
     public MutableLiveData<String> getUsername() {
         return username;
+    }
+
+    public MutableLiveData<String> getUserId() {
+        return userId;
     }
 }

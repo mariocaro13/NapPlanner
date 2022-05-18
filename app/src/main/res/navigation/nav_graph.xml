@@ -63,7 +63,7 @@
     </fragment>
     <fragment
         android:id="@+id/teacherTasksFragment"
-        android:name="com.example.naplanner.features.main.TeacherTasksFragment"
+        android:name="com.example.naplanner.features.main.tasks.view.TeacherTasksFragment"
         android:label="fragment_teacher_tasks"
         tools:layout="@layout/fragment_teacher_tasks" >
         <action
@@ -76,7 +76,7 @@
     </fragment>
     <fragment
         android:id="@+id/taskForm"
-        android:name="com.example.naplanner.features.main.CreateTaskFragment"
+        android:name="com.example.naplanner.features.main.createtasks.view.CreateTaskFragment"
         android:label="fragment_task_form"
         tools:layout="@layout/fragment_create_task" >
         <argument
@@ -127,11 +127,19 @@
     </fragment>
     <fragment
         android:id="@+id/studentListFragment"
-        android:name="com.example.naplanner.features.main.StudentListFragment"
+        android:name="com.example.naplanner.features.main.studentlist.view.StudentListFragment"
         android:label="fragment_student_list"
         tools:layout="@layout/fragment_student_list" >
         <action
             android:id="@+id/action_studentListFragment_to_teacherTasksFragment"
             app:destination="@id/teacherTasksFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/taskAssignedByTeacherFragment"
+        android:name="com.example.naplanner.features.main.tasks.view.TaskAssignedByTeacherFragment"
+        android:label="TaskAssignedByTeacherFragment" >
+        <action
+            android:id="@+id/action_taskAssignedByTeacherFragment_to_taskForm"
+            app:destination="@id/taskForm" />
     </fragment>
 </navigation>

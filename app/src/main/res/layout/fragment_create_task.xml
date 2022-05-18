@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/background_blue"
-    tools:context=".features.main.CreateTaskFragment">
+    tools:context=".features.main.createtasks.view.CreateTaskFragment">
 
     <ImageView
         android:id="@+id/task_form_fragment_app_icon_image_view"

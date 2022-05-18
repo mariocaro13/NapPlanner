@@ -5,7 +5,7 @@
     tools:context="com.example.naplanner.MainActivity">
 
     <item
-        android:id="@+id/teacherTasksFragment"
+        android:id="@+id/taskAssignedByTeacherFragment"
         android:icon="@drawable/ic_baseline_school_24"
         android:title="@string/bottom_menu_students_teacher_tasks_text"
         app:showAsAction="always" />
