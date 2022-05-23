@@ -73,7 +73,7 @@ public class StudentSignUpFragment extends Fragment {
     }
 
     private void setObservables() {
-        viewModel.getNavigate().observe(getViewLifecycleOwner(), unused -> Navigation.findNavController(requireView()).navigate(R.id.action_teacherSignUpFragment_to_teacherTasksFragment));
+        viewModel.getNavigate().observe(getViewLifecycleOwner(), unused -> Navigation.findNavController(requireView()).navigate(R.id.action_studentSignUpFragment_to_studentOwnTasksFragment));
         viewModel.getNotifySignUpException().observe(getViewLifecycleOwner(), exception -> printMsg(exception.getMessage()));
     }
 

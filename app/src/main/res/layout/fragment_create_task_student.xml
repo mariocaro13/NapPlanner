@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/background_blue"
-    tools:context=".features.main.createtasks.view.CreateTaskFragment">
+    android:background="@color/background_green"
+    tools:context=".features.main.createtasks.view.TeacherCreateTaskFragment">
 
     <ImageView
         android:id="@+id/task_form_fragment_app_icon_image_view"
@@ -34,7 +34,7 @@
             android:layout_width="match_parent"
             android:layout_height="26dp"
             android:background="@drawable/border_linear_layout"
-            android:backgroundTint="@color/light_blue"
+            android:backgroundTint="@color/light_green"
             android:paddingHorizontal="4dp"
             android:textColor="@color/black"
             android:textStyle="bold|italic"
@@ -59,7 +59,7 @@
             android:id="@+id/task_form_fragment_name_textview"
             android:layout_width="match_parent"
             android:layout_height="18dp"
-            android:background="@color/dark_blue"
+            android:background="@color/dark_green"
             android:text="@string/task_form_task_name"
             android:textColor="@color/black" />
 
@@ -67,7 +67,7 @@
             android:id="@+id/task_form_fragment_name_edittext"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/light_blue"
+            android:background="@color/light_green"
             android:hint="@string/task_form_hint_task_name"
             android:imeOptions="actionDone"
             android:inputType="text"
@@ -93,7 +93,7 @@
             android:id="@+id/task_form_fragment_taks_importance_title_text_view"
             android:layout_width="match_parent"
             android:layout_height="30dp"
-            android:background="@color/dark_blue"
+            android:background="@color/dark_green"
             android:padding="6dp"
             android:text="@string/task_form_type_of_task"
             android:textColor="@color/black" />
@@ -102,7 +102,6 @@
             android:id="@+id/task_form_fragment_taks_importance_radio_group"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/nav_menu_blue"
             android:orientation="vertical">
 
             <RadioButton
@@ -110,7 +109,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12dp"
-                android:background="@color/legendary_task_blue"
+                android:background="@color/legendary_task_green"
                 android:text="@string/generic_legendary_task_type" />
 
             <RadioButton
@@ -118,7 +117,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12dp"
-                android:background="@color/epic_task_blue"
+                android:background="@color/epic_task_green"
                 android:text="@string/generic_epic_task_type" />
 
             <RadioButton
@@ -126,7 +125,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12dp"
-                android:background="@color/normal_tasks_blue"
+                android:background="@color/light_green"
                 android:text="@string/generic_normal_task_type" />
         </RadioGroup>
 
@@ -137,7 +136,7 @@
         android:id="@+id/task_form_fragment_confirm_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@color/dark_blue"
+        android:background="@color/dark_green"
         android:text="@string/generic_action_confirmar"
         android:textColor="@color/black"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -149,7 +148,7 @@
         android:id="@+id/task_form_fragment_cancel_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@color/dark_blue"
+        android:background="@color/dark_green"
         android:text="@string/generic_action_cancelar"
         android:textColor="@color/black"
         app:layout_constraintBottom_toBottomOf="parent"

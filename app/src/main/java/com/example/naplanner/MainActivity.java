@@ -70,7 +70,7 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
         if (id == R.id.action_add_task) {
-            navController.navigate(R.id.taskForm);
+            navController.navigate(R.id.teacherTaskForm);
             return true;
         } else if (id == R.id.action_profile) {
             navController.navigate(R.id.profileFragment);

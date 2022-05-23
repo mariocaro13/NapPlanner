@@ -5,32 +5,28 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
-
 import com.example.naplanner.MainActivity;
-import com.example.naplanner.databinding.FragmentCreateTaskBinding;
+import com.example.naplanner.databinding.FragmentCreateTaskTeacherBinding;
 import com.example.naplanner.features.main.createtasks.viewmodel.CreateTaskViewModel;
 import com.example.naplanner.models.TaskModel;
 
 import java.util.Objects;
 
-public class CreateTaskFragment extends Fragment{
+public class TeacherCreateTaskFragment extends Fragment {
 
-    private CreateTaskViewModel viewModel;
-    private FragmentCreateTaskBinding binding;
-
-    private String studentId;
     private final TaskModel task = new TaskModel();
-
+    private CreateTaskViewModel viewModel;
+    private FragmentCreateTaskTeacherBinding binding;
+    private String studentId;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        binding = FragmentCreateTaskBinding.inflate(inflater, container, false);
+        binding = FragmentCreateTaskTeacherBinding.inflate(inflater, container, false);
         viewModel = new ViewModelProvider(requireActivity()).get(CreateTaskViewModel.class);
         return binding.getRoot();
     }
@@ -54,8 +50,8 @@ public class CreateTaskFragment extends Fragment{
         binding = null;
     }
 
-    private void setupVariables(){
-        studentId = CreateTaskFragmentArgs.fromBundle(getArguments()).getUserID();
+    private void setupVariables() {
+        studentId = TeacherCreateTaskFragmentArgs.fromBundle(getArguments()).getUserID();
     }
 
     private void setupUI() {
@@ -79,9 +75,9 @@ public class CreateTaskFragment extends Fragment{
             binding.taskFormRadioButtonNormal.setChecked(task.getType() == TaskModel.TaskType.NORMAL);
         });
         viewModel.getUserId().observe(getViewLifecycleOwner(), userId -> {
-            if(studentId.equals("-1")) studentId = userId;
+            if (studentId.equals("-1")) studentId = userId;
 
-            if (CreateTaskFragmentArgs.fromBundle(getArguments()).getIsEdit())
+            if (TeacherCreateTaskFragmentArgs.fromBundle(getArguments()).getIsEdit())
                 editTask();
             else
                 createTask();
@@ -91,7 +87,7 @@ public class CreateTaskFragment extends Fragment{
     }
 
     private void editTask() {
-        int taskID = CreateTaskFragmentArgs.fromBundle(getArguments()).getTaskID();
+        int taskID = TeacherCreateTaskFragmentArgs.fromBundle(getArguments()).getTaskID();
         if (taskID != -1)
             viewModel.loadTask(taskID, studentId);
 
@@ -108,7 +104,7 @@ public class CreateTaskFragment extends Fragment{
         });
     }
 
-    private void getData(){
+    private void getData() {
         if (!binding.taskFormFragmentNameEdittext.getText().toString().isEmpty())
             task.setName(binding.taskFormFragmentNameEdittext.getText().toString());
         else {

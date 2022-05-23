@@ -11,7 +11,7 @@
         app:showAsAction="always" />
 
     <item
-        android:id="@+id/ownTasksFragment"
+        android:id="@+id/teacherOwnTasksFragment"
         android:title="@string/bottom_menu_own_tasks_text"
         android:icon="@drawable/ic_baseline_format_list_numbered_24"
         app:showAsAction="ifRoom" />
