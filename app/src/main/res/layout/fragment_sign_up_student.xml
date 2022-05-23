@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/background_blue"
-    tools:context=".features.signup.view.SignUpFragment">
+    android:background="@color/background_green"
+    tools:context=".features.signup.view.TeacherSignUpFragment">
 
     <ImageView
         android:id="@+id/sign_up_fragment_app_icon_image_view"
@@ -21,7 +21,7 @@
         android:id="@+id/sign_up_fragment_form_layout"
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
-        layout="@layout/sign_up_form"
+        layout="@layout/student_sign_up_form"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/sign_up_fragment_app_icon_image_view"
@@ -58,7 +58,7 @@
         android:id="@+id/sign_up_fragment_send_button"
         android:layout_width="132dp"
         android:layout_height="60dp"
-        android:backgroundTint="@color/dark_blue"
+        android:backgroundTint="@color/dark_green"
         android:text="@string/log_ing_fragment_button_send"
         android:textColor="@color/black"
         app:layout_constraintBottom_toBottomOf="parent"

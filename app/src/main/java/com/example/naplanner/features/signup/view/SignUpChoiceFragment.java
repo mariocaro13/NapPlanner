@@ -10,6 +10,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
+import com.example.naplanner.R;
 import com.example.naplanner.databinding.FragmentSignUpChoiceBinding;
 
 public class SignUpChoiceFragment extends Fragment {
@@ -35,18 +36,10 @@ public class SignUpChoiceFragment extends Fragment {
     }
 
     private void setupUI() {
-        binding.signUpChoiceFragmentProfessorButton.setOnClickListener(navigateWithChoice(false));
+        binding.signUpChoiceFragmentProfessorButton.setOnClickListener(view -> Navigation.findNavController(requireView()).navigate(R.id.action_signUpChoiceFragment_to_teacherSignUpFragment));
 
-        binding.signUpChoiceFragmentStudentButton.setOnClickListener(navigateWithChoice(true));
+        binding.signUpChoiceFragmentStudentButton.setOnClickListener(view -> Navigation.findNavController(requireView()).navigate(R.id.action_signUpChoiceFragment_to_studentSignUpFragment));
 
         binding.signUpChoiceFragmentLogInTextView.setOnClickListener(view -> Navigation.findNavController(requireView()).navigateUp());
-    }
-
-
-    private View.OnClickListener navigateWithChoice(boolean isStudent) {
-        return view -> {
-            SignUpChoiceFragmentDirections.ActionSignUpChoiceFragmentToSignUpFragment action = SignUpChoiceFragmentDirections.actionSignUpChoiceFragmentToSignUpFragment(isStudent);
-            Navigation.findNavController(requireView()).navigate(action);
-        };
     }
 }
