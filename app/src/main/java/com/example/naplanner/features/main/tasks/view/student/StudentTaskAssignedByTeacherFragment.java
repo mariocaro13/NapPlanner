@@ -1,35 +1,30 @@
-package com.example.naplanner.features.main.tasks.view;
+package com.example.naplanner.features.main.tasks.view.student;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
-
 import com.example.naplanner.MainActivity;
-import com.example.naplanner.adapters.TaskRecycleAdapter;
-import com.example.naplanner.databinding.FragmentTeacherTasksBinding;
+import com.example.naplanner.adapters.StudentTaskByTeacherRecycleAdapter;
+import com.example.naplanner.databinding.FragmentTaskAssignedByTeacherBinding;
 import com.example.naplanner.features.main.tasks.viewmodel.TasksViewModel;
 import com.example.naplanner.interfaces.TaskItemListener;
 
-import java.util.Objects;
+public class StudentTaskAssignedByTeacherFragment extends Fragment implements TaskItemListener {
 
-public class TeacherTasksFragment extends Fragment implements TaskItemListener {
-
-    private FragmentTeacherTasksBinding binding;
+    private FragmentTaskAssignedByTeacherBinding binding;
     private TasksViewModel viewModel;
-    private String studentId;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        binding = FragmentTeacherTasksBinding.inflate(inflater, container, false);
+        binding = FragmentTaskAssignedByTeacherBinding.inflate(inflater, container, false);
         viewModel = new ViewModelProvider(requireActivity()).get(TasksViewModel.class);
         return binding.getRoot();
     }
@@ -37,8 +32,7 @@ public class TeacherTasksFragment extends Fragment implements TaskItemListener {
     @Override
     public void onStart() {
         super.onStart();
-        studentId = TeacherTasksFragmentArgs.fromBundle(getArguments()).getId();
-
+        ((MainActivity) requireActivity()).showInteractionBars();
         setObservables();
         setupUI();
     }
@@ -50,24 +44,16 @@ public class TeacherTasksFragment extends Fragment implements TaskItemListener {
 
     private void setObservables() {
         viewModel.getTasks().observe(getViewLifecycleOwner(), taskModels -> {
-            TaskRecycleAdapter adapter = new TaskRecycleAdapter(taskModels, this, requireContext());
-            binding.teacherTasksFragmentTasksListRecycleview.setLayoutManager(new LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false));
-            binding.teacherTasksFragmentTasksListRecycleview.setAdapter(adapter);
-        });
-        viewModel.getUserId().observe(getViewLifecycleOwner(), userId -> {
-            TeacherTasksFragmentDirections.ActionTeacherTasksFragmentToTaskForm action = TeacherTasksFragmentDirections.actionTeacherTasksFragmentToTaskForm();
-            action.setUserID(studentId);
-            action.setTeacherID(userId);
-            Navigation.findNavController(requireView()).navigate(action);
+            StudentTaskByTeacherRecycleAdapter adapter = new StudentTaskByTeacherRecycleAdapter(taskModels, this, requireContext());
+            binding.taskByTeacherFragmentTasksListRecycleview.setLayoutManager(new LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false));
+            binding.taskByTeacherFragmentTasksListRecycleview.setAdapter(adapter);
         });
         viewModel.getNotifyTaskViewModelException().observe(getViewLifecycleOwner(), exception -> printMsg(exception.getMessage()));
     }
 
     private void setupUI() {
-        viewModel.loadTaskByTeacher(studentId);
-        ((MainActivity) requireActivity()).hideInteractionBars();
-        binding.teacherTasksFragmentReturnButton.setOnClickListener(v -> Navigation.findNavController(requireView()).navigateUp());
-        binding.teacherTasksFragmentCreateButton.setOnClickListener(v -> viewModel.loadUserId());
+        viewModel.loadAllTeacherTasks();
+        binding.taskByTeacherFragmentTasksListRecycleview.setHasFixedSize(true);
     }
 
     @Override
@@ -77,7 +63,7 @@ public class TeacherTasksFragment extends Fragment implements TaskItemListener {
 
     @Override
     public void onEditTap(int taskID) {
-        TeacherTasksFragmentDirections.ActionTeacherTasksFragmentToTaskForm action = TeacherTasksFragmentDirections.actionTeacherTasksFragmentToTaskForm();
+        StudentTaskAssignedByTeacherFragmentDirections.ActionTaskAssignedByTeacherFragmentToStudentCreateTaskFragment action = StudentTaskAssignedByTeacherFragmentDirections.actionTaskAssignedByTeacherFragmentToStudentCreateTaskFragment();
         action.setIsEdit(true);
         action.setTaskID(taskID);
         Navigation.findNavController(requireView()).navigate(action);

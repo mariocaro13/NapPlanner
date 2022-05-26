@@ -12,7 +12,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import com.example.naplanner.MainActivity;
-import com.example.naplanner.adapters.TaskRecycleAdapter;
+import com.example.naplanner.adapters.TeacherTaskRecycleAdapter;
 import com.example.naplanner.databinding.FragmentOwnTasksTeacherBinding;
 import com.example.naplanner.features.main.tasks.viewmodel.TasksViewModel;
 import com.example.naplanner.interfaces.TaskItemListener;
@@ -44,7 +44,7 @@ public class TeacherOwnTasksFragment extends Fragment implements TaskItemListene
 
     private void setObservables() {
         viewModel.getTasks().observe(getViewLifecycleOwner(), taskModels -> {
-            TaskRecycleAdapter adapter = new TaskRecycleAdapter(taskModels, this, requireContext());
+            TeacherTaskRecycleAdapter adapter = new TeacherTaskRecycleAdapter(taskModels, this, requireContext());
             binding.ownTasksFragmentTasksListRecycleview.setLayoutManager(new LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false));
             binding.ownTasksFragmentTasksListRecycleview.setAdapter(adapter);
         });

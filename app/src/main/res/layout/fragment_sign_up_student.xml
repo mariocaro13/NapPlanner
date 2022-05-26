@@ -21,7 +21,7 @@
         android:id="@+id/sign_up_fragment_form_layout"
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
-        layout="@layout/student_sign_up_form"
+        layout="@layout/sign_up_form_student"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/sign_up_fragment_app_icon_image_view"

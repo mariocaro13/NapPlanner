@@ -2,11 +2,9 @@ package com.example.naplanner.adapters;
 
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
-
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-
-import com.example.naplanner.databinding.StudentsListItemBinding;
+import com.example.naplanner.databinding.ListItemStudentsBinding;
 import com.example.naplanner.interfaces.StudentListener;
 import com.example.naplanner.models.UserModel;
 
@@ -25,7 +23,7 @@ public class StudentListRecycleAdapter extends RecyclerView.Adapter<StudentListR
     @NonNull
     @Override
     public StudentListRecycleAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType) {
-        return new ViewHolder(StudentsListItemBinding.inflate(LayoutInflater.from(viewGroup.getContext()), viewGroup, false));
+        return new ViewHolder(ListItemStudentsBinding.inflate(LayoutInflater.from(viewGroup.getContext()), viewGroup, false));
     }
 
     @Override
@@ -43,9 +41,9 @@ public class StudentListRecycleAdapter extends RecyclerView.Adapter<StudentListR
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        StudentsListItemBinding binding;
+        ListItemStudentsBinding binding;
 
-        public ViewHolder(StudentsListItemBinding mbinding) {
+        public ViewHolder(ListItemStudentsBinding mbinding) {
             super(mbinding.getRoot());
             binding = mbinding;
         }

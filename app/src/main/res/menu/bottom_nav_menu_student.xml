@@ -11,13 +11,13 @@
         app:showAsAction="always" />
 
     <item
-        android:id="@+id/teacherOwnTasksFragment"
+        android:id="@+id/studentOwnTasksFragment"
         android:title="@string/bottom_menu_own_tasks_text"
         android:icon="@drawable/ic_baseline_format_list_numbered_24"
         app:showAsAction="ifRoom" />
 
     <item
-        android:id="@+id/completeTasksFragment"
+        android:id="@+id/studentCompleteTasksFragment"
         android:title="@string/bottom_menu_completed_tasks_text"
         android:icon="@drawable/ic_baseline_playlist_add_check_24"
         app:showAsAction="ifRoom" />

@@ -1,4 +1,4 @@
-package com.example.naplanner.features.main.tasks.view.student;
+package com.example.naplanner.features.main.tasks.view.teacher;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -12,20 +12,20 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import com.example.naplanner.MainActivity;
-import com.example.naplanner.adapters.StudentTaskRecycleAdapter;
 import com.example.naplanner.adapters.TeacherTaskRecycleAdapter;
-import com.example.naplanner.databinding.FragmentOwnTasksStudentBinding;
+import com.example.naplanner.databinding.FragmentTasksTeacherBinding;
 import com.example.naplanner.features.main.tasks.viewmodel.TasksViewModel;
 import com.example.naplanner.interfaces.TaskItemListener;
 
-public class StudentOwnTasksFragment extends Fragment implements TaskItemListener {
+public class TeacherCreatedTasksForStudentFragment extends Fragment implements TaskItemListener {
 
-    private FragmentOwnTasksStudentBinding binding;
+    private FragmentTasksTeacherBinding binding;
     private TasksViewModel viewModel;
+    private String studentId;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        binding = FragmentOwnTasksStudentBinding.inflate(inflater, container, false);
+        binding = FragmentTasksTeacherBinding.inflate(inflater, container, false);
         viewModel = new ViewModelProvider(requireActivity()).get(TasksViewModel.class);
         return binding.getRoot();
     }
@@ -33,7 +33,8 @@ public class StudentOwnTasksFragment extends Fragment implements TaskItemListene
     @Override
     public void onStart() {
         super.onStart();
-        ((MainActivity) requireActivity()).showInteractionBars();
+        studentId = TeacherCreatedTasksForStudentFragmentArgs.fromBundle(getArguments()).getId();
+
         setObservables();
         setupUI();
     }
@@ -45,16 +46,24 @@ public class StudentOwnTasksFragment extends Fragment implements TaskItemListene
 
     private void setObservables() {
         viewModel.getTasks().observe(getViewLifecycleOwner(), taskModels -> {
-            StudentTaskRecycleAdapter adapter = new StudentTaskRecycleAdapter(taskModels, this, requireContext());
-            binding.ownTasksFragmentTasksListRecycleview.setLayoutManager(new LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false));
-            binding.ownTasksFragmentTasksListRecycleview.setAdapter(adapter);
+            TeacherTaskRecycleAdapter adapter = new TeacherTaskRecycleAdapter(taskModels, this, requireContext());
+            binding.teacherTasksFragmentTasksListRecycleview.setLayoutManager(new LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false));
+            binding.teacherTasksFragmentTasksListRecycleview.setAdapter(adapter);
+        });
+        viewModel.getUserId().observe(getViewLifecycleOwner(), userId -> {
+            TeacherCreatedTasksForStudentFragmentDirections.ActionTeacherTasksFragmentToTaskForm action = TeacherCreatedTasksForStudentFragmentDirections.actionTeacherTasksFragmentToTaskForm();
+            action.setUserID(studentId);
+            action.setTeacherID(userId);
+            Navigation.findNavController(requireView()).navigate(action);
         });
         viewModel.getNotifyTaskViewModelException().observe(getViewLifecycleOwner(), exception -> printMsg(exception.getMessage()));
     }
 
     private void setupUI() {
-        viewModel.loadOwnTasks(false);
-        binding.ownTasksFragmentTasksListRecycleview.setHasFixedSize(true);
+        viewModel.loadTaskByTeacher(studentId);
+        ((MainActivity) requireActivity()).hideInteractionBars();
+        binding.teacherTasksFragmentReturnButton.setOnClickListener(v -> Navigation.findNavController(requireView()).navigateUp());
+        binding.teacherTasksFragmentCreateButton.setOnClickListener(v -> viewModel.loadUserId());
     }
 
     @Override
@@ -64,7 +73,7 @@ public class StudentOwnTasksFragment extends Fragment implements TaskItemListene
 
     @Override
     public void onEditTap(int taskID) {
-        StudentOwnTasksFragmentDirections.ActionStudentOwnTasksFragmentToStudentCreateTaskFragment action = StudentOwnTasksFragmentDirections.actionStudentOwnTasksFragmentToStudentCreateTaskFragment();
+        TeacherCreatedTasksForStudentFragmentDirections.ActionTeacherTasksFragmentToTaskForm action = TeacherCreatedTasksForStudentFragmentDirections.actionTeacherTasksFragmentToTaskForm();
         action.setIsEdit(true);
         action.setTaskID(taskID);
         Navigation.findNavController(requireView()).navigate(action);

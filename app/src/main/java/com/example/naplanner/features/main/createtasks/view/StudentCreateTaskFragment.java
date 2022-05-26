@@ -39,7 +39,6 @@ public class StudentCreateTaskFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-        setupVariables();
         setObservables();
         setupUI();
     }
@@ -48,10 +47,6 @@ public class StudentCreateTaskFragment extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
         binding = null;
-    }
-
-    private void setupVariables() {
-        studentId = CreateTaskFragmentArgs.fromBundle(getArguments()).getUserID();
     }
 
     private void setupUI() {
@@ -75,9 +70,9 @@ public class StudentCreateTaskFragment extends Fragment {
             binding.taskFormRadioButtonNormal.setChecked(task.getType() == TaskModel.TaskType.NORMAL);
         });
         viewModel.getUserId().observe(getViewLifecycleOwner(), userId -> {
-            if (studentId.equals("-1")) studentId = userId;
+            studentId = userId;
 
-            if (CreateTask.fromBundle(getArguments()).getIsEdit())
+            if (StudentCreateTaskFragmentArgs.fromBundle(getArguments()).getIsEdit())
                 editTask();
             else
                 createTask();
@@ -87,7 +82,7 @@ public class StudentCreateTaskFragment extends Fragment {
     }
 
     private void editTask() {
-        int taskID = CreateTaskFragmentArgs.fromBundle(getArguments()).getTaskID();
+        int taskID = StudentCreateTaskFragmentArgs.fromBundle(getArguments()).getTaskID();
         if (taskID != -1)
             viewModel.loadTask(taskID, studentId);
 

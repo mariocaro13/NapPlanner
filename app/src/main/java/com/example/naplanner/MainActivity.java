@@ -7,17 +7,16 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.constraintlayout.widget.ConstraintSet;
+import androidx.core.content.res.ResourcesCompat;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
-
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.CustomTarget;
 import com.bumptech.glide.request.transition.Transition;
@@ -30,10 +29,10 @@ import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
 
+    private final FirebaseAuth fAuth = FirebaseAuth.getInstance();
     private AppBarConfiguration appBarConfiguration;
     private ActivityMainBinding binding;
     private NavController navController;
-    private final FirebaseAuth fAuth = FirebaseAuth.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,7 +60,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_main, menu);
-        if(fAuth.getCurrentUser() != null)
+        if (fAuth.getCurrentUser() != null)
             getAndApplyProfilePicture(menu.findItem(R.id.action_profile));
         return super.onCreateOptionsMenu(menu);
     }
@@ -86,11 +85,12 @@ public class MainActivity extends AppCompatActivity {
 
     public void setupNavigationBar(boolean isStudent) {
         binding.activityMainBottomNav.getMenu().clear();
-        if(isStudent)
+        if (isStudent) {
             binding.activityMainBottomNav.inflateMenu(R.menu.bottom_nav_menu_student);
-        else
+            binding.activityMainBottomNav.setBackground(ResourcesCompat.getDrawable(getResources(), R.color.dark_green, null));
+        } else {
             binding.activityMainBottomNav.inflateMenu(R.menu.bottom_nav_menu_teacher);
-
+        }
         NavigationUI.setupWithNavController(binding.activityMainBottomNav, navController);
     }
 
@@ -124,16 +124,16 @@ public class MainActivity extends AppCompatActivity {
                         .asBitmap()
                         .load(uri)
                         .into(new CustomTarget<Bitmap>() {
-                                  @Override
-                                  public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
-                                      BitmapDrawable croppedResource = new BitmapDrawable(getResources(), BitmapCropper.getRoundCroppedBitmap(resource));
-                                      profileItem.setIcon(croppedResource);
-                                  }
+                            @Override
+                            public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
+                                BitmapDrawable croppedResource = new BitmapDrawable(getResources(), BitmapCropper.getRoundCroppedBitmap(resource));
+                                profileItem.setIcon(croppedResource);
+                            }
 
-                                  @Override
-                                  public void onLoadCleared(@Nullable Drawable placeholder) {
+                            @Override
+                            public void onLoadCleared(@Nullable Drawable placeholder) {
 
-                                  }
-                              }));
+                            }
+                        }));
     }
 }

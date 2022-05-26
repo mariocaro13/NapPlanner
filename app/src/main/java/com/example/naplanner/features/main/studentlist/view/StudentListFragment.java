@@ -5,17 +5,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
-
 import com.example.naplanner.MainActivity;
 import com.example.naplanner.adapters.StudentListRecycleAdapter;
-import com.example.naplanner.databinding.FragmentStudentListBinding;
+import com.example.naplanner.databinding.FragmentListStudentBinding;
 import com.example.naplanner.features.main.studentlist.viewmodel.StudentListViewModel;
 import com.example.naplanner.interfaces.StudentListener;
 import com.example.naplanner.models.UserModel;
@@ -23,11 +21,11 @@ import com.example.naplanner.models.UserModel;
 public class StudentListFragment extends Fragment implements StudentListener {
 
     private StudentListViewModel viewModel;
-    private FragmentStudentListBinding binding;
+    private FragmentListStudentBinding binding;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        binding = FragmentStudentListBinding.inflate(inflater, container, false);
+        binding = FragmentListStudentBinding.inflate(inflater, container, false);
         viewModel = new ViewModelProvider(requireActivity()).get(StudentListViewModel.class);
         return binding.getRoot();
     }

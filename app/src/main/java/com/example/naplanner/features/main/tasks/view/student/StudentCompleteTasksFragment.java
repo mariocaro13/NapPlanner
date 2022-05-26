@@ -5,28 +5,27 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
-
 import com.example.naplanner.MainActivity;
-import com.example.naplanner.adapters.TaskRecycleAdapter;
-import com.example.naplanner.databinding.FragmentTaskAssignedByTeacherBinding;
+import com.example.naplanner.adapters.StudentTaskRecycleAdapter;
+import com.example.naplanner.adapters.TeacherTaskRecycleAdapter;
+import com.example.naplanner.databinding.FragmentCompleteTasksStudentBinding;
 import com.example.naplanner.features.main.tasks.viewmodel.TasksViewModel;
 import com.example.naplanner.interfaces.TaskItemListener;
 
-public class TaskAssignedByTeacherFragment extends Fragment implements TaskItemListener{
+public class StudentCompleteTasksFragment extends Fragment implements TaskItemListener {
 
-    private FragmentTaskAssignedByTeacherBinding binding;
+    private FragmentCompleteTasksStudentBinding binding;
     private TasksViewModel viewModel;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        binding = FragmentTaskAssignedByTeacherBinding.inflate(inflater, container, false);
+        binding = FragmentCompleteTasksStudentBinding.inflate(inflater, container, false);
         viewModel = new ViewModelProvider(requireActivity()).get(TasksViewModel.class);
         return binding.getRoot();
     }
@@ -46,16 +45,16 @@ public class TaskAssignedByTeacherFragment extends Fragment implements TaskItemL
 
     private void setObservables() {
         viewModel.getTasks().observe(getViewLifecycleOwner(), taskModels -> {
-            TaskRecycleAdapter adapter = new TaskRecycleAdapter(taskModels, this, requireContext());
-            binding.taskByTeacherFragmentTasksListRecycleview.setLayoutManager(new LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false));
-            binding.taskByTeacherFragmentTasksListRecycleview.setAdapter(adapter);
+            StudentTaskRecycleAdapter adapter = new StudentTaskRecycleAdapter(taskModels, this, requireContext());
+            binding.completeTasksFragmentTasksListRecycleview.setLayoutManager(new LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false));
+            binding.completeTasksFragmentTasksListRecycleview.setAdapter(adapter);
         });
         viewModel.getNotifyTaskViewModelException().observe(getViewLifecycleOwner(), exception -> printMsg(exception.getMessage()));
     }
 
     private void setupUI() {
-        viewModel.loadAllTeacherTasks();
-        binding.taskByTeacherFragmentTasksListRecycleview.setHasFixedSize(true);
+        viewModel.loadOwnTasks(true);
+        binding.completeTasksFragmentTasksListRecycleview.setHasFixedSize(true);
     }
 
     @Override
@@ -65,7 +64,7 @@ public class TaskAssignedByTeacherFragment extends Fragment implements TaskItemL
 
     @Override
     public void onEditTap(int taskID) {
-        TaskAssignedByTeacherFragmentDirections.ActionTaskAssignedByTeacherFragmentToTaskForm action = TaskAssignedByTeacherFragmentDirections.actionTaskAssignedByTeacherFragmentToTaskForm();
+        StudentCompleteTasksFragmentDirections.ActionStudentCompleteTasksFragmentToStudentCreateTaskFragment action = StudentCompleteTasksFragmentDirections.actionStudentCompleteTasksFragmentToStudentCreateTaskFragment();
         action.setIsEdit(true);
         action.setTaskID(taskID);
         Navigation.findNavController(requireView()).navigate(action);

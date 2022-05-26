@@ -3,11 +3,9 @@ package com.example.naplanner.adapters;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.content.res.AppCompatResources;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.example.naplanner.R;
 import com.example.naplanner.databinding.TasksListItemBinding;
 import com.example.naplanner.interfaces.TaskItemListener;
@@ -15,14 +13,13 @@ import com.example.naplanner.models.TaskModel;
 
 import java.util.ArrayList;
 
-public class TaskRecycleAdapter extends RecyclerView.Adapter<TaskRecycleAdapter.ViewHolder> {
+public class StudentTaskRecycleAdapter extends RecyclerView.Adapter<StudentTaskRecycleAdapter.ViewHolder> {
 
     private final ArrayList<TaskModel> tasks;
     private final TaskItemListener listener;
     private final Context context;
-    private boolean isStudent;
 
-    public TaskRecycleAdapter(ArrayList<TaskModel> tasks, TaskItemListener listener, Context context) {
+    public StudentTaskRecycleAdapter(ArrayList<TaskModel> tasks, TaskItemListener listener, Context context) {
         this.tasks = tasks;
         this.listener = listener;
         this.context = context;
@@ -38,12 +35,7 @@ public class TaskRecycleAdapter extends RecyclerView.Adapter<TaskRecycleAdapter.
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         holder.binding.tasksListItemNameTaskTextView.setText(tasks.get(position).getName());
         holder.binding.taskListItemCompleteTaskCheckbox.setChecked(tasks.get(position).isComplete());
-
-        if (isStudent)
-            useStudentPalette(holder, position);
-        else
-            useTeacherPalette(holder, position);
-
+        useStudentPalette(holder, position);
         holder.binding.taskListItemCompleteTaskCheckbox.setOnClickListener(view -> listener.onCheckboxTap(tasks.get(position).getId()));
         holder.binding.taskListItemEditTaskImageView.setOnClickListener(view -> listener.onEditTap(tasks.get(position).getId()));
     }
@@ -51,21 +43,6 @@ public class TaskRecycleAdapter extends RecyclerView.Adapter<TaskRecycleAdapter.
     @Override
     public int getItemCount() {
         return tasks.size();
-    }
-
-    private void useTeacherPalette(ViewHolder holder, int position) {
-        switch (tasks.get(position).getType()) {
-            case LEGENDARY:
-                holder.binding.getRoot().setBackground(AppCompatResources.getDrawable(context, R.drawable.border_task_legendary_blue));
-                break;
-            case EPIC:
-                holder.binding.getRoot().setBackground(AppCompatResources.getDrawable(context, R.drawable.border_task_epic_blue));
-                break;
-            case NORMAL:
-                holder.binding.getRoot().setBackground(AppCompatResources.getDrawable(context, R.drawable.border_task_normal_blue));
-                break;
-            default:
-        }
     }
 
     private void useStudentPalette(ViewHolder holder, int position) {

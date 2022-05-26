@@ -60,9 +60,9 @@
     </fragment>
     <fragment
         android:id="@+id/teacherTasksFragment"
-        android:name="com.example.naplanner.features.main.tasks.view.TeacherTasksFragment"
+        android:name="com.example.naplanner.features.main.tasks.view.teacher.TeacherCreatedTasksForStudentFragment"
         android:label="fragment_teacher_tasks"
-        tools:layout="@layout/fragment_teacher_tasks" >
+        tools:layout="@layout/fragment_tasks_teacher" >
         <action
             android:id="@+id/action_teacherTasksFragment_to_taskForm"
             app:destination="@id/teacherTaskForm" />
@@ -106,9 +106,9 @@
     </fragment>
     <fragment
         android:id="@+id/completeTasksFragment"
-        android:name="com.example.naplanner.features.main.tasks.view.CompleteTasksFragment"
+        android:name="com.example.naplanner.features.main.tasks.view.teacher.TeacherCompleteTasksFragment"
         android:label="fragment_complete_tasks"
-        tools:layout="@layout/fragment_complete_tasks" >
+        tools:layout="@layout/fragment_complete_tasks_teacher" >
         <action
             android:id="@+id/action_completeTasksFragment_to_taskForm"
             app:destination="@id/teacherTaskForm" />
@@ -126,14 +126,14 @@
         android:id="@+id/studentListFragment"
         android:name="com.example.naplanner.features.main.studentlist.view.StudentListFragment"
         android:label="fragment_student_list"
-        tools:layout="@layout/fragment_student_list" >
+        tools:layout="@layout/fragment_list_student" >
         <action
             android:id="@+id/action_studentListFragment_to_teacherTasksFragment"
             app:destination="@id/teacherTasksFragment" />
     </fragment>
     <fragment
         android:id="@+id/taskAssignedByTeacherFragment"
-        android:name="com.example.naplanner.features.main.tasks.view.student.TaskAssignedByTeacherFragment"
+        android:name="com.example.naplanner.features.main.tasks.view.student.StudentTaskAssignedByTeacherFragment"
         android:label="TaskAssignedByTeacherFragment" >
         <action android:id="@+id/action_taskAssignedByTeacherFragment_to_studentCreateTaskFragment"
                 app:destination="@id/studentCreateTaskFragment"/>
@@ -165,5 +165,14 @@
     </fragment>
     <fragment android:id="@+id/studentCreateTaskFragment"
               android:name="com.example.naplanner.features.main.createtasks.view.StudentCreateTaskFragment"
-              android:label="StudentCreateTaskFragment"/>
+              android:label="StudentCreateTaskFragment">
+        <argument android:name="isEdit" android:defaultValue="false" app:argType="boolean"/>
+        <argument android:name="taskID" app:argType="integer" android:defaultValue="-1"/>
+    </fragment>
+    <fragment android:id="@+id/studentCompleteTasksFragment"
+              android:name="com.example.naplanner.features.main.tasks.view.student.StudentCompleteTasksFragment"
+              android:label="StudentCompleteTasksFragment">
+        <action android:id="@+id/action_studentCompleteTasksFragment_to_studentCreateTaskFragment"
+                app:destination="@id/studentCreateTaskFragment"/>
+    </fragment>
 </navigation>

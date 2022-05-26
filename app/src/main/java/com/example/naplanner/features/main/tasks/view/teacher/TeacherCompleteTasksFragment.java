@@ -1,4 +1,4 @@
-package com.example.naplanner.features.main.tasks.view;
+package com.example.naplanner.features.main.tasks.view.teacher;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -12,19 +12,19 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import com.example.naplanner.MainActivity;
-import com.example.naplanner.adapters.TaskRecycleAdapter;
-import com.example.naplanner.databinding.FragmentCompleteTasksBinding;
+import com.example.naplanner.adapters.TeacherTaskRecycleAdapter;
+import com.example.naplanner.databinding.FragmentCompleteTasksTeacherBinding;
 import com.example.naplanner.features.main.tasks.viewmodel.TasksViewModel;
 import com.example.naplanner.interfaces.TaskItemListener;
 
-public class CompleteTasksFragment extends Fragment implements TaskItemListener {
+public class TeacherCompleteTasksFragment extends Fragment implements TaskItemListener {
 
-    private FragmentCompleteTasksBinding binding;
+    private FragmentCompleteTasksTeacherBinding binding;
     private TasksViewModel viewModel;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        binding = FragmentCompleteTasksBinding.inflate(inflater, container, false);
+        binding = FragmentCompleteTasksTeacherBinding.inflate(inflater, container, false);
         viewModel = new ViewModelProvider(requireActivity()).get(TasksViewModel.class);
         return binding.getRoot();
     }
@@ -44,7 +44,7 @@ public class CompleteTasksFragment extends Fragment implements TaskItemListener 
 
     private void setObservables() {
         viewModel.getTasks().observe(getViewLifecycleOwner(), taskModels -> {
-            TaskRecycleAdapter adapter = new TaskRecycleAdapter(taskModels, this, requireContext());
+            TeacherTaskRecycleAdapter adapter = new TeacherTaskRecycleAdapter(taskModels, this, requireContext());
             binding.completeTasksFragmentTasksListRecycleview.setLayoutManager(new LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false));
             binding.completeTasksFragmentTasksListRecycleview.setAdapter(adapter);
         });
@@ -63,7 +63,7 @@ public class CompleteTasksFragment extends Fragment implements TaskItemListener 
 
     @Override
     public void onEditTap(int taskID) {
-        CompleteTasksFragmentDirections.ActionCompleteTasksFragmentToTaskForm action = CompleteTasksFragmentDirections.actionCompleteTasksFragmentToTaskForm();
+        TeacherCompleteTasksFragmentDirections.ActionCompleteTasksFragmentToTaskForm action = TeacherCompleteTasksFragmentDirections.actionCompleteTasksFragmentToTaskForm();
         action.setIsEdit(true);
         action.setTaskID(taskID);
         Navigation.findNavController(requireView()).navigate(action);
