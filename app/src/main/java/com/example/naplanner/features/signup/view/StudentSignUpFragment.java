@@ -38,9 +38,11 @@ public class StudentSignUpFragment extends Fragment {
         setupUI();
     }
 
-    @Override
-    public void onStart() {
-        super.onStart();
+    private void setObservables() {
+        viewModel.navigate.observe(getViewLifecycleOwner(),
+                unused -> Navigation.findNavController(requireView()).navigate(R.id.action_teacherSignUpFragment_to_teacherTasksFragment));
+        viewModel.notifySignUpException.observe(getViewLifecycleOwner(),
+                exception -> printMsg(exception.getMessage()));
     }
 
     private void setupUI() {
@@ -71,13 +73,6 @@ public class StudentSignUpFragment extends Fragment {
         else if (pass.equals(conPass))
             viewModel.signUp(userModel, pass);
         else printMsg("Las contraseñas no son iguales");
-    }
-
-    private void setObservables() {
-        viewModel.navigate.observe(getViewLifecycleOwner(),
-                unused -> Navigation.findNavController(requireView()).navigate(R.id.action_teacherSignUpFragment_to_teacherTasksFragment));
-        viewModel.notifySignUpException.observe(getViewLifecycleOwner(),
-                exception -> printMsg(exception.getMessage()));
     }
 
     private void printMsg(String msg) {

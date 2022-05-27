@@ -78,6 +78,7 @@ public class TeacherCreatedTasksForStudentFragment extends Fragment implements T
         TeacherCreatedTasksForStudentFragmentDirections.ActionTeacherTasksFragmentToTaskForm action = TeacherCreatedTasksForStudentFragmentDirections.actionTeacherTasksFragmentToTaskForm();
         action.setIsEdit(true);
         action.setTaskID(taskID);
+        action.setUserID(studentId);
         Navigation.findNavController(requireView()).navigate(action);
     }
 

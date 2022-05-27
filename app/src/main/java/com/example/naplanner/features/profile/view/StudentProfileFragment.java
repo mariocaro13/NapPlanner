@@ -60,15 +60,15 @@ public class StudentProfileFragment extends Fragment {
     public void setupUI() {
         viewModel.loadCompleteTaskCount();
         viewModel.loadImage();
-        viewModel.loadUsername();
+        viewModel.loadUser();
 
-        binding.profileFragmentUserMailTextView.setText(Objects.requireNonNull(viewModel.getUser().getEmail()));
+
         binding.fragmentProfileResetPasswordTextView.setOnClickListener(viewModel.updatePassword());
         binding.profileFragmentAppIconImageView.setOnClickListener(getPhotoFromImagePicker());
-        binding.profileFragmentBackButton.setOnClickListener(view1 -> Navigation.findNavController(requireView()).navigateUp());
-        binding.profileFragmentLogOutButton.setOnClickListener(v -> {
+        binding.profileFragmentBackButton.setOnClickListener(view -> Navigation.findNavController(requireView()).navigateUp());
+        binding.profileFragmentLogOutButton.setOnClickListener(view -> {
             viewModel.logout();
-            Navigation.findNavController(requireView()).navigate(R.id.loginFragment);
+            Navigation.findNavController(requireView()).navigate(ProfileFragmentDirections.actionProfileFragmentToLoginFragment());
         });
 
     }
@@ -88,10 +88,12 @@ public class StudentProfileFragment extends Fragment {
     private void setObservables() {
         viewModel.navigate.observe(getViewLifecycleOwner(),
                 unused -> Navigation.findNavController(requireView()).navigate(R.id.action_LoginFragment_to_ownTasksFragment));
-        viewModel.username.observe(getViewLifecycleOwner(),
-                name -> { String shortenedString = name.substring(0, 1).toUpperCase() + name.substring(1);
-                binding.profileFragmentUserNameTextView.setText(shortenedString);
-        });
+        viewModel.user.observe(getViewLifecycleOwner(),
+                user -> {
+                    String shortenedString = user.getUsername().substring(0, 1).toUpperCase() + user.getUsername().substring(1);
+                    binding.profileFragmentUserNameTextView.setText(shortenedString);
+                    binding.profileFragmentUserMailTextView.setText(Objects.requireNonNull(user.getMail()));
+                });
         viewModel.imageUri.observe(getViewLifecycleOwner(), this::setUserImage);
         viewModel.completedTaskCount.observe(getViewLifecycleOwner(),
                 completedTaskCount -> binding.profileFragmentTasksCountTextView.setText(String.valueOf(completedTaskCount)));
@@ -104,7 +106,8 @@ public class StudentProfileFragment extends Fragment {
     private void printMsg(String msg) {
         Toast.makeText(requireActivity().getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
     }
-    private void setUserImage(Uri uri){
+
+    private void setUserImage(Uri uri) {
         Glide.with(requireActivity())
                 .asBitmap()
                 .load(uri)
@@ -115,6 +118,7 @@ public class StudentProfileFragment extends Fragment {
                         BitmapDrawable croppedResource = new BitmapDrawable(getResources(), BitmapCropper.getRoundCroppedBitmap(resource));
                         binding.profileFragmentAppIconImageView.setImageDrawable(croppedResource);
                     }
+
                     @Override
                     public void onLoadCleared(@Nullable Drawable placeholder) {
                     }

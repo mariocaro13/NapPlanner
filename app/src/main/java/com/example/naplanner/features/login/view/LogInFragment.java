@@ -9,11 +9,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
+
 import com.example.naplanner.MainActivity;
 import com.example.naplanner.R;
 import com.example.naplanner.databinding.FragmentLogInBinding;
@@ -52,16 +54,12 @@ public class LogInFragment extends Fragment {
     }
 
     private void setObservables() {
-        viewModel.getLoginResponse().observe(getViewLifecycleOwner(), isStudent -> {
-            ((MainActivity) requireActivity()).setupNavigationBar(isStudent);
-            viewModel.loadUsername();
-        });
-        viewModel.getUsername().observe(getViewLifecycleOwner(), username -> {
-            ((MainActivity) requireActivity()).setupToolbar(username.substring(0, 1).toUpperCase() + username.substring(1));
+        viewModel.navigate.observe(getViewLifecycleOwner(), unused -> {
+            ((MainActivity) requireActivity()).loadUserInfo();
             Navigation.findNavController(requireView()).navigate(R.id.action_LoginFragment_to_ownTasksFragment);
         });
-        viewModel.getNotifyLoginException().observe(getViewLifecycleOwner(), exception -> printMsg(exception.getMessage()));
-        viewModel.getNotifyResetPassResponse().observe(getViewLifecycleOwner(), this::printMsg);
+        viewModel.notifyLoginException.observe(getViewLifecycleOwner(), exception -> printMsg(exception.getMessage()));
+        viewModel.notifyResetPassResponse.observe(getViewLifecycleOwner(), this::printMsg);
     }
 
     private void setupUI() {

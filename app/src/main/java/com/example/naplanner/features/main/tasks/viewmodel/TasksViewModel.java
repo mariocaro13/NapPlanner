@@ -21,10 +21,13 @@ public class TasksViewModel extends ViewModel {
 
     private final FirebaseAuth fAuth = FirebaseAuth.getInstance();
     private final DatabaseReference dRef = FirebaseDatabase.getInstance(Constants.databaseURL).getReference();
+
     private final MutableLiveData<ArrayList<TaskModel>> tasksData = new MutableLiveData<>();
     public final LiveData<ArrayList<TaskModel>> tasks = tasksData;
+
     private final MutableLiveData<String> userIdData = new MutableLiveData<>();
     public final LiveData<String> userId = userIdData;
+
     private final MutableLiveData<Exception> notifyTaskViewModelExceptionData = new MutableLiveData<>();
     public final LiveData<Exception> notifyTaskViewModelException = notifyTaskViewModelExceptionData;
 

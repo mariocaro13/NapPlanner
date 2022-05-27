@@ -17,7 +17,6 @@ import com.example.naplanner.helperclasses.Constants;
 import com.example.naplanner.models.TaskModel;
 import com.example.naplanner.models.UserModel;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
@@ -31,6 +30,7 @@ public class ProfileViewModel extends ViewModel {
 
     private final FirebaseAuth fAuth = FirebaseAuth.getInstance();
     private final FirebaseStorage fStorage = FirebaseStorage.getInstance();
+    private final FirebaseDatabase fDatabase = FirebaseDatabase.getInstance(Constants.databaseURL);
 
     private final MutableLiveData<Void> navigateData = new MutableLiveData<>();
     public final LiveData<Void> navigate = navigateData;
@@ -41,8 +41,8 @@ public class ProfileViewModel extends ViewModel {
     private final MutableLiveData<Uri> imageUriData = new MutableLiveData<>();
     public final LiveData<Uri> imageUri = imageUriData;
 
-    private final MutableLiveData<String> usernameData = new MutableLiveData<>();
-    public final LiveData<String> username = usernameData;
+    private final MutableLiveData<UserModel> userData = new MutableLiveData<>();
+    public final LiveData<UserModel> user = userData;
 
     private final MutableLiveData<Void> uploadSelectedImageResponseData = new MutableLiveData<>();
     public final LiveData<Void> uploadSelectedImageResponse = uploadSelectedImageResponseData;
@@ -52,7 +52,7 @@ public class ProfileViewModel extends ViewModel {
 
 
     public void loadCompleteTaskCount() {
-        FirebaseDatabase.getInstance(Constants.databaseURL).getReference().child("Tasks").child(Objects.requireNonNull(fAuth.getCurrentUser()).getUid()).addValueEventListener(new ValueEventListener() {
+        fDatabase.getReference().child("Tasks").child(Objects.requireNonNull(fAuth.getCurrentUser()).getUid()).addValueEventListener(new ValueEventListener() {
             int tasksCompleteCount = 0;
 
             @SuppressLint({"NotifyDataSetChanged", "SetTextI18n"})
@@ -107,13 +107,13 @@ public class ProfileViewModel extends ViewModel {
                 .addOnFailureListener(notifyProfileExceptionData::postValue);
     }
 
-    public void loadUsername() {
-        FirebaseDatabase.getInstance(Constants.databaseURL).getReference().child("User").child(Objects.requireNonNull(fAuth.getCurrentUser()).getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+    public void loadUser() {
+        fDatabase.getReference().child("User").child(Objects.requireNonNull(fAuth.getCurrentUser()).getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
             @SuppressLint("SetTextI18n")
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.exists()) {
-                    usernameData.postValue(Objects.requireNonNull(snapshot.getValue(UserModel.class)).getUsername());
+                    userData.postValue(Objects.requireNonNull(snapshot.getValue(UserModel.class)));
                 }
             }
 
@@ -136,9 +136,5 @@ public class ProfileViewModel extends ViewModel {
                 loadImage();
             }).addOnFailureListener(notifyProfileExceptionData::postValue);
         }
-    }
-
-    public FirebaseUser getUser() {
-        return fAuth.getCurrentUser();
     }
 }
