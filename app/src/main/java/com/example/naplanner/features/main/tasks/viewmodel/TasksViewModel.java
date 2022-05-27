@@ -1,14 +1,18 @@
 package com.example.naplanner.features.main.tasks.viewmodel;
 
-import android.annotation.SuppressLint;
 import androidx.annotation.NonNull;
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
+
 import com.example.naplanner.helperclasses.Constants;
 import com.example.naplanner.models.TaskModel;
-import com.example.naplanner.models.UserModel;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.*;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.Objects;
@@ -17,9 +21,12 @@ public class TasksViewModel extends ViewModel {
 
     private final FirebaseAuth fAuth = FirebaseAuth.getInstance();
     private final DatabaseReference dRef = FirebaseDatabase.getInstance(Constants.databaseURL).getReference();
-    private final MutableLiveData<ArrayList<TaskModel>> tasks = new MutableLiveData<>();
-    private final MutableLiveData<String> userId = new MutableLiveData<>();
-    private final MutableLiveData<Exception> notifyTaskViewModelException = new MutableLiveData<>();
+    private final MutableLiveData<ArrayList<TaskModel>> tasksData = new MutableLiveData<>();
+    public final LiveData<ArrayList<TaskModel>> tasks = tasksData;
+    private final MutableLiveData<String> userIdData = new MutableLiveData<>();
+    public final LiveData<String> userId = userIdData;
+    private final MutableLiveData<Exception> notifyTaskViewModelExceptionData = new MutableLiveData<>();
+    public final LiveData<Exception> notifyTaskViewModelException = notifyTaskViewModelExceptionData;
 
     public void loadOwnTasks() {
         if (fAuth.getCurrentUser() != null)
@@ -32,12 +39,12 @@ public class TasksViewModel extends ViewModel {
                         if (Objects.requireNonNull(task).getCreatorID().equals(fAuth.getCurrentUser().getUid()))
                             tempTasks.add(task);
                     }
-                    tasks.postValue(tempTasks);
+                    tasksData.postValue(tempTasks);
                 }
 
                 @Override
                 public void onCancelled(@NonNull DatabaseError error) {
-                    notifyTaskViewModelException.postValue(error.toException());
+                    notifyTaskViewModelExceptionData.postValue(error.toException());
                 }
             });
     }
@@ -53,12 +60,12 @@ public class TasksViewModel extends ViewModel {
                         if (Objects.requireNonNull(task).getCreatorID().equals(fAuth.getCurrentUser().getUid()) && task.isComplete() == isComplete)
                             tempTasks.add(task);
                     }
-                    tasks.postValue(tempTasks);
+                    tasksData.postValue(tempTasks);
                 }
 
                 @Override
                 public void onCancelled(@NonNull DatabaseError error) {
-                    notifyTaskViewModelException.postValue(error.toException());
+                    notifyTaskViewModelExceptionData.postValue(error.toException());
                 }
             });
     }
@@ -74,12 +81,12 @@ public class TasksViewModel extends ViewModel {
                         if (Objects.requireNonNull(task).getCreatorID().equals(fAuth.getCurrentUser().getUid()))
                             tempTasks.add(task);
                     }
-                    tasks.postValue(tempTasks);
+                    tasksData.postValue(tempTasks);
                 }
 
                 @Override
                 public void onCancelled(@NonNull DatabaseError error) {
-                    notifyTaskViewModelException.postValue(error.toException());
+                    notifyTaskViewModelExceptionData.postValue(error.toException());
                 }
             });
     }
@@ -95,18 +102,18 @@ public class TasksViewModel extends ViewModel {
                         if (!Objects.requireNonNull(task).getCreatorID().equals(fAuth.getCurrentUser().getUid()))
                             tempTasks.add(task);
                     }
-                    tasks.postValue(tempTasks);
+                    tasksData.postValue(tempTasks);
                 }
 
                 @Override
                 public void onCancelled(@NonNull DatabaseError error) {
-                    notifyTaskViewModelException.postValue(error.toException());
+                    notifyTaskViewModelExceptionData.postValue(error.toException());
                 }
             });
     }
 
     public void loadUserId() {
-        userId.postValue(Objects.requireNonNull(fAuth.getCurrentUser()).getUid());
+        userIdData.postValue(Objects.requireNonNull(fAuth.getCurrentUser()).getUid());
     }
 
     public void setTasksComplete(int taskID) {
@@ -116,17 +123,5 @@ public class TasksViewModel extends ViewModel {
                 FirebaseDatabase.getInstance(Constants.databaseURL).getReference().child("Tasks").child(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid()).child("Task" + taskID).child("complete").setValue(task.isComplete());
             }
         }
-    }
-
-    public MutableLiveData<Exception> getNotifyTaskViewModelException() {
-        return notifyTaskViewModelException;
-    }
-
-    public MutableLiveData<ArrayList<TaskModel>> getTasks() {
-        return tasks;
-    }
-
-    public MutableLiveData<String> getUserId() {
-        return userId;
     }
 }

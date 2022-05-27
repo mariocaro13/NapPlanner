@@ -28,7 +28,7 @@ public class LogInFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentLogInBinding.inflate(inflater, container, false);
-        viewModel = new ViewModelProvider(requireActivity()).get(LogInViewModel.class);
+        viewModel = new ViewModelProvider(this).get(LogInViewModel.class);
         return binding.getRoot();
     }
 

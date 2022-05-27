@@ -1,7 +1,9 @@
 package com.example.naplanner.features.signup.viewmodel;
 
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
+
 import com.example.naplanner.helperclasses.Constants;
 import com.example.naplanner.models.UserModel;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -13,8 +15,10 @@ import java.util.Objects;
 
 public class SignUpViewModel extends ViewModel {
 
-    private final MutableLiveData<Void> navigate = new MutableLiveData<>();
-    private final MutableLiveData<Exception> notifySignUpException = new MutableLiveData<>();
+    private final MutableLiveData<Void> navigateData = new MutableLiveData<>();
+    public final LiveData<Void> navigate = navigateData;
+    private final MutableLiveData<Exception> notifySignUpExceptionData = new MutableLiveData<>();
+    public final LiveData<Exception> notifySignUpException = notifySignUpExceptionData;
     private final FirebaseAuth fAuth = FirebaseAuth.getInstance();
 
     public void signUp(final UserModel userModel, String pass) {
@@ -29,19 +33,11 @@ public class SignUpViewModel extends ViewModel {
 
                 userModel.setuID(Objects.requireNonNull(fAuth.getCurrentUser()).getUid());
                 FirebaseDatabase.getInstance(Constants.databaseURL).getReference("User").child(Objects.requireNonNull(fAuth.getCurrentUser()).getUid()).setValue(userModel).addOnCompleteListener(task1 -> {
-                    if (task1.isSuccessful()) navigate.postValue(null);
+                    if (task1.isSuccessful()) navigateData.postValue(null);
                 });
 
             } else
-                notifySignUpException.postValue(new Exception(Objects.requireNonNull(task.getException()).getMessage()));
+                notifySignUpExceptionData.postValue(new Exception(Objects.requireNonNull(task.getException()).getMessage()));
         };
-    }
-
-    public MutableLiveData<Void> getNavigate() {
-        return navigate;
-    }
-
-    public MutableLiveData<Exception> getNotifySignUpException() {
-        return notifySignUpException;
     }
 }

@@ -25,7 +25,7 @@ public class TeacherCompleteTasksFragment extends Fragment implements TaskItemLi
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = FragmentCompleteTasksTeacherBinding.inflate(inflater, container, false);
-        viewModel = new ViewModelProvider(requireActivity()).get(TasksViewModel.class);
+        viewModel = new ViewModelProvider(this).get(TasksViewModel.class);
         return binding.getRoot();
     }
 
@@ -43,12 +43,12 @@ public class TeacherCompleteTasksFragment extends Fragment implements TaskItemLi
     }
 
     private void setObservables() {
-        viewModel.getTasks().observe(getViewLifecycleOwner(), taskModels -> {
+        viewModel.tasks.observe(getViewLifecycleOwner(), taskModels -> {
             TeacherTaskRecycleAdapter adapter = new TeacherTaskRecycleAdapter(taskModels, this, requireContext());
             binding.completeTasksFragmentTasksListRecycleview.setLayoutManager(new LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false));
             binding.completeTasksFragmentTasksListRecycleview.setAdapter(adapter);
         });
-        viewModel.getNotifyTaskViewModelException().observe(getViewLifecycleOwner(), exception -> printMsg(exception.getMessage()));
+        viewModel.notifyTaskViewModelException.observe(getViewLifecycleOwner(), exception -> printMsg(exception.getMessage()));
     }
 
     private void setupUI() {

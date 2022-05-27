@@ -1,10 +1,14 @@
 package com.example.naplanner.features.main.createtasks.viewmodel;
 
 import android.annotation.SuppressLint;
+import android.app.usage.UsageEvents;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
+import androidx.navigation.Navigation;
 
 import com.example.naplanner.helperclasses.Constants;
 import com.example.naplanner.models.TaskModel;
@@ -23,12 +27,24 @@ public class CreateTaskViewModel extends ViewModel {
 
     private final FirebaseAuth fAuth = FirebaseAuth.getInstance();
     private final DatabaseReference dRef = FirebaseDatabase.getInstance(Constants.databaseURL).getReference();
-    private final MutableLiveData<ArrayList<TaskModel>> tasks = new MutableLiveData<>();
-    private final MutableLiveData<String> username = new MutableLiveData<>();
-    private final MutableLiveData<Void> navigate = new MutableLiveData<>();
-    private final MutableLiveData<TaskModel> task = new MutableLiveData<>();
-    private final MutableLiveData<String> userId = new MutableLiveData<>();
-    private final MutableLiveData<Exception> notifyCreateTaskViewModelException = new MutableLiveData<>();
+
+    private final MutableLiveData<ArrayList<TaskModel>> tasksData = new MutableLiveData<>();
+    public LiveData<ArrayList<TaskModel>> tasks = tasksData;
+
+    private final MutableLiveData<String> usernameData = new MutableLiveData<>();
+    public LiveData<String> username = usernameData;
+
+    private final MutableLiveData<Void> navigateData = new MutableLiveData<>();
+    public LiveData<Void> navigate = navigateData;
+
+    private final MutableLiveData<TaskModel> taskData = new MutableLiveData<>();
+    public LiveData<TaskModel> task = taskData;
+
+    private final MutableLiveData<String> userIdData = new MutableLiveData<>();
+    public LiveData<String> userId = userIdData;
+
+    private final MutableLiveData<Exception> notifyCreateTaskViewModelExceptionData = new MutableLiveData<>();
+    public LiveData<Exception> notifyCreateTaskViewModelException = notifyCreateTaskViewModelExceptionData;
 
     public void loadUsername() {
         if (fAuth.getCurrentUser() != null)
@@ -39,18 +55,18 @@ public class CreateTaskViewModel extends ViewModel {
                     dRef.child("User").child(Objects.requireNonNull(fAuth.getCurrentUser()).getUid()).removeEventListener(this);
                     if (snapshot.exists()) {
                         String name = Objects.requireNonNull(snapshot.getValue(UserModel.class)).getUsername();
-                        username.postValue(name);
+                        usernameData.postValue(name);
                     }
                 }
 
                 @Override
                 public void onCancelled(@NonNull DatabaseError error) {
-                    notifyCreateTaskViewModelException.postValue(error.toException());
+                    notifyCreateTaskViewModelExceptionData.postValue(error.toException());
                 }
             });
     }
 
-    public void editTask(int taskId, String studentId, TaskModel task){
+    public void editTask(int taskId, String studentId, TaskModel task) {
         dRef.child("Tasks").child(studentId).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -59,20 +75,23 @@ public class CreateTaskViewModel extends ViewModel {
                     task.setId(taskId);
                     task.setCreatorID(Objects.requireNonNull(fAuth.getCurrentUser()).getUid());
                     dRef.child("Tasks").child(studentId).child("Task" + (task.getId())).setValue(task)
-                            .addOnCompleteListener(task1 -> navigate.postValue(null))
-                            .addOnFailureListener(notifyCreateTaskViewModelException::postValue);
+                            .addOnCompleteListener(task1 -> {
+                                navigateData.postValue(null);
+                            })
+                            .addOnFailureListener(notifyCreateTaskViewModelExceptionData::postValue);
+
                 }
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                notifyCreateTaskViewModelException.postValue(error.toException());
+                notifyCreateTaskViewModelExceptionData.postValue(error.toException());
             }
         });
     }
 
-    public void createTask(final String studentId, TaskModel task){
-        dRef.child("Tasks").child(studentId).addValueEventListener( new ValueEventListener() {
+    public void createTask(final String studentId, TaskModel task) {
+        dRef.child("Tasks").child(studentId).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 dRef.child("Tasks").child(studentId).removeEventListener(this);
@@ -80,66 +99,43 @@ public class CreateTaskViewModel extends ViewModel {
                     task.setId((int) (snapshot.getChildrenCount() + 1));
                     task.setCreatorID(Objects.requireNonNull(fAuth.getCurrentUser()).getUid());
                     dRef.child("Tasks").child(studentId).child("Task" + (task.getId())).setValue(task)
-                            .addOnCompleteListener(task1 -> navigate.postValue(null))
-                            .addOnFailureListener(notifyCreateTaskViewModelException::postValue);
+                            .addOnCompleteListener(task1 -> navigateData.postValue(null))
+                            .addOnFailureListener(notifyCreateTaskViewModelExceptionData::postValue);
                 } else {
                     task.setId(1);
                     task.setCreatorID(Objects.requireNonNull(fAuth.getCurrentUser()).getUid());
                     dRef.child("Tasks").child(studentId).child("Task1").setValue(task)
-                            .addOnCompleteListener(task1 -> navigate.postValue(null))
-                            .addOnFailureListener(notifyCreateTaskViewModelException::postValue);
+                            .addOnCompleteListener(task1 -> navigateData.postValue(null))
+                            .addOnFailureListener(notifyCreateTaskViewModelExceptionData::postValue);
                 }
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                notifyCreateTaskViewModelException.postValue(error.toException());
+                notifyCreateTaskViewModelExceptionData.postValue(error.toException());
             }
         });
     }
 
-    public void loadTask(int taskId, String studentId){
+    public void loadTask(int taskId, String studentId) {
         dRef.child("Tasks").child(studentId).child("Task" + taskId).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 dRef.child("Tasks").child(studentId).child("Task" + taskId).removeEventListener(this);
                 if (snapshot.exists()) {
                     TaskModel snapTask = snapshot.getValue(TaskModel.class);
-                    task.postValue(snapTask);
+                    taskData.postValue(snapTask);
                 }
             }
+
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                notifyCreateTaskViewModelException.postValue(error.toException());
+                notifyCreateTaskViewModelExceptionData.postValue(error.toException());
             }
         });
     }
 
     public void loadUserId() {
-        userId.postValue(Objects.requireNonNull(fAuth.getCurrentUser()).getUid());
-    }
-
-    public MutableLiveData<ArrayList<TaskModel>> getTasks() {
-        return tasks;
-    }
-
-    public MutableLiveData<String> getUsername() {
-        return username;
-    }
-
-    public MutableLiveData<Void> getNavigate() {
-        return navigate;
-    }
-
-    public MutableLiveData<TaskModel> getTask() {
-        return task;
-    }
-
-    public MutableLiveData<String> getUserId() {
-        return userId;
-    }
-
-    public MutableLiveData<Exception> getNotifyCreateTaskViewModelException() {
-        return notifyCreateTaskViewModelException;
+        userIdData.postValue(Objects.requireNonNull(fAuth.getCurrentUser()).getUid());
     }
 }

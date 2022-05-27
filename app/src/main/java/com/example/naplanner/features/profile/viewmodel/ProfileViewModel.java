@@ -9,6 +9,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
@@ -30,12 +31,24 @@ public class ProfileViewModel extends ViewModel {
 
     private final FirebaseAuth fAuth = FirebaseAuth.getInstance();
     private final FirebaseStorage fStorage = FirebaseStorage.getInstance();
-    private final MutableLiveData<Void> navigate = new MutableLiveData<>();
-    private final MutableLiveData<Integer> completedTaskCount = new MutableLiveData<>();
-    private final MutableLiveData<Uri> imageUri = new MutableLiveData<>();
-    private final MutableLiveData<String> username = new MutableLiveData<>();
-    private final MutableLiveData<Void> uploadSelectedImageResponse = new MutableLiveData<>();
-    private final MutableLiveData<Exception> notifyProfileException = new MutableLiveData<>();
+
+    private final MutableLiveData<Void> navigateData = new MutableLiveData<>();
+    public final LiveData<Void> navigate = navigateData;
+
+    private final MutableLiveData<Integer> completedTaskCountData = new MutableLiveData<>();
+    public final LiveData<Integer> completedTaskCount = completedTaskCountData;
+
+    private final MutableLiveData<Uri> imageUriData = new MutableLiveData<>();
+    public final LiveData<Uri> imageUri = imageUriData;
+
+    private final MutableLiveData<String> usernameData = new MutableLiveData<>();
+    public final LiveData<String> username = usernameData;
+
+    private final MutableLiveData<Void> uploadSelectedImageResponseData = new MutableLiveData<>();
+    public final LiveData<Void> uploadSelectedImageResponse = uploadSelectedImageResponseData;
+
+    private final MutableLiveData<Exception> notifyProfileExceptionData = new MutableLiveData<>();
+    public final LiveData<Exception> notifyProfileException = notifyProfileExceptionData;
 
 
     public void loadCompleteTaskCount() {
@@ -52,12 +65,12 @@ public class ProfileViewModel extends ViewModel {
                     if (Objects.requireNonNull(task).isComplete())
                         tasksCompleteCount++;
                 }
-                completedTaskCount.postValue(tasksCompleteCount);
+                completedTaskCountData.postValue(tasksCompleteCount);
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                notifyProfileException.postValue(error.toException());
+                notifyProfileExceptionData.postValue(error.toException());
             }
         });
 
@@ -90,59 +103,42 @@ public class ProfileViewModel extends ViewModel {
 
     public void loadImage() {
         fStorage.getReference().child("/users/" + Objects.requireNonNull(fAuth.getCurrentUser()).getUid()).getDownloadUrl()
-                .addOnSuccessListener(imageUri::postValue)
-                .addOnFailureListener(notifyProfileException::postValue);
+                .addOnSuccessListener(imageUriData::postValue)
+                .addOnFailureListener(notifyProfileExceptionData::postValue);
     }
 
-    public void loadUsername(){
+    public void loadUsername() {
         FirebaseDatabase.getInstance(Constants.databaseURL).getReference().child("User").child(Objects.requireNonNull(fAuth.getCurrentUser()).getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
             @SuppressLint("SetTextI18n")
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.exists()) {
-                    username.postValue(Objects.requireNonNull(snapshot.getValue(UserModel.class)).getUsername());
+                    usernameData.postValue(Objects.requireNonNull(snapshot.getValue(UserModel.class)).getUsername());
                 }
             }
+
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                notifyProfileException.postValue(error.toException());
+                notifyProfileExceptionData.postValue(error.toException());
             }
         });
     }
 
-    public void logout(){
+    public void logout() {
         fAuth.signOut();
     }
 
     public void uploadSelectedImage(Uri uri) {
-            if (uri != null) {
-                UploadTask uploadTask = fStorage.getReference().child("/users/" + Objects.requireNonNull(fAuth.getCurrentUser()).getUid()).putFile(uri);
-                uploadTask.addOnSuccessListener(taskSnapshot -> {
-                    uploadSelectedImageResponse.postValue(null);
-                    loadImage();
-                }).addOnFailureListener(notifyProfileException::postValue);
-            }
+        if (uri != null) {
+            UploadTask uploadTask = fStorage.getReference().child("/users/" + Objects.requireNonNull(fAuth.getCurrentUser()).getUid()).putFile(uri);
+            uploadTask.addOnSuccessListener(taskSnapshot -> {
+                uploadSelectedImageResponseData.postValue(null);
+                loadImage();
+            }).addOnFailureListener(notifyProfileExceptionData::postValue);
+        }
     }
 
     public FirebaseUser getUser() {
         return fAuth.getCurrentUser();
-    }
-    public MutableLiveData<Void> getNavigate() {
-        return navigate;
-    }
-    public MutableLiveData<Integer> getCompletedTaskCount() {
-        return completedTaskCount;
-    }
-    public MutableLiveData<Uri> getImageUri() {
-        return imageUri;
-    }
-    public MutableLiveData<String> getUsername() {
-        return username;
-    }
-    public MutableLiveData<Void> getUploadSelectedImageResponse() {
-        return uploadSelectedImageResponse;
-    }
-    public MutableLiveData<Exception> getNotifyProfileException() {
-        return notifyProfileException;
     }
 }

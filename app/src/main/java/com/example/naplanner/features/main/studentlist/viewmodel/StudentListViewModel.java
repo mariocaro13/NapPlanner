@@ -1,6 +1,7 @@
 package com.example.naplanner.features.main.studentlist.viewmodel;
 
 import androidx.annotation.NonNull;
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
@@ -21,9 +22,12 @@ public class StudentListViewModel extends ViewModel {
     private final FirebaseAuth fAuth = FirebaseAuth.getInstance();
     private final DatabaseReference dRef = FirebaseDatabase.getInstance(Constants.databaseURL).getReference();
 
-    private final MutableLiveData<Void> navigate = new MutableLiveData<>();
-    private final MutableLiveData<ArrayList<UserModel>> students = new MutableLiveData<>();
-    private final MutableLiveData<Exception> notifyStudentListException = new MutableLiveData<>();
+    private final MutableLiveData<Void> navigateData = new MutableLiveData<>();
+    public final LiveData<Void> navigate = navigateData;
+    private final MutableLiveData<ArrayList<UserModel>> studentsData = new MutableLiveData<>();
+    public final LiveData<ArrayList<UserModel>> students = studentsData;
+    private final MutableLiveData<Exception> notifyStudentListExceptionData = new MutableLiveData<>();
+    public final LiveData<Exception> notifyStudentListException = notifyStudentListExceptionData;
 
     public void loadStudents() {
         dRef.child("User").addValueEventListener(new ValueEventListener() {
@@ -40,24 +44,13 @@ public class StudentListViewModel extends ViewModel {
                         users.add(user);
                     }
                 }
-                students.postValue(users);
+                studentsData.postValue(users);
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                notifyStudentListException.postValue(error.toException());
+                notifyStudentListExceptionData.postValue(error.toException());
             }
         });
-    }
-
-    public MutableLiveData<Void> getNavigate() {
-        return navigate;
-    }
-
-    public MutableLiveData<ArrayList<UserModel>> getStudents() {
-        return students;
-    }
-    public MutableLiveData<Exception> getNotifyStudentListException() {
-        return notifyStudentListException;
     }
 }

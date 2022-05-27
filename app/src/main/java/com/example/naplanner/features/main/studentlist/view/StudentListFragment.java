@@ -5,12 +5,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
+
 import com.example.naplanner.MainActivity;
 import com.example.naplanner.adapters.StudentListRecycleAdapter;
 import com.example.naplanner.databinding.FragmentListStudentBinding;
@@ -26,7 +28,7 @@ public class StudentListFragment extends Fragment implements StudentListener {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = FragmentListStudentBinding.inflate(inflater, container, false);
-        viewModel = new ViewModelProvider(requireActivity()).get(StudentListViewModel.class);
+        viewModel = new ViewModelProvider(this).get(StudentListViewModel.class);
         return binding.getRoot();
     }
 
@@ -45,13 +47,13 @@ public class StudentListFragment extends Fragment implements StudentListener {
     }
 
     private void setObservables() {
-        viewModel.getStudents().observe(getViewLifecycleOwner(), userModels -> {
+        viewModel.students.observe(getViewLifecycleOwner(), userModels -> {
                     StudentListRecycleAdapter adapter = new StudentListRecycleAdapter(userModels, this);
                     binding.studentListFragmentTasksListRecycleview.setAdapter(adapter);
                 }
         );
 
-        viewModel.getNotifyStudentListException().observe(getViewLifecycleOwner(), exception -> printMsg(exception.getMessage()));
+        viewModel.notifyStudentListException.observe(getViewLifecycleOwner(), exception -> printMsg(exception.getMessage()));
     }
 
     private void setupUI() {

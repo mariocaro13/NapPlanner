@@ -5,12 +5,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
+
 import com.example.naplanner.MainActivity;
 import com.example.naplanner.adapters.TeacherTaskRecycleAdapter;
 import com.example.naplanner.databinding.FragmentOwnTasksTeacherBinding;
@@ -25,7 +27,7 @@ public class TeacherOwnTasksFragment extends Fragment implements TaskItemListene
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = FragmentOwnTasksTeacherBinding.inflate(inflater, container, false);
-        viewModel = new ViewModelProvider(requireActivity()).get(TasksViewModel.class);
+        viewModel = new ViewModelProvider(this).get(TasksViewModel.class);
         return binding.getRoot();
     }
 
@@ -43,12 +45,12 @@ public class TeacherOwnTasksFragment extends Fragment implements TaskItemListene
     }
 
     private void setObservables() {
-        viewModel.getTasks().observe(getViewLifecycleOwner(), taskModels -> {
+        viewModel.tasks.observe(getViewLifecycleOwner(), taskModels -> {
             TeacherTaskRecycleAdapter adapter = new TeacherTaskRecycleAdapter(taskModels, this, requireContext());
             binding.ownTasksFragmentTasksListRecycleview.setLayoutManager(new LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false));
             binding.ownTasksFragmentTasksListRecycleview.setAdapter(adapter);
         });
-        viewModel.getNotifyTaskViewModelException().observe(getViewLifecycleOwner(), exception -> printMsg(exception.getMessage()));
+        viewModel.notifyTaskViewModelException.observe(getViewLifecycleOwner(), exception -> printMsg(exception.getMessage()));
     }
 
     private void setupUI() {

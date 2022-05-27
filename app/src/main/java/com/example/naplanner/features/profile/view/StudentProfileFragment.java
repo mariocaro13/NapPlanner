@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
+
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
@@ -17,6 +18,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
+
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.CustomTarget;
 import com.bumptech.glide.request.transition.Transition;
@@ -37,7 +39,7 @@ public class StudentProfileFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = FragmentProfileStudentBinding.inflate(inflater, container, false);
-        viewModel = new ViewModelProvider(requireActivity()).get(ProfileViewModel.class);
+        viewModel = new ViewModelProvider(this).get(ProfileViewModel.class);
         return binding.getRoot();
     }
 
@@ -68,6 +70,7 @@ public class StudentProfileFragment extends Fragment {
             viewModel.logout();
             Navigation.findNavController(requireView()).navigate(R.id.loginFragment);
         });
+
     }
 
     private ActivityResultCallback<Uri> UploadSelectedImage() {
@@ -83,27 +86,25 @@ public class StudentProfileFragment extends Fragment {
     }
 
     private void setObservables() {
-        viewModel.getNavigate().observe(getViewLifecycleOwner(),
+        viewModel.navigate.observe(getViewLifecycleOwner(),
                 unused -> Navigation.findNavController(requireView()).navigate(R.id.action_LoginFragment_to_ownTasksFragment));
-        viewModel.getUsername().observe(getViewLifecycleOwner(),
-                name -> {
-                    String shortenedString = name.substring(0, 1).toUpperCase() + name.substring(1);
-                    binding.profileFragmentUserNameTextView.setText(shortenedString);
-                });
-        viewModel.getImageUri().observe(getViewLifecycleOwner(), this::setUserImage);
-        viewModel.getCompletedTaskCount().observe(getViewLifecycleOwner(),
+        viewModel.username.observe(getViewLifecycleOwner(),
+                name -> { String shortenedString = name.substring(0, 1).toUpperCase() + name.substring(1);
+                binding.profileFragmentUserNameTextView.setText(shortenedString);
+        });
+        viewModel.imageUri.observe(getViewLifecycleOwner(), this::setUserImage);
+        viewModel.completedTaskCount.observe(getViewLifecycleOwner(),
                 completedTaskCount -> binding.profileFragmentTasksCountTextView.setText(String.valueOf(completedTaskCount)));
-        viewModel.getUploadSelectedImageResponse().observe(getViewLifecycleOwner(),
+        viewModel.uploadSelectedImageResponse.observe(getViewLifecycleOwner(),
                 unused -> printMsg("Imagen Subida Correctamente"));
-        viewModel.getNotifyProfileException().observe(getViewLifecycleOwner(),
+        viewModel.notifyProfileException.observe(getViewLifecycleOwner(),
                 exception -> printMsg(exception.getMessage()));
     }
 
     private void printMsg(String msg) {
         Toast.makeText(requireActivity().getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
     }
-
-    private void setUserImage(Uri uri) {
+    private void setUserImage(Uri uri){
         Glide.with(requireActivity())
                 .asBitmap()
                 .load(uri)
@@ -114,7 +115,6 @@ public class StudentProfileFragment extends Fragment {
                         BitmapDrawable croppedResource = new BitmapDrawable(getResources(), BitmapCropper.getRoundCroppedBitmap(resource));
                         binding.profileFragmentAppIconImageView.setImageDrawable(croppedResource);
                     }
-
                     @Override
                     public void onLoadCleared(@Nullable Drawable placeholder) {
                     }
