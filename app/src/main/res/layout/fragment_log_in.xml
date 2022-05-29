@@ -119,6 +119,17 @@
             android:textColor="@color/blue" />
     </LinearLayout>
 
+    <ProgressBar
+        android:id="@+id/log_in_fragment_load_spinner"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="224dp"
+        android:layout_height="224dp"
+        android:layout_marginTop="45dp"
+        android:visibility="invisible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <Button
         android:id="@+id/log_in_fragment_send_button"
         android:layout_width="132dp"

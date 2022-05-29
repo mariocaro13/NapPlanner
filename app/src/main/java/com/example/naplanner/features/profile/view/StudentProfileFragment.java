@@ -5,6 +5,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -68,7 +69,8 @@ public class StudentProfileFragment extends Fragment {
         binding.profileFragmentBackButton.setOnClickListener(view -> Navigation.findNavController(requireView()).navigateUp());
         binding.profileFragmentLogOutButton.setOnClickListener(view -> {
             viewModel.logout();
-            Navigation.findNavController(requireView()).navigate(ProfileFragmentDirections.actionProfileFragmentToLoginFragment());
+            Navigation.findNavController(requireView()).getGraph().setStartDestination(R.id.loginFragment);
+            Navigation.findNavController(requireView()).navigate(R.id.action_global_loginFragment);
         });
 
     }
@@ -86,8 +88,6 @@ public class StudentProfileFragment extends Fragment {
     }
 
     private void setObservables() {
-        viewModel.navigate.observe(getViewLifecycleOwner(),
-                unused -> Navigation.findNavController(requireView()).navigate(R.id.action_LoginFragment_to_ownTasksFragment));
         viewModel.user.observe(getViewLifecycleOwner(),
                 user -> {
                     String shortenedString = user.getUsername().substring(0, 1).toUpperCase() + user.getUsername().substring(1);
@@ -101,6 +101,8 @@ public class StudentProfileFragment extends Fragment {
                 unused -> printMsg("Imagen Subida Correctamente"));
         viewModel.notifyProfileException.observe(getViewLifecycleOwner(),
                 exception -> printMsg(exception.getMessage()));
+        viewModel.notifyImageLoadException.observe(getViewLifecycleOwner(),
+                exception -> Log.d("Load Image from Main Activty: ", exception.getMessage()));
     }
 
     private void printMsg(String msg) {

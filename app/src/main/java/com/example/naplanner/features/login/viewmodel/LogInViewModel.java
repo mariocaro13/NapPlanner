@@ -22,6 +22,9 @@ public class LogInViewModel extends ViewModel {
     private final MutableLiveData<String> notifyResetPassResponseData = new MutableLiveData<>();
     public final LiveData<String> notifyResetPassResponse = notifyResetPassResponseData;
 
+    private final MutableLiveData<Boolean> userIsLoggedData = new MutableLiveData<>();
+    public final LiveData<Boolean> userIsLogged = userIsLoggedData;
+
     public void login(AuthModel authModel) {
         fAuth.signInWithEmailAndPassword(authModel.getEmail(), authModel.getPassword())
                 .addOnSuccessListener(authResult -> {
@@ -40,6 +43,10 @@ public class LogInViewModel extends ViewModel {
             navigateData.postValue(null);
         else
             notifyLoginExceptionData.postValue(new Exception("Verifique su correo"));
+    }
+
+    public void checkUserIsLogged() {
+        userIsLoggedData.postValue(fAuth.getCurrentUser() != null);
     }
 
 }

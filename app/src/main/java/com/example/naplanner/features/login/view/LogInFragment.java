@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.content.res.AppCompatResources;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
@@ -26,6 +27,7 @@ public class LogInFragment extends Fragment {
 
     private FragmentLogInBinding binding;
     private LogInViewModel viewModel;
+
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -44,7 +46,9 @@ public class LogInFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
+        viewModel.checkUserIsLogged();
         ((MainActivity) requireActivity()).hideInteractionBars();
+        showLoadingInProgress();
     }
 
     @Override
@@ -54,6 +58,9 @@ public class LogInFragment extends Fragment {
     }
 
     private void setObservables() {
+        viewModel.userIsLogged.observe(getViewLifecycleOwner(), isLogged -> {
+            if (!isLogged) hideLoadingInProgress();
+        });
         viewModel.navigate.observe(getViewLifecycleOwner(), unused -> {
             ((MainActivity) requireActivity()).loadUserInfo();
             Navigation.findNavController(requireView()).navigate(R.id.action_LoginFragment_to_ownTasksFragment);
@@ -112,5 +119,19 @@ public class LogInFragment extends Fragment {
         else printMsg("Introduzca una contraseña");
 
         return authModel;
+    }
+
+    private void showLoadingInProgress() {
+        binding.logInFragmentLoadSpinner.setVisibility(View.VISIBLE);
+        binding.getRoot().setForeground(AppCompatResources.getDrawable(requireContext(), R.color.foreground_gray));
+        binding.logInFragmentMailEditText.setEnabled(false);
+        binding.logInFragmentPasswordEditText.setEnabled(false);
+    }
+
+    private void hideLoadingInProgress() {
+        binding.logInFragmentLoadSpinner.setVisibility(View.INVISIBLE);
+        binding.getRoot().setForeground(null);
+        binding.logInFragmentMailEditText.setEnabled(true);
+        binding.logInFragmentPasswordEditText.setEnabled(true);
     }
 }

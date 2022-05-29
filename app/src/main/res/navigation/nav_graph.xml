@@ -3,12 +3,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/ownTasksFragment">
+    app:startDestination="@id/loginFragment">
 
     <fragment
         android:id="@+id/loginFragment"
         android:name="com.example.naplanner.features.login.view.LogInFragment"
-        android:label="@string/first_fragment_label"
         tools:layout="@layout/fragment_log_in">
         <action
             android:id="@+id/action_LoginFragment_to_signUpChoiceFragment"
@@ -26,89 +25,87 @@
             app:popUpToInclusive="true" />
     </fragment>
     <fragment
-            android:id="@+id/teacherSignUpFragment"
-            android:name="com.example.naplanner.features.signup.view.TeacherSignUpFragment"
-            android:label="fragment_sign_up"
-            tools:layout="@layout/fragment_sign_up_teacher">
+        android:id="@+id/teacherSignUpFragment"
+        android:name="com.example.naplanner.features.signup.view.TeacherSignUpFragment"
+        tools:layout="@layout/fragment_sign_up_teacher">
         <argument
-                android:name="isStudent"
-                app:argType="boolean"/>
+            android:name="isStudent"
+            app:argType="boolean" />
         <action
-                android:id="@+id/action_teacherSignUpFragment_to_teacherTasksFragment"
-                app:destination="@id/teacherOwnTasksFragment"
-                app:enterAnim="@android:anim/fade_in"
-                app:exitAnim="@android:anim/fade_out"
-                app:popUpTo="@id/loginFragment"
-                app:popUpToInclusive="true"/>
-        <action android:id="@+id/action_teacherSignUpFragment_to_loginFragment" app:destination="@id/loginFragment"
-                app:enterAnim="@anim/slide_in_from_right" app:exitAnim="@anim/slide_out_to_left"/>
+            android:id="@+id/action_teacherSignUpFragment_to_teacherTasksFragment"
+            app:destination="@id/teacherOwnTasksFragment"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out"
+            app:popUpTo="@id/loginFragment"
+            app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_teacherSignUpFragment_to_loginFragment"
+            app:destination="@id/loginFragment"
+            app:enterAnim="@anim/slide_in_from_right"
+            app:exitAnim="@anim/slide_out_to_left" />
     </fragment>
     <fragment
-            android:id="@+id/signUpChoiceFragment"
-            android:name="com.example.naplanner.features.signup.view.SignUpChoiceFragment"
-            android:label="fragment_sign_up_choice"
-            tools:layout="@layout/fragment_sign_up_choice">
+        android:id="@+id/signUpChoiceFragment"
+        android:name="com.example.naplanner.features.signup.view.SignUpChoiceFragment"
+        tools:layout="@layout/fragment_sign_up_choice">
         <action
-                android:id="@+id/action_signUpChoiceFragment_to_teacherSignUpFragment"
-                app:destination="@id/teacherSignUpFragment"
-                app:enterAnim="@anim/slide_in_from_top"
-                app:exitAnim="@anim/slide_out_to_bot"
-                app:popEnterAnim="@anim/slide_in_from_bot"
-                app:popExitAnim="@anim/slide_out_to_top"/>
-        <action android:id="@+id/action_signUpChoiceFragment_to_studentSignUpFragment"
-                app:destination="@id/studentSignUpFragment"/>
+            android:id="@+id/action_signUpChoiceFragment_to_teacherSignUpFragment"
+            app:destination="@id/teacherSignUpFragment"
+            app:enterAnim="@anim/slide_in_from_top"
+            app:exitAnim="@anim/slide_out_to_bot"
+            app:popEnterAnim="@anim/slide_in_from_bot"
+            app:popExitAnim="@anim/slide_out_to_top" />
+        <action
+            android:id="@+id/action_signUpChoiceFragment_to_studentSignUpFragment"
+            app:destination="@id/studentSignUpFragment" />
     </fragment>
     <fragment
         android:id="@+id/teacherTasksFragment"
         android:name="com.example.naplanner.features.main.tasks.view.teacher.TeacherCreatedTasksForStudentFragment"
-        android:label="fragment_teacher_tasks"
-        tools:layout="@layout/fragment_tasks_teacher" >
+        tools:layout="@layout/fragment_tasks_teacher">
         <action
             android:id="@+id/action_teacherTasksFragment_to_taskForm"
             app:destination="@id/teacherTaskForm" />
         <argument
             android:name="id"
-            app:argType="string"
-            android:defaultValue="-1" />
+            android:defaultValue="-1"
+            app:argType="string" />
     </fragment>
     <fragment
         android:id="@+id/teacherTaskForm"
         android:name="com.example.naplanner.features.main.createtasks.view.TeacherCreateTaskFragment"
-        android:label="fragment_task_form"
-        tools:layout="@layout/fragment_create_task_teacher" >
+        tools:layout="@layout/fragment_create_task_teacher">
         <argument
             android:name="isEdit"
-            app:argType="boolean"
-            android:defaultValue="false" />
+            android:defaultValue="false"
+            app:argType="boolean" />
         <argument
             android:name="taskID"
-            app:argType="integer"
-            android:defaultValue="-1" />
+            android:defaultValue="-1"
+            app:argType="integer" />
         <argument
             android:name="userID"
-            app:argType="string"
-            android:defaultValue="-1" />
+            android:defaultValue="-1"
+            app:argType="string" />
         <argument
             android:name="teacherID"
-            app:argType="string"
-            android:defaultValue="-1" />
+            android:defaultValue="-1"
+            app:argType="string" />
     </fragment>
     <fragment
-            android:id="@+id/profileFragment"
-            android:name="com.example.naplanner.features.profile.view.TeacherProfileFragment"
-            android:label="fragment_profile"
-            tools:layout="@layout/fragment_profile_teacher">
+        android:id="@+id/teacherProfileFragment"
+        android:name="com.example.naplanner.features.profile.view.TeacherProfileFragment"
+        tools:layout="@layout/fragment_profile_teacher">
         <action
-                android:id="@+id/action_profileFragment_to_LoginFragment"
-                app:destination="@id/loginFragment"
-                app:popUpTo="@id/loginFragment"
-                app:popUpToInclusive="true"/>
+            android:id="@+id/action_profileFragment_to_LoginFragment"
+            app:destination="@id/loginFragment"
+            app:popUpTo="@id/loginFragment"
+            app:popUpToInclusive="true" />
     </fragment>
     <fragment
         android:id="@+id/completeTasksFragment"
         android:name="com.example.naplanner.features.main.tasks.view.teacher.TeacherCompleteTasksFragment"
-        android:label="fragment_complete_tasks"
-        tools:layout="@layout/fragment_complete_tasks_teacher" >
+        tools:layout="@layout/fragment_complete_tasks_teacher">
         <action
             android:id="@+id/action_completeTasksFragment_to_taskForm"
             app:destination="@id/teacherTaskForm" />
@@ -116,8 +113,7 @@
     <fragment
         android:id="@+id/teacherOwnTasksFragment"
         android:name="com.example.naplanner.features.main.tasks.view.teacher.TeacherOwnTasksFragment"
-        android:label="fragment_own_tasks"
-        tools:layout="@layout/fragment_own_tasks_teacher" >
+        tools:layout="@layout/fragment_own_tasks_teacher">
         <action
             android:id="@+id/action_TeacherOwnTaeesksFragment_to_taskForm"
             app:destination="@id/teacherTaskForm" />
@@ -125,54 +121,83 @@
     <fragment
         android:id="@+id/studentListFragment"
         android:name="com.example.naplanner.features.main.studentlist.view.StudentListFragment"
-        android:label="fragment_student_list"
-        tools:layout="@layout/fragment_list_student" >
+        tools:layout="@layout/fragment_list_student">
         <action
             android:id="@+id/action_studentListFragment_to_teacherTasksFragment"
             app:destination="@id/teacherTasksFragment" />
     </fragment>
     <fragment
         android:id="@+id/taskAssignedByTeacherFragment"
-        android:name="com.example.naplanner.features.main.tasks.view.student.StudentTaskAssignedByTeacherFragment"
-        android:label="TaskAssignedByTeacherFragment" >
-        <action android:id="@+id/action_taskAssignedByTeacherFragment_to_studentCreateTaskFragment"
-                app:destination="@id/studentCreateTaskFragment"/>
-    </fragment>
-    <fragment android:id="@+id/studentProfileFragment"
-              android:name="com.example.naplanner.features.profile.view.StudentProfileFragment"
-              android:label="StudentProfileFragment">
-        <action android:id="@+id/action_studentProfileFragment_to_loginFragment" app:destination="@id/loginFragment"/>
-    </fragment>
-    <fragment android:id="@+id/studentSignUpFragment"
-              android:name="com.example.naplanner.features.signup.view.StudentSignUpFragment"
-              android:label="StudentSignUpFragment">
+        android:name="com.example.naplanner.features.main.tasks.view.student.StudentTaskAssignedByTeacherFragment">
         <action
-                android:id="@+id/action_studentSignUpFragment_to_LogInFragment"
-                app:destination="@id/loginFragment"
-                app:enterAnim="@anim/slide_in_from_right"
-                app:exitAnim="@anim/slide_out_to_left"
-                app:popUpTo="@id/loginFragment"
-                app:popUpToInclusive="true"/>
-        <action android:id="@+id/action_studentSignUpFragment_to_studentOwnTasksFragment"
-                app:destination="@id/studentOwnTasksFragment" app:enterAnim="@android:anim/fade_in"
-                app:exitAnim="@android:anim/fade_out"/>
+            android:id="@+id/action_taskAssignedByTeacherFragment_to_studentCreateTaskFragment"
+            app:destination="@id/studentCreateTaskFragment" />
     </fragment>
-    <fragment android:id="@+id/studentOwnTasksFragment"
-              android:name="com.example.naplanner.features.main.tasks.view.student.StudentOwnTasksFragment"
-              android:label="StudentOwnTasksFragment">
-        <action android:id="@+id/action_studentOwnTasksFragment_to_studentCreateTaskFragment"
-                app:destination="@id/studentCreateTaskFragment"/>
+    <fragment
+        android:id="@+id/studentProfileFragment"
+        android:name="com.example.naplanner.features.profile.view.StudentProfileFragment">
+        <action
+            android:id="@+id/action_studentProfileFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
     </fragment>
-    <fragment android:id="@+id/studentCreateTaskFragment"
-              android:name="com.example.naplanner.features.main.createtasks.view.StudentCreateTaskFragment"
-              android:label="StudentCreateTaskFragment">
-        <argument android:name="isEdit" android:defaultValue="false" app:argType="boolean"/>
-        <argument android:name="taskID" app:argType="integer" android:defaultValue="-1"/>
+    <fragment
+        android:id="@+id/studentSignUpFragment"
+        android:name="com.example.naplanner.features.signup.view.StudentSignUpFragment">
+        <action
+            android:id="@+id/action_studentSignUpFragment_to_LogInFragment"
+            app:destination="@id/loginFragment"
+            app:enterAnim="@anim/slide_in_from_right"
+            app:exitAnim="@anim/slide_out_to_left"
+            app:popUpTo="@id/loginFragment"
+            app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_studentSignUpFragment_to_studentOwnTasksFragment"
+            app:destination="@id/studentOwnTasksFragment"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out" />
     </fragment>
-    <fragment android:id="@+id/studentCompleteTasksFragment"
-              android:name="com.example.naplanner.features.main.tasks.view.student.StudentCompleteTasksFragment"
-              android:label="StudentCompleteTasksFragment">
-        <action android:id="@+id/action_studentCompleteTasksFragment_to_studentCreateTaskFragment"
-                app:destination="@id/studentCreateTaskFragment"/>
+    <fragment
+        android:id="@+id/studentOwnTasksFragment"
+        android:name="com.example.naplanner.features.main.tasks.view.student.StudentOwnTasksFragment">
+        <action
+            android:id="@+id/action_studentOwnTasksFragment_to_studentCreateTaskFragment"
+            app:destination="@id/studentCreateTaskFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/studentCreateTaskFragment"
+        android:name="com.example.naplanner.features.main.createtasks.view.StudentCreateTaskFragment">
+        <argument
+            android:name="isEdit"
+            android:defaultValue="false"
+            app:argType="boolean" />
+        <argument
+            android:name="taskID"
+            android:defaultValue="-1"
+            app:argType="integer" />
+    </fragment>
+    <fragment
+        android:id="@+id/studentCompleteTasksFragment"
+        android:name="com.example.naplanner.features.main.tasks.view.student.StudentCompleteTasksFragment">
+        <action
+            android:id="@+id/action_studentCompleteTasksFragment_to_studentCreateTaskFragment"
+            app:destination="@id/studentCreateTaskFragment" />
+    </fragment>
+    <action
+        android:id="@+id/action_global_loginFragment"
+        app:destination="@id/loginFragment"
+        app:launchSingleTop="true"
+        app:popUpTo="@id/nav_graph"
+        app:popUpToInclusive="true" />
+    <action
+        android:id="@+id/action_global_studentOwnTasksFragment"
+        app:destination="@id/studentOwnTasksFragment"
+        app:launchSingleTop="true"
+        app:popUpTo="@id/nav_graph"
+        app:popUpToInclusive="true" />
+    <action
+        android:id="@+id/action_global_teacherOwnTasksFragment"
+        app:destination="@id/teacherOwnTasksFragment"
+        app:launchSingleTop="true"
+        app:popUpTo="@id/nav_graph"
+        app:popUpToInclusive="true" />
 </navigation>

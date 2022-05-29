@@ -12,12 +12,14 @@
     <color name="blue">#110066</color>
 
     //Gray
-    <color name="background_gray">#E3DEE0 </color>
+    <color name="foreground_gray">#85FFFFFF</color>
+    <color name="background_gray">#E3DEE0</color>
     <color name="light_gray">#BDB9BA</color>
     <color name="dark_gray">#7D7A7B</color>
 
+
     //Green
-    <color name="background_green">#D3E4CD </color>
+    <color name="background_green">#D3E4CD</color>
     <color name="light_green">#ADC2A9</color>
     <color name="dark_green">#76B990</color>
     <color name="nav_menu_green">#ADC2A9</color>
@@ -28,7 +30,7 @@
 
 
     //Blue
-    <color name="background_blue">#D6E1F4 </color>
+    <color name="background_blue">#D6E1F4</color>
     <color name="light_blue">#A4BDE5</color>
     <color name="dark_blue">#657CBF</color>
     <color name="nav_menu_blue">#BDD2F6</color>

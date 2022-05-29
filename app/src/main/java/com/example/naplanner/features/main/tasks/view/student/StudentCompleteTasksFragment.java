@@ -5,15 +5,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
+
 import com.example.naplanner.MainActivity;
 import com.example.naplanner.adapters.StudentTaskRecycleAdapter;
-import com.example.naplanner.adapters.TeacherTaskRecycleAdapter;
 import com.example.naplanner.databinding.FragmentCompleteTasksStudentBinding;
 import com.example.naplanner.features.main.tasks.viewmodel.TasksViewModel;
 import com.example.naplanner.interfaces.TaskItemListener;
@@ -26,7 +27,7 @@ public class StudentCompleteTasksFragment extends Fragment implements TaskItemLi
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = FragmentCompleteTasksStudentBinding.inflate(inflater, container, false);
-        viewModel = new ViewModelProvider(requireActivity()).get(TasksViewModel.class);
+        viewModel = new ViewModelProvider(this).get(TasksViewModel.class);
         return binding.getRoot();
     }
 
@@ -44,12 +45,12 @@ public class StudentCompleteTasksFragment extends Fragment implements TaskItemLi
     }
 
     private void setObservables() {
-        viewModel.getTasks().observe(getViewLifecycleOwner(), taskModels -> {
+        viewModel.tasks.observe(getViewLifecycleOwner(), taskModels -> {
             StudentTaskRecycleAdapter adapter = new StudentTaskRecycleAdapter(taskModels, this, requireContext());
             binding.completeTasksFragmentTasksListRecycleview.setLayoutManager(new LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false));
             binding.completeTasksFragmentTasksListRecycleview.setAdapter(adapter);
         });
-        viewModel.getNotifyTaskViewModelException().observe(getViewLifecycleOwner(), exception -> printMsg(exception.getMessage()));
+        viewModel.notifyTaskViewModelException.observe(getViewLifecycleOwner(), exception -> printMsg(exception.getMessage()));
     }
 
     private void setupUI() {

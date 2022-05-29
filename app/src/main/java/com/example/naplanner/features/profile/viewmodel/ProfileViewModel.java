@@ -32,8 +32,6 @@ public class ProfileViewModel extends ViewModel {
     private final FirebaseStorage fStorage = FirebaseStorage.getInstance();
     private final FirebaseDatabase fDatabase = FirebaseDatabase.getInstance(Constants.databaseURL);
 
-    private final MutableLiveData<Void> navigateData = new MutableLiveData<>();
-    public final LiveData<Void> navigate = navigateData;
 
     private final MutableLiveData<Integer> completedTaskCountData = new MutableLiveData<>();
     public final LiveData<Integer> completedTaskCount = completedTaskCountData;
@@ -49,6 +47,9 @@ public class ProfileViewModel extends ViewModel {
 
     private final MutableLiveData<Exception> notifyProfileExceptionData = new MutableLiveData<>();
     public final LiveData<Exception> notifyProfileException = notifyProfileExceptionData;
+
+    private final MutableLiveData<Exception> notifyImageLoadExceptionData = new MutableLiveData<>();
+    public final LiveData<Exception> notifyImageLoadException = notifyImageLoadExceptionData;
 
 
     public void loadCompleteTaskCount() {
@@ -104,7 +105,7 @@ public class ProfileViewModel extends ViewModel {
     public void loadImage() {
         fStorage.getReference().child("/users/" + Objects.requireNonNull(fAuth.getCurrentUser()).getUid()).getDownloadUrl()
                 .addOnSuccessListener(imageUriData::postValue)
-                .addOnFailureListener(notifyProfileExceptionData::postValue);
+                .addOnFailureListener(notifyImageLoadExceptionData::postValue);
     }
 
     public void loadUser() {

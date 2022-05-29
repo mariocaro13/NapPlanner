@@ -5,7 +5,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
-import android.view.Menu;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
@@ -13,6 +13,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.content.res.AppCompatResources;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.constraintlayout.widget.ConstraintSet;
 import androidx.lifecycle.ViewModelProvider;
@@ -48,7 +49,6 @@ public class MainActivity extends AppCompatActivity {
 
         navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
         appBarConfiguration = new AppBarConfiguration.Builder(navController.getGraph()).build();
-
         viewModel = new ViewModelProvider(this).get(MainActivityViewModel.class);
     }
 
@@ -57,7 +57,7 @@ public class MainActivity extends AppCompatActivity {
         super.onStart();
         viewModel.checkUserIsLogged();
         setObservables(iconItem);
-        setupToolbar("Login");
+        setupToolbar("Login", true);
     }
 
     @Override
@@ -67,47 +67,75 @@ public class MainActivity extends AppCompatActivity {
     }
 
     // Toolbar Config
+    /*
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_main, menu);
+        getMenuInflater().inflate(R.menu.menu_main_teacher, menu);
         return super.onCreateOptionsMenu(menu);
-    }
+    }*/
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         return NavigationUI.onNavDestinationSelected(item, navController) || super.onOptionsItemSelected(item);
     }
 
+    private void setupUI(boolean isStudent) {
+        if (isStudent) {
+            navController.getGraph().setStartDestination(R.id.studentOwnTasksFragment);
+            navController.navigate(R.id.action_global_studentOwnTasksFragment);
+        } else {
+            navController.getGraph().setStartDestination(R.id.teacherOwnTasksFragment);
+            navController.navigate(R.id.action_global_teacherOwnTasksFragment);
+        }
 
-    public void setupToolbar(String title) {
+    }
+
+    public void setupToolbar(String title, boolean isStudent) {
+        binding.activityMainToolbar.getMenu().clear();
+
+        if (isStudent) {
+            binding.activityMainToolbar.inflateMenu(R.menu.menu_main_student);
+            binding.activityMainToolbar.setBackground(AppCompatResources.getDrawable(getApplicationContext(), R.color.dark_green));
+            iconItem = binding.activityMainToolbar.getMenu().findItem(R.id.studentProfileFragment);
+        } else {
+            binding.activityMainToolbar.inflateMenu(R.menu.menu_main_teacher);
+            binding.activityMainToolbar.setBackground(AppCompatResources.getDrawable(getApplicationContext(), R.color.dark_blue));
+            iconItem = binding.activityMainToolbar.getMenu().findItem(R.id.teacherProfileFragment);
+        }
+        NavigationUI.setupWithNavController(binding.activityMainToolbar, navController);
         binding.activityMainToolbar.setTitle(title);
-        iconItem = binding.activityMainBottomNav.getMenu().findItem(R.id.profileFragment);
-        //NavigationUI.setupWithNavController(binding.activityMainToolbar, navController);
     }
 
     public void setupNavigationBar(boolean isStudent) {
         binding.activityMainBottomNav.getMenu().clear();
-        if(isStudent)
+        if (isStudent) {
             binding.activityMainBottomNav.inflateMenu(R.menu.bottom_nav_menu_student);
-        else
+            binding.activityMainBottomNav.setBackground(AppCompatResources.getDrawable(getApplicationContext(), R.color.dark_green));
+        } else {
             binding.activityMainBottomNav.inflateMenu(R.menu.bottom_nav_menu_teacher);
+            binding.activityMainBottomNav.setBackground(AppCompatResources.getDrawable(getApplicationContext(), R.color.dark_blue));
+        }
+
 
         NavigationUI.setupWithNavController(binding.activityMainBottomNav, navController);
     }
 
     private void setObservables(MenuItem menuItem) {
 
-        viewModel.userIsLogged.observe(this, aBoolean -> {
-            if (aBoolean)
+        viewModel.userIsLogged.observe(this, userIsLogged -> {
+            if (userIsLogged)
                 loadUserInfo();
-            else
+            else {
+                navController.getGraph().setStartDestination(R.id.loginFragment);
                 navController.navigate(R.id.loginFragment, null, new NavOptions.Builder()
                         .setPopUpTo(R.id.loginFragment, true)
                         .build());
+            }
         });
 
         viewModel.user.observe(this, user -> {
-            setupToolbar(user.getUsername());
+            setupUI(user.getStudent());
+            setupToolbar(user.getUsername(), user.getStudent());
             setupNavigationBar(user.getStudent());
         });
 
@@ -120,7 +148,7 @@ public class MainActivity extends AppCompatActivity {
                 exception -> printMsg(exception.getMessage()));
 
         viewModel.notifyImageLoadException.observe(this,
-                exception -> printMsg(exception.getMessage()));
+                exception -> Log.d("Load Image from Main Activty: ", exception.getMessage()));
     }
 
     public void loadUserInfo() {
@@ -170,7 +198,9 @@ public class MainActivity extends AppCompatActivity {
 
         binding.activityMainToolbar.setVisibility(View.GONE);
     }
+
     private void printMsg(String msg) {
         Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
-}
+        Log.d("Call from activity:", msg);
+    }
 }

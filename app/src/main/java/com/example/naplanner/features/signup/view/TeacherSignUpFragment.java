@@ -6,11 +6,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
+
 import com.example.naplanner.R;
 import com.example.naplanner.databinding.FragmentSignUpTeacherBinding;
 import com.example.naplanner.features.signup.viewmodel.SignUpViewModel;
@@ -25,7 +27,7 @@ public class TeacherSignUpFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentSignUpTeacherBinding.inflate(inflater, container, false);
-        viewModel = new ViewModelProvider(requireActivity()).get(SignUpViewModel.class);
+        viewModel = new ViewModelProvider(this).get(SignUpViewModel.class);
         return binding.getRoot();
     }
 
@@ -73,8 +75,8 @@ public class TeacherSignUpFragment extends Fragment {
     }
 
     private void setObservables() {
-        viewModel.getNavigate().observe(getViewLifecycleOwner(), unused -> Navigation.findNavController(requireView()).navigate(R.id.action_teacherSignUpFragment_to_teacherTasksFragment));
-        viewModel.getNotifySignUpException().observe(getViewLifecycleOwner(), exception -> printMsg(exception.getMessage()));
+        viewModel.navigate.observe(getViewLifecycleOwner(), unused -> Navigation.findNavController(requireView()).navigate(R.id.action_teacherSignUpFragment_to_teacherTasksFragment));
+        viewModel.notifySignUpException.observe(getViewLifecycleOwner(), exception -> printMsg(exception.getMessage()));
     }
 
     private void printMsg(String msg) {
