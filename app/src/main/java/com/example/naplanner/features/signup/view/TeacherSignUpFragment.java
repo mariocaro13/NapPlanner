@@ -50,12 +50,13 @@ public class TeacherSignUpFragment extends Fragment {
 
     private void setData() {
         String username = binding.signUpFragmentFormLayout.signUpFragmentUsernameEditText.getText().toString();
+        userModel.setStudent(false);
         if (username.length() > 18) {
             printMsg("Nombre muy largo (Maximo 18)");
             return;
-        } else if (!username.isEmpty()) userModel.setUsername(username);
+        } else if (!username.contains(" ") && !username.isEmpty()) userModel.setUsername(username);
         else {
-            printMsg("El Nombre de usuario esta vacio");
+            printMsg("Introduzca un nombre de usuario valido");
             return;
         }
         String mail = binding.signUpFragmentFormLayout.signUpFragmentMailEditText.getText().toString();
@@ -75,7 +76,7 @@ public class TeacherSignUpFragment extends Fragment {
     }
 
     private void setObservables() {
-        viewModel.navigate.observe(getViewLifecycleOwner(), unused -> Navigation.findNavController(requireView()).navigate(R.id.action_teacherSignUpFragment_to_teacherTasksFragment));
+        viewModel.navigate.observe(getViewLifecycleOwner(), unused -> Navigation.findNavController(requireView()).navigate(R.id.action_global_studentOwnTasksFragment));
         viewModel.notifySignUpException.observe(getViewLifecycleOwner(), exception -> printMsg(exception.getMessage()));
     }
 

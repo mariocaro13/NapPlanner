@@ -57,7 +57,11 @@
             app:popExitAnim="@anim/slide_out_to_top" />
         <action
             android:id="@+id/action_signUpChoiceFragment_to_studentSignUpFragment"
-            app:destination="@id/studentSignUpFragment" />
+            app:destination="@id/studentSignUpFragment"
+            app:enterAnim="@anim/slide_in_from_top"
+            app:exitAnim="@anim/slide_out_to_bot"
+            app:popEnterAnim="@anim/slide_in_from_bot"
+            app:popExitAnim="@anim/slide_out_to_top" />
     </fragment>
     <fragment
         android:id="@+id/teacherTasksFragment"

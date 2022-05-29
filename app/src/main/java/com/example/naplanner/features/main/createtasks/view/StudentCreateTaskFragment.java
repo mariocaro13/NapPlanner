@@ -73,7 +73,7 @@ public class StudentCreateTaskFragment extends Fragment {
             binding.taskFormRadioButtonNormal.setChecked(task.getType() == TaskModel.TaskType.NORMAL);
         });
         viewModel.userId.observe(getViewLifecycleOwner(), userId -> {
-            if(studentId.equals("-1")) studentId = userId;
+            studentId = userId;
 
             if (StudentCreateTaskFragmentArgs.fromBundle(getArguments()).getIsEdit())
                 editTask();
@@ -102,7 +102,7 @@ public class StudentCreateTaskFragment extends Fragment {
         });
     }
 
-    private void getData(){
+    private void getData() {
         if (!binding.taskFormFragmentNameEdittext.getText().toString().isEmpty())
             task.setName(binding.taskFormFragmentNameEdittext.getText().toString());
         else {

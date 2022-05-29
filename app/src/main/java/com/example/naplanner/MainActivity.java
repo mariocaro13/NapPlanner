@@ -110,9 +110,11 @@ public class MainActivity extends AppCompatActivity {
         binding.activityMainBottomNav.getMenu().clear();
         if (isStudent) {
             binding.activityMainBottomNav.inflateMenu(R.menu.bottom_nav_menu_student);
+            binding.activityMainBottomNav.setSelectedItemId(R.id.studentOwnTasksFragment);
             binding.activityMainBottomNav.setBackground(AppCompatResources.getDrawable(getApplicationContext(), R.color.dark_green));
         } else {
             binding.activityMainBottomNav.inflateMenu(R.menu.bottom_nav_menu_teacher);
+            binding.activityMainBottomNav.setSelectedItemId(R.id.teacherOwnTasksFragment);
             binding.activityMainBottomNav.setBackground(AppCompatResources.getDrawable(getApplicationContext(), R.color.dark_blue));
         }
 
