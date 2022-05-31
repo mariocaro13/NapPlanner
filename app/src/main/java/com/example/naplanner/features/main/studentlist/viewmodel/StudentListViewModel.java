@@ -24,8 +24,10 @@ public class StudentListViewModel extends ViewModel {
 
     private final MutableLiveData<Void> navigateData = new MutableLiveData<>();
     public final LiveData<Void> navigate = navigateData;
+
     private final MutableLiveData<ArrayList<UserModel>> studentsData = new MutableLiveData<>();
     public final LiveData<ArrayList<UserModel>> students = studentsData;
+
     private final MutableLiveData<Exception> notifyStudentListExceptionData = new MutableLiveData<>();
     public final LiveData<Exception> notifyStudentListException = notifyStudentListExceptionData;
 

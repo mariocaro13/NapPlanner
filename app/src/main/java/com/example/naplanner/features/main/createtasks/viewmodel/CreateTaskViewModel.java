@@ -1,14 +1,11 @@
 package com.example.naplanner.features.main.createtasks.viewmodel;
 
 import android.annotation.SuppressLint;
-import android.app.usage.UsageEvents;
-import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
-import androidx.navigation.Navigation;
 
 import com.example.naplanner.helperclasses.Constants;
 import com.example.naplanner.models.TaskModel;
@@ -75,9 +72,7 @@ public class CreateTaskViewModel extends ViewModel {
                     task.setId(taskId);
                     task.setCreatorID(Objects.requireNonNull(fAuth.getCurrentUser()).getUid());
                     dRef.child("Tasks").child(studentId).child("Task" + (task.getId())).setValue(task)
-                            .addOnCompleteListener(task1 -> {
-                                navigateData.postValue(null);
-                            })
+                            .addOnCompleteListener(task1 -> navigateData.postValue(null))
                             .addOnFailureListener(notifyCreateTaskViewModelExceptionData::postValue);
 
                 }

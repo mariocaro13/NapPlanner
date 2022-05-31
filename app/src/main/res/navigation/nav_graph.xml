@@ -64,7 +64,7 @@
             app:popExitAnim="@anim/slide_out_to_top" />
     </fragment>
     <fragment
-        android:id="@+id/teacherTasksFragment"
+        android:id="@+id/teacherCreatedTasksForStudentFragment"
         android:name="com.example.naplanner.features.main.tasks.view.teacher.TeacherCreatedTasksForStudentFragment"
         tools:layout="@layout/fragment_tasks_teacher">
         <action
@@ -89,10 +89,6 @@
             app:argType="integer" />
         <argument
             android:name="userID"
-            android:defaultValue="-1"
-            app:argType="string" />
-        <argument
-            android:name="teacherID"
             android:defaultValue="-1"
             app:argType="string" />
     </fragment>
@@ -128,7 +124,7 @@
         tools:layout="@layout/fragment_list_student">
         <action
             android:id="@+id/action_studentListFragment_to_teacherTasksFragment"
-            app:destination="@id/teacherTasksFragment" />
+            app:destination="@id/teacherCreatedTasksForStudentFragment" />
     </fragment>
     <fragment
         android:id="@+id/taskAssignedByTeacherFragment"

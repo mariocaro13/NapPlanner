@@ -43,6 +43,8 @@ public class TeacherCreateTaskFragment extends Fragment {
         setupVariables();
         setObservables();
         setupUI();
+
+        printMsg("Im Started");
     }
 
     @Override
@@ -53,6 +55,8 @@ public class TeacherCreateTaskFragment extends Fragment {
 
     private void setupVariables() {
         studentId = TeacherCreateTaskFragmentArgs.fromBundle(getArguments()).getUserID();
+        if (getArguments() != null)
+            studentId = getArguments().getString("userID");
     }
 
     private void setupUI() {

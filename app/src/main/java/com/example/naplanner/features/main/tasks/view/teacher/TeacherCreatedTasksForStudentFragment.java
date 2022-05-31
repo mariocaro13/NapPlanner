@@ -14,6 +14,7 @@ import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.example.naplanner.MainActivity;
+import com.example.naplanner.R;
 import com.example.naplanner.adapters.TeacherTaskRecycleAdapter;
 import com.example.naplanner.databinding.FragmentTasksTeacherBinding;
 import com.example.naplanner.features.main.tasks.viewmodel.TasksViewModel;
@@ -27,8 +28,8 @@ public class TeacherCreatedTasksForStudentFragment extends Fragment implements T
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        binding = FragmentTasksTeacherBinding.inflate(inflater, container, false);
         viewModel = new ViewModelProvider(this).get(TasksViewModel.class);
+        binding = FragmentTasksTeacherBinding.inflate(inflater, container, false);
         return binding.getRoot();
     }
 
@@ -41,31 +42,27 @@ public class TeacherCreatedTasksForStudentFragment extends Fragment implements T
         setupUI();
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-    }
-
     private void setObservables() {
         viewModel.tasks.observe(getViewLifecycleOwner(), taskModels -> {
             TeacherTaskRecycleAdapter adapter = new TeacherTaskRecycleAdapter(taskModels, this, requireContext());
             binding.teacherTasksFragmentTasksListRecycleview.setLayoutManager(new LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false));
             binding.teacherTasksFragmentTasksListRecycleview.setAdapter(adapter);
         });
-        viewModel.userId.observe(getViewLifecycleOwner(), userId -> {
-            TeacherCreatedTasksForStudentFragmentDirections.ActionTeacherTasksFragmentToTaskForm action = TeacherCreatedTasksForStudentFragmentDirections.actionTeacherTasksFragmentToTaskForm();
-            action.setUserID(studentId);
-            action.setTeacherID(userId);
-            Navigation.findNavController(requireView()).navigate(action);
-        });
         viewModel.notifyTaskViewModelException.observe(getViewLifecycleOwner(), exception -> printMsg(exception.getMessage()));
     }
 
     private void setupUI() {
-        viewModel.loadTaskByTeacher(studentId);
         ((MainActivity) requireActivity()).hideInteractionBars();
+        viewModel.loadTaskByTeacher(studentId);
         binding.teacherTasksFragmentReturnButton.setOnClickListener(v -> Navigation.findNavController(requireView()).navigateUp());
-        binding.teacherTasksFragmentCreateButton.setOnClickListener(v -> viewModel.loadUserId());
+        binding.teacherTasksFragmentCreateButton.setOnClickListener(v -> navigate());
+    }
+
+    private void navigate() {
+        Bundle args = new Bundle();
+        args.putString("userID", studentId);
+        Navigation.findNavController(requireView()).navigate(R.id.teacherTaskForm, args);
+
     }
 
     @Override

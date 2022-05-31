@@ -33,9 +33,10 @@ public class TasksViewModel extends ViewModel {
 
     public void loadOwnTasks() {
         if (fAuth.getCurrentUser() != null)
-            dRef.child("Tasks").child(Objects.requireNonNull(fAuth.getCurrentUser()).getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+            dRef.child("Tasks").child(Objects.requireNonNull(fAuth.getCurrentUser()).getUid()).addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    dRef.child("Tasks").child(Objects.requireNonNull(fAuth.getCurrentUser()).getUid()).removeEventListener(this);
                     ArrayList<TaskModel> tempTasks = new ArrayList<>();
                     for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                         TaskModel task = dataSnapshot.getValue(TaskModel.class);
@@ -54,9 +55,10 @@ public class TasksViewModel extends ViewModel {
 
     public void loadOwnTasks(boolean isComplete) {
         if (fAuth.getCurrentUser() != null)
-            dRef.child("Tasks").child(Objects.requireNonNull(fAuth.getCurrentUser()).getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+            dRef.child("Tasks").child(Objects.requireNonNull(fAuth.getCurrentUser()).getUid()).addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    dRef.child("Tasks").child(Objects.requireNonNull(fAuth.getCurrentUser()).getUid()).removeEventListener(this);
                     ArrayList<TaskModel> tempTasks = new ArrayList<>();
                     for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                         TaskModel task = dataSnapshot.getValue(TaskModel.class);
@@ -75,9 +77,10 @@ public class TasksViewModel extends ViewModel {
 
     public void loadTaskByTeacher(String studentId) {
         if (fAuth.getCurrentUser() != null)
-            dRef.child("Tasks").child(studentId).addListenerForSingleValueEvent(new ValueEventListener() {
+            dRef.child("Tasks").child(studentId).addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    dRef.child("Tasks").child(studentId).removeEventListener(this);
                     ArrayList<TaskModel> tempTasks = new ArrayList<>();
                     for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                         TaskModel task = dataSnapshot.getValue(TaskModel.class);
@@ -96,9 +99,10 @@ public class TasksViewModel extends ViewModel {
 
     public void loadAllTeacherTasks() {
         if (fAuth.getCurrentUser() != null)
-            dRef.child("Tasks").child(Objects.requireNonNull(fAuth.getCurrentUser()).getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+            dRef.child("Tasks").child(Objects.requireNonNull(fAuth.getCurrentUser()).getUid()).addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    dRef.child("Tasks").child(Objects.requireNonNull(fAuth.getCurrentUser()).getUid()).removeEventListener(this);
                     ArrayList<TaskModel> tempTasks = new ArrayList<>();
                     for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                         TaskModel task = dataSnapshot.getValue(TaskModel.class);
@@ -123,7 +127,7 @@ public class TasksViewModel extends ViewModel {
         for (TaskModel task : Objects.requireNonNull(tasks.getValue())) {
             if (task.getId() == taskID) {
                 task.setComplete(!task.isComplete());
-                FirebaseDatabase.getInstance(Constants.databaseURL).getReference().child("Tasks").child(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid()).child("Task" + taskID).child("complete").setValue(task.isComplete());
+                dRef.child("Tasks").child(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid()).child("Task" + taskID).child("complete").setValue(task.isComplete());
             }
         }
     }
@@ -132,7 +136,7 @@ public class TasksViewModel extends ViewModel {
         for (TaskModel task : Objects.requireNonNull(tasks.getValue())) {
             if (task.getId() == taskID) {
                 task.setComplete(!task.isComplete());
-                FirebaseDatabase.getInstance(Constants.databaseURL).getReference().child("Tasks").child(studentID).child("Task" + taskID).child("complete").setValue(task.isComplete());
+                dRef.child("Tasks").child(studentID).child("Task" + taskID).child("complete").setValue(task.isComplete());
             }
         }
     }
