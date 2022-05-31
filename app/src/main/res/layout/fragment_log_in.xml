@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/background_gray"
-    tools:context=".features.login.LogInFragment">
+    tools:context=".features.login.view.LogInFragment">
 
     <ImageView
         android:id="@+id/log_in_fragment_app_icon_image_view"
@@ -118,6 +118,17 @@
             android:textAlignment="center"
             android:textColor="@color/blue" />
     </LinearLayout>
+
+    <ProgressBar
+        android:id="@+id/log_in_fragment_load_spinner"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="224dp"
+        android:layout_height="224dp"
+        android:layout_marginTop="45dp"
+        android:visibility="invisible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/log_in_fragment_send_button"

@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background_green"
+    tools:context=".features.profile.view.TeacherProfileFragment">
+
+
+    <ImageView
+        android:id="@+id/profile_fragment_app_icon_image_view"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_marginTop="46dp"
+        android:src="@drawable/books_app_ico"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <LinearLayout
+        android:id="@+id/profile_fragment_user_name_linear_layout"
+        android:layout_width="266dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="60dp"
+        android:background="@drawable/border_linear_layout"
+        android:gravity="center"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/profile_fragment_app_icon_image_view">
+
+
+        <TextView
+            android:id="@+id/profile_fragment_user_name_title_text_view"
+            android:layout_width="match_parent"
+            android:layout_height="18dp"
+            android:background="@color/dark_green"
+            android:paddingHorizontal="5dp"
+            android:text="@string/generic_form_user_text_view"
+            android:textColor="@color/black"
+            android:textSize="12sp" />
+
+        <TextView
+
+            android:id="@+id/profile_fragment_user_name_text_view"
+            android:layout_width="match_parent"
+            android:layout_height="46dp"
+            android:background="@color/light_green"
+            android:gravity="center"
+            android:hint="@string/generic_form_user_text_view"
+            android:padding="5dp"
+            android:textColor="@color/black"
+            android:textColorHint="@color/gray"
+            android:textStyle="bold|italic" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/profile_fragment_mail_linear_layout"
+        android:layout_width="266dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="36dp"
+        android:background="@drawable/border_linear_layout"
+        android:gravity="center"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/profile_fragment_user_name_linear_layout">
+
+
+        <TextView
+            android:id="@+id/profile_fragment_mail_text_view"
+            android:layout_width="match_parent"
+            android:layout_height="18dp"
+            android:background="@color/dark_green"
+            android:paddingHorizontal="5dp"
+            android:text="@string/generic_form_mail"
+            android:textColor="@color/black"
+            android:textSize="12sp" />
+
+        <TextView
+            android:id="@+id/profile_fragment_user_mail_text_view"
+            android:layout_width="match_parent"
+            android:layout_height="46dp"
+            android:background="@color/light_green"
+            android:gravity="center"
+            android:hint="@string/generic_form_mail"
+            android:padding="5dp"
+            android:textAlignment="center"
+            android:textColor="@color/black"
+            android:textColorHint="@color/gray" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/profile_fragment_tasks_count_linear_layout"
+        android:layout_width="266dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="36dp"
+        android:background="@drawable/border_linear_layout"
+        android:gravity="center"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/profile_fragment_mail_linear_layout">
+
+
+        <TextView
+            android:id="@+id/profile_fragment_tasks_count_title_text_view"
+            android:layout_width="match_parent"
+            android:layout_height="18dp"
+            android:background="@color/dark_green"
+            android:paddingHorizontal="5dp"
+            android:text="@string/profile_fragment_number_of_task_completed"
+            android:textColor="@color/black"
+            android:textSize="12sp" />
+
+        <TextView
+            android:id="@+id/profile_fragment_tasks_count_text_view"
+            android:layout_width="match_parent"
+            android:layout_height="46dp"
+            android:background="@color/light_green"
+            android:gravity="center"
+            android:hint="@string/profile_fragment_number_of_task_completed"
+            android:padding="5dp"
+            android:textAlignment="center"
+            android:textColor="@color/black"
+            android:textColorHint="@color/gray" />
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/fragment_profile_reset_password_text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/fragment_profile_reset_password"
+        android:scrollbarSize="14sp"
+        android:textStyle="italic"
+        android:textColor="@color/blue"
+        app:layout_constraintTop_toBottomOf="@id/profile_fragment_tasks_count_linear_layout"
+        app:layout_constraintStart_toStartOf="@id/profile_fragment_tasks_count_linear_layout"/>
+
+    <LinearLayout
+        android:layout_width="266dp"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/profile_fragment_tasks_count_linear_layout">
+
+
+        <Button
+            android:id="@+id/profile_fragment_back_button"
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="12dp"
+            android:layout_weight="1"
+            android:background="@color/dark_green"
+            android:text="@string/profile_fragment_back"
+            android:textColor="@color/black" />
+
+        <Button
+            android:id="@+id/profile_fragment_log_out_button"
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@color/dark_green"
+            android:padding="5dp"
+            android:text="@string/profile_fragment_log_out"
+            android:textColor="@color/black" />
+
+
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
