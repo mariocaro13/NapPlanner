@@ -3,9 +3,11 @@ package com.example.naplanner.adapters;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.content.res.AppCompatResources;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.example.naplanner.R;
 import com.example.naplanner.databinding.TasksListItemBinding;
 import com.example.naplanner.interfaces.TaskItemListener;

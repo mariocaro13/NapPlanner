@@ -127,4 +127,13 @@ public class TasksViewModel extends ViewModel {
             }
         }
     }
+
+    public void setTasksCompleteForStudent(int taskID, String studentID) {
+        for (TaskModel task : Objects.requireNonNull(tasks.getValue())) {
+            if (task.getId() == taskID) {
+                task.setComplete(!task.isComplete());
+                FirebaseDatabase.getInstance(Constants.databaseURL).getReference().child("Tasks").child(studentID).child("Task" + taskID).child("complete").setValue(task.isComplete());
+            }
+        }
+    }
 }

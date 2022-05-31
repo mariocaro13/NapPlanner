@@ -90,24 +90,25 @@ public class StudentCreateTaskFragment extends Fragment {
             viewModel.loadTask(taskID, studentId);
 
         binding.taskFormFragmentConfirmButton.setOnClickListener(view -> {
-            getData();
-            viewModel.editTask(taskID, studentId, task);
+            TaskModel task = getData();
+            if (task != null) viewModel.editTask(taskID, studentId, task);
         });
     }
 
     private void createTask() {
         binding.taskFormFragmentConfirmButton.setOnClickListener(view -> {
-            getData();
-            viewModel.createTask(studentId, task);
+            TaskModel task = getData();
+            if (task != null) viewModel.createTask(studentId, task);
         });
     }
 
-    private void getData() {
+    private TaskModel getData() {
+        TaskModel task = new TaskModel();
         if (!binding.taskFormFragmentNameEdittext.getText().toString().isEmpty())
             task.setName(binding.taskFormFragmentNameEdittext.getText().toString());
         else {
             printMsg("Introduzca un nombre para la tarea");
-            return;
+            return null;
         }
 
         if (binding.taskFormRadioButtonLeg.isChecked())
@@ -118,7 +119,10 @@ public class StudentCreateTaskFragment extends Fragment {
             task.setType(TaskModel.TaskType.NORMAL);
         else {
             printMsg("Seleccione una opcion de tipo de tarea");
+            return null;
         }
+
+        return task;
     }
 
     private void printMsg(String msg) {

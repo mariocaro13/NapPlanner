@@ -70,7 +70,7 @@ public class TeacherCreatedTasksForStudentFragment extends Fragment implements T
 
     @Override
     public void onCheckboxTap(int taskID) {
-        viewModel.setTasksComplete(taskID);
+        viewModel.setTasksCompleteForStudent(taskID, studentId);
     }
 
     @Override

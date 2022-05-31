@@ -3,9 +3,11 @@ package com.example.naplanner.adapters;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.content.res.AppCompatResources;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.example.naplanner.R;
 import com.example.naplanner.databinding.TasksReducedListItemBinding;
 import com.example.naplanner.interfaces.TaskItemListener;
@@ -35,8 +37,8 @@ public class StudentTaskByTeacherRecycleAdapter extends RecyclerView.Adapter<Stu
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         holder.binding.tasksListItemNameTaskTextView.setText(tasks.get(position).getName());
         holder.binding.taskListItemCompleteTaskCheckbox.setChecked(tasks.get(position).isComplete());
-        useStudentPalette(holder, position);
         holder.binding.taskListItemCompleteTaskCheckbox.setOnClickListener(view -> listener.onCheckboxTap(tasks.get(position).getId()));
+        useStudentPalette(holder, position);
     }
 
     @Override
