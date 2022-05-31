@@ -21,7 +21,6 @@ import java.util.Objects;
 
 public class StudentCreateTaskFragment extends Fragment {
 
-    private final TaskModel task = new TaskModel();
     private CreateTaskViewModel viewModel;
     private FragmentCreateTaskStudentBinding binding;
     private String studentId;
