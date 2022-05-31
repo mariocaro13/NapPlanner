@@ -13,6 +13,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
+import com.example.naplanner.MainActivity;
 import com.example.naplanner.R;
 import com.example.naplanner.databinding.FragmentSignUpTeacherBinding;
 import com.example.naplanner.features.signup.viewmodel.SignUpViewModel;
@@ -76,7 +77,10 @@ public class TeacherSignUpFragment extends Fragment {
     }
 
     private void setObservables() {
-        viewModel.navigate.observe(getViewLifecycleOwner(), unused -> Navigation.findNavController(requireView()).navigate(R.id.action_global_studentOwnTasksFragment));
+        viewModel.navigate.observe(getViewLifecycleOwner(), unused -> {
+            ((MainActivity) requireActivity()).loadUserInfo();
+            Navigation.findNavController(requireView()).navigate(R.id.action_global_studentOwnTasksFragment);
+        });
         viewModel.notifySignUpException.observe(getViewLifecycleOwner(), exception -> printMsg(exception.getMessage()));
     }
 
