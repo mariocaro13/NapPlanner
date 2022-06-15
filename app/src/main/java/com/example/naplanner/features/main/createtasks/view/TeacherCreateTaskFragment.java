@@ -43,8 +43,6 @@ public class TeacherCreateTaskFragment extends Fragment {
         setupVariables();
         setObservables();
         setupUI();
-
-        printMsg("Im Started");
     }
 
     @Override
